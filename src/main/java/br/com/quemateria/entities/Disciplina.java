@@ -49,8 +49,7 @@ public class Disciplina {
 			  inverseJoinColumns = @JoinColumn(name = "requisito_id"))
 	private Set<Disciplina> requisitos;
 	
-	@ManyToMany(mappedBy = "disciplinasCursadas")
-	private Set<Aluno> alunos;
+	
 	
 	
 	

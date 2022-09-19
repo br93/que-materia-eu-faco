@@ -23,6 +23,7 @@ public class Curso {
 	private Long id;
 	
 	private String nome;
+	private String matriz;
 	private Integer periodos;
 	
 	@OneToMany(mappedBy = "curso")

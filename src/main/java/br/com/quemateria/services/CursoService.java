@@ -33,6 +33,12 @@ public class CursoService {
 
 		return buscarPorId.orElseThrow(() -> new EntityNotFoundException("Curso não encontrado"));
 	}
+	
+	public Curso buscarCursoPorMatriz(String matriz) {
+		Optional<Curso> buscarPorMatriz = cursoRepository.findByMatriz(matriz);
+
+		return buscarPorMatriz.orElseThrow(() -> new EntityNotFoundException("Curso não encontrado"));
+	}
 
 	public Curso atualizarCurso(Curso curso, Long id) {
 		Curso cursoOriginal = this.buscarCurso(id);

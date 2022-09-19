@@ -34,6 +34,12 @@ private final DisciplinaRepository disciplinaRepository;
 		return buscarPorId.orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada"));
 	}
 	
+	public Disciplina buscarDisciplinaPorCodigo(String codigo) {
+		Optional<Disciplina> buscarPorCodigo = disciplinaRepository.findByCodigo(codigo);
+		
+		return buscarPorCodigo.orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada"));
+	}
+	
 	public Disciplina atualizarDisciplina(Disciplina disciplina, Long id) {
 		Disciplina disciplinaOriginal = this.buscarDisciplina(id);
 		disciplina.setId(disciplinaOriginal.getId());

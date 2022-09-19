@@ -34,6 +34,12 @@ private final TipoDeDisciplinaRepository tipoDeDisciplinaRepository;
 		return buscarPorId.orElseThrow(() -> new EntityNotFoundException("Tipo de disciplina não encontrado"));
 	}
 	
+	public TipoDeDisciplina buscarTipoDeDisciplinaPorNome(String nome) {
+		Optional<TipoDeDisciplina> buscarPorNome = tipoDeDisciplinaRepository.findByTipoNome(nome);
+		
+		return buscarPorNome.orElseThrow(() -> new EntityNotFoundException("Tipo de disciplina não encontrado"));
+	}
+	
 	public TipoDeDisciplina atualizarTipoDeDisciplina(TipoDeDisciplina tipoDeDisciplina, Long id) {
 		TipoDeDisciplina tipoDeDisciplinaOriginal = this.buscarTipoDeDisciplina(id);
 		tipoDeDisciplina.setId(tipoDeDisciplinaOriginal.getId());
