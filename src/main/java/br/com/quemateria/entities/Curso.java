@@ -23,8 +23,8 @@ public class Curso {
 	private Long id;
 	
 	private String nome;
+	private Integer periodos;
 	
 	@OneToMany(mappedBy = "curso")
 	private Set<Disciplina> disciplinas;
-	private Integer periodos;
 }

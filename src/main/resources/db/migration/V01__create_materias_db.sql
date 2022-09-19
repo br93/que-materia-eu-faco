@@ -27,7 +27,8 @@ FOREIGN KEY(curso_id) REFERENCES cursos_db(id)
 
 CREATE TABLE disciplinas_db (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
-nome VARCHAR(255), 
+nome VARCHAR(255),
+codigo VARCHAR(255), 
 periodo INTEGER, 
 curso_id BIGINT, 
 horario_id BIGINT, 

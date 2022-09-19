@@ -12,11 +12,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "disciplinas_db")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Disciplina {
@@ -26,6 +28,8 @@ public class Disciplina {
 	private Long id;
 	
 	private String nome;
+	
+	private String codigo;
 	
 	private Integer periodo;
 	
