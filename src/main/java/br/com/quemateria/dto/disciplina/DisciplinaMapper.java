@@ -1,5 +1,7 @@
 package br.com.quemateria.dto.disciplina;
 
+import java.util.Set;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -34,5 +36,7 @@ public interface DisciplinaMapper {
 	@Mapping(target = "tipoDeDisciplina", source = "codigo", qualifiedBy = GetTipoDeDisciplina.class)
 	@Mapping(target = "nome", source = "codigo", qualifiedBy = GetNome.class)
 	Disciplina toEntityFromDisciplinaCursada (ConsultaDisciplinaCursadaDTO dto);
-
+	
+	Set<ConsultaDisciplinaDTO> toSetCompletoDTO (Set<Disciplina> disciplina);
+	Set<ConsultaDisciplinaCursadaDTO> toSetSimplesDTO (Set<Disciplina> disciplina);
 }

@@ -1,5 +1,6 @@
 package br.com.quemateria.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -28,6 +29,10 @@ public class AlunoService {
 		return alunoRepository.findAll(pageable);
 	}
 	
+	public List<Aluno> listarAlunos(){
+		return alunoRepository.findAll();
+	}
+	
 	public Aluno buscarAluno(Long id) {
 		Optional<Aluno> buscarPorId = alunoRepository.findById(id);
 		
@@ -45,5 +50,8 @@ public class AlunoService {
 		Aluno aluno = this.buscarAluno(id);
 		alunoRepository.delete(aluno);
 	}
+	
+	
+	
 
 }

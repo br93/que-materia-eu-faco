@@ -1,5 +1,7 @@
 package br.com.quemateria.dto.aluno;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,5 +21,7 @@ public interface AlunoMapper {
 	@Mapping(target = "curso", source = "curso")
 	@Mapping(target = "disciplinasCursadas", source = "disciplinas")
 	Aluno toEntity (RegistroAlunoDTO dto);
+	
+	List<ConsultaAlunoDTO> toListDTO (List<Aluno> alunos);
 
 }

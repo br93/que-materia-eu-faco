@@ -33,6 +33,8 @@ public class Disciplina {
 	
 	private Integer periodo;
 	
+	private Integer cargaHoraria;
+	
 	@ManyToOne
 	private Curso curso;
 	

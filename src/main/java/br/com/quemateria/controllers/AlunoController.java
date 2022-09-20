@@ -19,24 +19,24 @@ import br.com.quemateria.services.AlunoService;
 @RestController
 @RequestMapping("v1/alunos")
 public class AlunoController {
-	
+
 	private final AlunoService alunoService;
 	private final AlunoMapper alunoMapper;
-	
+
 	public AlunoController(AlunoService alunoService, AlunoMapper alunoMapper) {
 		this.alunoService = alunoService;
 		this.alunoMapper = alunoMapper;
 	}
-	
+
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos (@PageableDefault Pageable pageable){
+	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos(@PageableDefault Pageable pageable) {
 		return ResponseEntity.ok(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO));
 	}
-	
+
 	@PostMapping("add")
-	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@RequestBody RegistroAlunoDTO registroAlunoDTO){
+	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@RequestBody RegistroAlunoDTO registroAlunoDTO) {
 		Aluno aluno = alunoService.salvarAluno(alunoMapper.toEntity(registroAlunoDTO));
-		
+
 		return ResponseEntity.ok(alunoMapper.toDTO(aluno));
 	}
 
