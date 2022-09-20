@@ -1,1 +1,0 @@
-ALTER TABLE cursos_db ADD matriz VARCHAR(3);

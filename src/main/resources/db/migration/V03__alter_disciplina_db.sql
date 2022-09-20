@@ -1,1 +1,0 @@
-ALTER TABLE disciplinas_db ADD carga_horaria INTEGER;

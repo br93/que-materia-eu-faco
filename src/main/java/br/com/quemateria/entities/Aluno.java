@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "alunos_db")
+@Entity(name = "tb_alunos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,7 +34,7 @@ public class Aluno {
 	
 	@ManyToMany
 	@JoinTable(
-			  name = "alunos_disciplinas_db", 
+			  name = "tb_alunos_disciplinas", 
 			  joinColumns = @JoinColumn(name = "aluno_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "disciplina_id"))
 	private Set<Disciplina> disciplinasCursadas;
