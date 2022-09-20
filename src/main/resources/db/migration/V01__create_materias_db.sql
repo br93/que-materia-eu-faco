@@ -29,15 +29,14 @@ FOREIGN KEY(curso_id) REFERENCES tb_cursos(id)
 CREATE TABLE tb_disciplinas (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
 nome VARCHAR(255),
-codigo VARCHAR(255), 
+codigo VARCHAR(255),
+turma VARCHAR(255),  
 periodo INTEGER,
 carga_horaria INTEGER, 
 curso_id BIGINT, 
-horario_id BIGINT, 
 tipo_de_disciplina_id BIGINT,
 peso DOUBLE,
 FOREIGN KEY(curso_id) REFERENCES tb_cursos(id),
-FOREIGN KEY(horario_id) REFERENCES tb_horarios(id),
 FOREIGN KEY(tipo_de_disciplina_id) REFERENCES tb_tipos_de_disciplina(id)
 );
 
@@ -47,6 +46,14 @@ disciplina_id BIGINT,
 PRIMARY KEY (aluno_id, disciplina_id),
 FOREIGN KEY (aluno_id) REFERENCES tb_alunos(id),
 FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id)
+);
+
+CREATE TABLE tb_disciplinas_horarios(
+disciplina_id BIGINT,
+horario_id BIGINT,
+PRIMARY KEY (disciplina_id, horario_id),
+FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id),
+FOREIGN KEY (horario_id) REFERENCES tb_horarios(id)
 );
 
 CREATE TABLE tb_disciplinas_requisitos(

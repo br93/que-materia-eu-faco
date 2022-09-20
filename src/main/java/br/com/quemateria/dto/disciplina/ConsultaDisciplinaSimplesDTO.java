@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConsultaDisciplinaCursadaDTO {
+public class ConsultaDisciplinaSimplesDTO {
 
 	private String codigo;
 

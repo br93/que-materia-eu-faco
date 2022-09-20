@@ -31,6 +31,8 @@ public class Disciplina {
 	
 	private String codigo;
 	
+	private String turma;
+	
 	private Integer periodo;
 	
 	private Integer cargaHoraria;
@@ -43,14 +45,18 @@ public class Disciplina {
 	@ManyToOne
 	private TipoDeDisciplina tipoDeDisciplina;
 	
-	@ManyToOne
-	private Horario horario;
+	@ManyToMany
+	@JoinTable(
+			name = "tb_disciplinas_horarios",
+			joinColumns = @JoinColumn(name = "disciplina_id"),
+			inverseJoinColumns = @JoinColumn(name = "horario_id"))
+	private Set<Horario> horarios;
 	
 	@ManyToMany
 	@JoinTable(
-			  name = "tb_disciplinas_requisitos", 
-			  joinColumns = @JoinColumn(name = "disciplina_id"), 
-			  inverseJoinColumns = @JoinColumn(name = "requisito_id"))
+			name = "tb_disciplinas_requisitos", 
+			joinColumns = @JoinColumn(name = "disciplina_id"), 
+			inverseJoinColumns = @JoinColumn(name = "requisito_id"))
 	private Set<Disciplina> requisitos;
 	
 	

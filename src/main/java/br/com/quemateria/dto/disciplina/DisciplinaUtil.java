@@ -41,13 +41,6 @@ public class DisciplinaUtil {
 	@Qualifier
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.CLASS)
-	public @interface GetHorario{
-		
-	}
-	
-	@Qualifier
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.CLASS)
 	public @interface GetNome{
 		
 	}
@@ -73,6 +66,27 @@ public class DisciplinaUtil {
 		
 	}
 	
+	@Qualifier
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.CLASS)
+	public @interface GetCargaHoraria{
+		
+	}
+	
+	@Qualifier
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.CLASS)
+	public @interface GetHorarios{
+		
+	}
+	
+	@Qualifier
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.CLASS)
+	public @interface GetTurma{
+		
+	}
+	
 	@GetId
 	public Long getId(String codigo) {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getId();
@@ -81,11 +95,6 @@ public class DisciplinaUtil {
 	@GetCurso
 	public Curso getCurso (String codigo) {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getCurso();
-	}
-	
-	@GetHorario
-	public Horario getHorario (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getHorario();
 	}
 	
 	@GetNome
@@ -106,6 +115,21 @@ public class DisciplinaUtil {
 	@GetTipoDeDisciplina
 	public TipoDeDisciplina getTipoDeDisciplina (String codigo) {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getTipoDeDisciplina();
+	}
+	
+	@GetCargaHoraria
+	public Integer getCargaHoraria (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getCargaHoraria();
+	}
+	
+	@GetHorarios
+	public Set<Horario> getHorarios (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getHorarios();
+	}
+	
+	@GetTurma
+	public String getTurma (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getTurma();
 	}
 	
 	

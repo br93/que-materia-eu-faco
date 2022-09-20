@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.quemateria.dto.disciplina.ConsultaDisciplinaCursadaDTO;
+import br.com.quemateria.dto.disciplina.ConsultaDisciplinaSimplesDTO;
 import br.com.quemateria.dto.disciplina.ConsultaDisciplinaDTO;
 import br.com.quemateria.dto.disciplina.DisciplinaMapper;
 import br.com.quemateria.services.HistoricoService;
@@ -25,7 +25,7 @@ public class HistoricoController {
 	}
 
 	@GetMapping("simples")
-	public ResponseEntity<Set<ConsultaDisciplinaCursadaDTO>> disciplinasCursadasSimples() {
+	public ResponseEntity<Set<ConsultaDisciplinaSimplesDTO>> disciplinasCursadasSimples() {
 		return ResponseEntity.ok(disciplinaMapper.toSetSimplesDTO(historicoService.getDisciplinasCursadas()));
 	}
 
@@ -35,7 +35,7 @@ public class HistoricoController {
 	}
 
 	@GetMapping("faltantes/simples")
-	public ResponseEntity<Set<ConsultaDisciplinaCursadaDTO>> disciplinasFaltantesSimples() {
+	public ResponseEntity<Set<ConsultaDisciplinaSimplesDTO>> disciplinasFaltantesSimples() {
 		return ResponseEntity
 				.ok(disciplinaMapper.toSetSimplesDTO(historicoService.getDisciplinasObrigatoriasFaltantes()));
 	}
