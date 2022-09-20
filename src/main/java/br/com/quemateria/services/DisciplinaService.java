@@ -35,16 +35,23 @@ public class DisciplinaService {
 		return buscarPorId.orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada"));
 	}
 
-	public Disciplina buscarDisciplinaPorCodigo(String codigo) {
-		Optional<Disciplina> buscarPorCodigo = disciplinaRepository.findByCodigo(codigo);
+	public Disciplina buscarDisciplinaPorTurma(String turma) {
+		Optional<Disciplina> buscarPorTurma = disciplinaRepository.findByTurma(turma);
 
-		return buscarPorCodigo.orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada"));
+		return buscarPorTurma.orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada"));
 	}
 
 	public Disciplina atualizarDisciplina(Disciplina disciplina, Long id) {
 		Disciplina disciplinaOriginal = this.buscarDisciplina(id);
 		disciplina.setId(disciplinaOriginal.getId());
 
+		return disciplinaRepository.save(disciplina);
+	}
+	
+	private Disciplina atualizarPeso(Double peso, Long id) {
+		Disciplina disciplina = this.buscarDisciplina(id);
+		disciplina.setPeso(peso);
+		
 		return disciplinaRepository.save(disciplina);
 	}
 
@@ -57,9 +64,14 @@ public class DisciplinaService {
 		List<Disciplina> disciplinas = disciplinaRepository.findAll();
 		
 		for (Disciplina disciplina : disciplinas)
-			if (disciplina.getPeso() == 0.0d)
-				disciplina.setPeso(Math.log(disciplina.getPeriodo()) - disciplina.getRequisitos().size()
-						- disciplina.getTipoDeDisciplina().getTipoValor());
+			if (disciplina.getPeso() == 0.0) {
+				atualizarPeso((Math.log(disciplina.getPeriodo())/Math.log(2)) - (disciplina.getPreRequisito() / 2)
+						- disciplina.getTipoDeDisciplina().getTipoValor(), disciplina.getId());
+			}
+				
 	}
+	
+	
+	
 
 }

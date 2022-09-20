@@ -1,8 +1,9 @@
 package br.com.quemateria.entities;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,11 +33,11 @@ public class Aluno {
 	@ManyToOne
 	private Curso curso;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			  name = "tb_alunos_disciplinas", 
 			  joinColumns = @JoinColumn(name = "aluno_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "disciplina_id"))
-	private Set<Disciplina> disciplinasCursadas;
+	private List<Disciplina> disciplinasCursadas;
 
 }

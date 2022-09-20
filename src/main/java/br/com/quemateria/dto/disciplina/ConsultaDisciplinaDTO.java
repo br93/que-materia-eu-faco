@@ -14,10 +14,11 @@ public class ConsultaDisciplinaDTO {
 	
 	private String nome;
 	private String codigo;
+	//private String turma;
 	private Integer periodo;
 	private String curso;
 	private String tipo;
-	private Set<ConsultaHorarioDTO> horarios;
+	//private Set<ConsultaHorarioDTO> horarios;
 	private Set<ConsultaDisciplinaDTO> requisitos;
 
 }

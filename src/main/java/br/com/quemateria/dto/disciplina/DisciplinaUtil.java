@@ -83,53 +83,65 @@ public class DisciplinaUtil {
 	@Qualifier
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.CLASS)
-	public @interface GetTurma{
+	public @interface GetCodigo{
+		
+	}
+	
+	@Qualifier
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.CLASS)
+	public @interface GetPreRequisito{
 		
 	}
 	
 	@GetId
-	public Long getId(String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getId();
+	public Long getId(String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getId();
 	}
 	
 	@GetCurso
-	public Curso getCurso (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getCurso();
+	public Curso getCurso (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getCurso();
 	}
 	
 	@GetNome
-	public String getNome (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getNome();
+	public String getNome (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getNome();
 	}
 	
 	@GetPeriodo
-	public Integer getPeriodo (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getPeriodo();
+	public Integer getPeriodo (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getPeriodo();
 	}
 	
 	@GetRequisitos
-	public Set<Disciplina> getRequisitos (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getRequisitos();
+	public Set<Disciplina> getRequisitos (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getRequisitos();
 	}
 	
 	@GetTipoDeDisciplina
-	public TipoDeDisciplina getTipoDeDisciplina (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getTipoDeDisciplina();
+	public TipoDeDisciplina getTipoDeDisciplina (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getTipoDeDisciplina();
 	}
 	
 	@GetCargaHoraria
-	public Integer getCargaHoraria (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getCargaHoraria();
+	public Integer getCargaHoraria (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getCargaHoraria();
 	}
 	
 	@GetHorarios
-	public Set<Horario> getHorarios (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getHorarios();
+	public Set<Horario> getHorarios (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getHorarios();
 	}
 	
-	@GetTurma
-	public String getTurma (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getTurma();
+	@GetCodigo
+	public String getCodigo (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getCodigo();
+	}
+	
+	@GetPreRequisito
+	public Integer getPreRequisito (String turma) {
+		return disciplinaService.buscarDisciplinaPorTurma(turma).getPreRequisito();
 	}
 	
 	

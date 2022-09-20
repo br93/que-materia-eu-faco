@@ -1,5 +1,6 @@
 package br.com.quemateria.entities;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -22,51 +23,61 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Disciplina {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String nome;
-	
+
 	private String codigo;
-	
+
 	private String turma;
-	
+
 	private Integer periodo;
-	
+
 	private Integer cargaHoraria;
 	
+	private Integer preRequisito;
+
 	private Double peso;
-	
+
 	@ManyToOne
 	private Curso curso;
-	
+
 	@ManyToOne
 	private TipoDeDisciplina tipoDeDisciplina;
-	
+
 	@ManyToMany
-	@JoinTable(
-			name = "tb_disciplinas_horarios",
-			joinColumns = @JoinColumn(name = "disciplina_id"),
-			inverseJoinColumns = @JoinColumn(name = "horario_id"))
+	@JoinTable(name = "tb_disciplinas_horarios", joinColumns = @JoinColumn(name = "disciplina_id"), inverseJoinColumns = @JoinColumn(name = "horario_id"))
 	private Set<Horario> horarios;
-	
+
 	@ManyToMany
-	@JoinTable(
-			name = "tb_disciplinas_requisitos", 
-			joinColumns = @JoinColumn(name = "disciplina_id"), 
-			inverseJoinColumns = @JoinColumn(name = "requisito_id"))
+	@JoinTable(name = "tb_disciplinas_requisitos", joinColumns = @JoinColumn(name = "disciplina_id"), inverseJoinColumns = @JoinColumn(name = "requisito_id"))
 	private Set<Disciplina> requisitos;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Disciplina other = (Disciplina) obj;
+		return Objects.equals(codigo, other.codigo);
+	}
 	
 	
 	
 	
 	
-	
-	
-	
-	
+
 	
 
 }

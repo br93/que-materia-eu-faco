@@ -2,7 +2,7 @@ package br.com.quemateria.dto.aluno;
 
 import java.util.Set;
 
-import br.com.quemateria.dto.disciplina.ConsultaDisciplinaSimplesDTO;
+import br.com.quemateria.dto.disciplina.RegistroDisciplinaSimplesDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +16,6 @@ public class RegistroAlunoDTO {
 	private String registro;
 	private Integer periodo;
 	private String curso;
-	private Set<ConsultaDisciplinaSimplesDTO> disciplinas;
+	private Set<RegistroDisciplinaSimplesDTO> disciplinas;
 
 }
