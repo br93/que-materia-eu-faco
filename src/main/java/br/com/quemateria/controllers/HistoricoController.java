@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.quemateria.dto.disciplina.ConsultaDisciplinaDTO;
 import br.com.quemateria.dto.disciplina.ConsultaDisciplinaSimplesDTO;
 import br.com.quemateria.dto.disciplina.DisciplinaMapper;
-import br.com.quemateria.services.DisciplinaService;
 import br.com.quemateria.services.HistoricoService;
 
 @RestController
@@ -19,18 +18,15 @@ import br.com.quemateria.services.HistoricoService;
 public class HistoricoController {
 
 	private final HistoricoService historicoService;
-	private final DisciplinaService disciplinaService;
 	private final DisciplinaMapper disciplinaMapper;
 
-	public HistoricoController(HistoricoService historicoService, DisciplinaService disciplinaService, DisciplinaMapper disciplinaMapper) {
+	public HistoricoController(HistoricoService historicoService, DisciplinaMapper disciplinaMapper) {
 		this.historicoService = historicoService;
-		this.disciplinaService = disciplinaService;
 		this.disciplinaMapper = disciplinaMapper;
 	}
 
 	@GetMapping("simples")
 	public ResponseEntity<Set<ConsultaDisciplinaSimplesDTO>> disciplinasCursadasSimples() {
-		disciplinaService.calcularPeso();
 		return ResponseEntity.ok(disciplinaMapper.toSetSimplesDTO(historicoService.getDisciplinasCursadas()));
 	}
 

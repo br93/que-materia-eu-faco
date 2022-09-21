@@ -1,6 +1,5 @@
 package br.com.quemateria.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -48,27 +47,16 @@ public class DisciplinaService {
 		return disciplinaRepository.save(disciplina);
 	}
 	
-	private Disciplina atualizarPeso(Double peso, Long id) {
-		Disciplina disciplina = this.buscarDisciplina(id);
-		disciplina.setPeso(peso);
-		
-		return disciplinaRepository.save(disciplina);
-	}
-
 	public void excluirDisciplina(Long id) {
 		Disciplina disciplina = this.buscarDisciplina(id);
 		disciplinaRepository.delete(disciplina);
 	}
 
-	public void calcularPeso() {
-		List<Disciplina> disciplinas = disciplinaRepository.findAll();
+	public Disciplina atualizarPeso(Double peso, Long id) {
+		Disciplina disciplina = this.buscarDisciplina(id);
+		disciplina.setPeso(peso);
 		
-		for (Disciplina disciplina : disciplinas)
-			if (disciplina.getPeso() == 0.0) {
-				atualizarPeso((Math.log(disciplina.getPeriodo())/Math.log(2)) - (disciplina.getPreRequisito() / 2)
-						- disciplina.getTipoDeDisciplina().getTipoValor(), disciplina.getId());
-			}
-				
+		return disciplinaRepository.save(disciplina);
 	}
 	
 	

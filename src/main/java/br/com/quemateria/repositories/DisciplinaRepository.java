@@ -15,5 +15,6 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
 	//List<Disciplina> findByCurso_IdAndTipoDeDisciplina_IdOrderByPesoAscCargaHorariaDescPeriodoAsc(Long cursoId, Long tipoId);
 	List<Disciplina> findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(Long cursoId, Long tipoId);
 	
+	
 
 }

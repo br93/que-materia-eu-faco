@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +34,8 @@ public class Aluno {
 	@ManyToOne
 	private Curso curso;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
+	@OrderBy(value = "periodo ASC")
 	@JoinTable(
 			  name = "tb_alunos_disciplinas", 
 			  joinColumns = @JoinColumn(name = "aluno_id"), 

@@ -51,6 +51,11 @@ public class AlunoService {
 		alunoRepository.delete(aluno);
 	}
 	
+	public Aluno getUltimoAlunoCadastrado() {
+		List<Aluno> listaAlunos = alunoRepository.findAll();
+		return listaAlunos.get(listaAlunos.size() - 1);
+	}
+	
 	
 	
 
