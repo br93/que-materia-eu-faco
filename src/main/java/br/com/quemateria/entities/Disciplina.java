@@ -12,6 +12,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,9 +51,11 @@ public class Disciplina {
 	private TipoDeDisciplina tipoDeDisciplina;
 
 	@OneToMany(mappedBy = "disciplina")
+	@OrderBy(value = "id ASC")
 	private Set<HorarioAula> horarios;
 
 	@ManyToMany
+	@OrderBy(value = "periodo ASC")
 	@JoinTable(name = "tb_disciplinas_requisitos", joinColumns = @JoinColumn(name = "disciplina_id"), inverseJoinColumns = @JoinColumn(name = "requisito_id"))
 	private Set<Disciplina> requisitos;
 
