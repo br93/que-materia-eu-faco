@@ -2,7 +2,7 @@ package br.com.quemateria.dto.disciplina;
 
 import java.util.Set;
 
-import br.com.quemateria.dto.horario.ConsultaHorarioDTO;
+import br.com.quemateria.dto.horario.ConsultaHorarioAulaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class ConsultaDisciplinaDTO {
 	private Integer periodo;
 	private String curso;
 	private String tipo;
-	//private Set<ConsultaHorarioDTO> horarios;
+	private Set<ConsultaHorarioAulaDTO> horarios;
 	private Set<ConsultaDisciplinaDTO> requisitos;
 
 }

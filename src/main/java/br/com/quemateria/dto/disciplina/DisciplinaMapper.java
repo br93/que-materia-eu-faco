@@ -1,6 +1,7 @@
 package br.com.quemateria.dto.disciplina;
 
 import java.util.List;
+import java.util.Set;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,11 +16,11 @@ import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetPeriodo;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetPreRequisito;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetRequisitos;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetTipoDeDisciplina;
+import br.com.quemateria.dto.horario.HorarioAulaMapper;
 import br.com.quemateria.entities.Disciplina;
 import br.com.quemateria.services.CursoService;
-import br.com.quemateria.services.TipoDeDisciplinaService;
 
-@Mapper(componentModel = "spring", uses = {CursoService.class, TipoDeDisciplinaService.class, DisciplinaUtil.class})
+@Mapper(componentModel = "spring", uses = {CursoService.class, DisciplinaUtil.class, HorarioAulaMapper.class})
 public interface DisciplinaMapper {
 	
 	@Mapping(target = "curso", source = "curso.nome")
@@ -43,6 +44,9 @@ public interface DisciplinaMapper {
 	
 	List<ConsultaDisciplinaDTO> toListCompletoDTO (List<Disciplina> disciplina);
 	List<ConsultaDisciplinaSimplesDTO> toListSimplesDTO (List<Disciplina> disciplina);
+
+	Set<ConsultaDisciplinaDTO> toSetCompletoDTO (Set<Disciplina> disciplina);
+	Set<ConsultaDisciplinaSimplesDTO> toSetSimplesDTO(Set<Disciplina> disciplinasCursadas);
 	
 	
 }

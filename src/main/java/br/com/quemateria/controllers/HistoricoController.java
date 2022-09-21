@@ -1,7 +1,6 @@
 package br.com.quemateria.controllers;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
@@ -30,26 +29,26 @@ public class HistoricoController {
 	}
 
 	@GetMapping("simples")
-	public ResponseEntity<List<ConsultaDisciplinaSimplesDTO>> disciplinasCursadasSimples() {
+	public ResponseEntity<Set<ConsultaDisciplinaSimplesDTO>> disciplinasCursadasSimples() {
 		disciplinaService.calcularPeso();
-		return ResponseEntity.ok(disciplinaMapper.toListSimplesDTO(historicoService.getDisciplinasCursadas()));
+		return ResponseEntity.ok(disciplinaMapper.toSetSimplesDTO(historicoService.getDisciplinasCursadas()));
 	}
 
 	@GetMapping("completo")
-	public ResponseEntity<List<ConsultaDisciplinaDTO>> disciplinasCursadasCompleto() {
-		return ResponseEntity.ok(disciplinaMapper.toListCompletoDTO(historicoService.getDisciplinasCursadas()));
+	public ResponseEntity<Set<ConsultaDisciplinaDTO>> disciplinasCursadasCompleto() {
+		return ResponseEntity.ok(disciplinaMapper.toSetCompletoDTO(historicoService.getDisciplinasCursadas()));
 	}
 
 	@GetMapping("faltantes/simples")
 	public ResponseEntity<Set<ConsultaDisciplinaSimplesDTO>> disciplinasFaltantesSimples() {
 		return ResponseEntity
-				.ok(new HashSet<>(disciplinaMapper.toListSimplesDTO(historicoService.getDisciplinasObrigatoriasFaltantes())));
+				.ok(new LinkedHashSet<>(disciplinaMapper.toListSimplesDTO(historicoService.getDisciplinasFaltantes())));
 	}
 
 	@GetMapping("faltantes/completo")
 	public ResponseEntity<Set<ConsultaDisciplinaDTO>> disciplinasFaltantesCompleto() {
 		return ResponseEntity
-				.ok(new HashSet<>(disciplinaMapper.toListCompletoDTO(historicoService.getDisciplinasObrigatoriasFaltantes())));
+				.ok(new LinkedHashSet<>(disciplinaMapper.toListCompletoDTO(historicoService.getDisciplinasFaltantes())));
 
 	}
 

@@ -1,7 +1,8 @@
 INSERT INTO tb_tipos_de_disciplina (tipo_nome, tipo_valor) VALUES
 	('Obrigatória', '1'),
-	('Trilha', '1'),
-	('Opcional', '2');
+	('Segundo Estrato', '2'),
+	('Trilha', '3'),
+	('Opcional', '4');
 	
 INSERT INTO tb_horarios (id, faixa, sigla) VALUES
 	('1', '07h30-08h20', 'M1'),
@@ -21,6 +22,13 @@ INSERT INTO tb_horarios (id, faixa, sigla) VALUES
 	('15', '20h20-21h10', 'N3'),
 	('16', '21h20-22h10', 'N4'),
 	('17', '22h10-23h00', 'N5');
+	
+INSERT INTO tb_dias (id, identificador, dia) VALUES
+	('1', '2', 'Segunda'),
+	('2', '3', 'Terça'),
+	('3', '4', 'Quarta'),
+	('4', '5', 'Quinta'),
+	('5', '6', 'Sexta');
 	
 INSERT INTO tb_cursos (nome, matriz, periodos) VALUES
 	('Bacharelado em Sistemas de Informação', '236', '8');
@@ -117,7 +125,8 @@ INSERT INTO tb_disciplinas (id, nome, codigo, turma, periodo, pre_requisito, car
 	('89', 'Trabalho de Conclusão de Curso 1', 'CSX40', 'CSX40-S73', '7', '0', '30', '1', '1', 0.0),
 	('90', 'Trabalho de Conclusão de Curso 2', 'CSX41', 'CSX41-E01', '8', '0', '30', '1', '1', 0.0),
 	('91', 'Trabalho de Conclusão de Curso 2', 'CSX41', 'CSX41-S73', '8', '0', '30', '1', '1', 0.0);
-	
+
+
 	
 	
 	

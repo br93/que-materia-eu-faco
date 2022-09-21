@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.quemateria.entities.Curso;
 import br.com.quemateria.entities.Disciplina;
-import br.com.quemateria.entities.Horario;
+import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.entities.TipoDeDisciplina;
 import br.com.quemateria.services.DisciplinaService;
 
@@ -130,7 +130,7 @@ public class DisciplinaUtil {
 	}
 	
 	@GetHorarios
-	public Set<Horario> getHorarios (String turma) {
+	public Set<HorarioAula> getHorarios (String turma) {
 		return disciplinaService.buscarDisciplinaPorTurma(turma).getHorarios();
 	}
 	

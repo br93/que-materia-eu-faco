@@ -11,6 +11,12 @@ faixa VARCHAR(255),
 sigla VARCHAR(255)
 );
 
+CREATE TABLE tb_dias (
+id BIGINT AUTO_INCREMENT PRIMARY KEY, 
+identificador INTEGER, 
+dia VARCHAR(255)
+);
+
 CREATE TABLE tb_tipos_de_disciplina (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
 tipo_nome VARCHAR(255), 
@@ -41,20 +47,22 @@ FOREIGN KEY(curso_id) REFERENCES tb_cursos(id),
 FOREIGN KEY(tipo_de_disciplina_id) REFERENCES tb_tipos_de_disciplina(id)
 );
 
+CREATE TABLE tb_horario_aula (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+disciplina_id BIGINT,
+dia_id BIGINT,
+horario_id BIGINT, 
+FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id),
+FOREIGN KEY (dia_id) REFERENCES tb_dias(id),
+FOREIGN KEY (horario_id) REFERENCES tb_horarios(id)
+);
+
 CREATE TABLE tb_alunos_disciplinas (
 aluno_id BIGINT,
 disciplina_id BIGINT, 
 PRIMARY KEY (aluno_id, disciplina_id),
 FOREIGN KEY (aluno_id) REFERENCES tb_alunos(id),
 FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id)
-);
-
-CREATE TABLE tb_disciplinas_horarios(
-disciplina_id BIGINT,
-horario_id BIGINT,
-PRIMARY KEY (disciplina_id, horario_id),
-FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id),
-FOREIGN KEY (horario_id) REFERENCES tb_horarios(id)
 );
 
 CREATE TABLE tb_disciplinas_requisitos(

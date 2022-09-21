@@ -9,9 +9,8 @@ import br.com.quemateria.dto.disciplina.DisciplinaMapper;
 import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.services.CursoService;
 import br.com.quemateria.services.DisciplinaService;
-import br.com.quemateria.services.HorarioService;
 
-@Mapper(componentModel = "spring", uses = {DisciplinaMapper.class, CursoService.class, HorarioService.class, DisciplinaService.class})
+@Mapper(componentModel = "spring", uses = {DisciplinaMapper.class, CursoService.class, DisciplinaService.class})
 public interface AlunoMapper {
 	
 	@Mapping(target = "curso", source = "curso.matriz" )

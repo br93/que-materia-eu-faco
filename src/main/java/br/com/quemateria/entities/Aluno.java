@@ -1,6 +1,6 @@
 package br.com.quemateria.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,6 +38,6 @@ public class Aluno {
 			  name = "tb_alunos_disciplinas", 
 			  joinColumns = @JoinColumn(name = "aluno_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "disciplina_id"))
-	private List<Disciplina> disciplinasCursadas;
+	private Set<Disciplina> disciplinasCursadas;
 
 }

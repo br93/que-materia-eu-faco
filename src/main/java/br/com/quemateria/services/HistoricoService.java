@@ -1,6 +1,8 @@
 package br.com.quemateria.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -24,31 +26,33 @@ public class HistoricoService {
 		List<Aluno> listaAlunos = alunoRepository.findAll();
 		return listaAlunos.get(listaAlunos.size() - 1);
 	}
-
-	private Long getIdUltimoAlunoCadastrado() {
-		return this.getUltimoAlunoCadastrado().getId();
+	
+	private Long getIdCursoUltimoAlunoCadastrado() {
+		return this.getUltimoAlunoCadastrado().getCurso().getId();
 	}
 
-	public List<Disciplina> getDisciplinasCursadas() {
+	public Set<Disciplina> getDisciplinasCursadas() {
 		return this.getUltimoAlunoCadastrado().getDisciplinasCursadas();
 	}
 
 	public List<Disciplina> listarDisciplinasObrigatorias() {
-		Long id = this.getIdUltimoAlunoCadastrado();
 		return disciplinaRepository
-				.findByCurso_IdAndTipoDeDisciplina_TipoValorOrderByPesoAscCargaHorariaDescPeriodoAsc(id, 1);
+				.findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 1L);
 	}
 
-	public List<Disciplina> listarDisciplinasOpcionais() {
-		Long id = this.getIdUltimoAlunoCadastrado();
+	public List<Disciplina> listarDisciplinasSegundoEstrato() {
 		return disciplinaRepository
-				.findByCurso_IdAndTipoDeDisciplina_TipoValorOrderByPesoAscCargaHorariaDescPeriodoAsc(id, 2);
+				.findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 2L);
 	}
 
 	public List<Disciplina> listarDisciplinasTrilha() {
-		Long id = this.getIdUltimoAlunoCadastrado();
 		return disciplinaRepository
-				.findByCurso_IdAndTipoDeDisciplina_TipoValorOrderByPesoAscCargaHorariaDescPeriodoAsc(id, 3);
+				.findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 3L);
+	}
+	
+	public List<Disciplina> listarDisciplinasOpcionais() {
+		return disciplinaRepository
+				.findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 4L);
 	}
 
 	public List<Disciplina> getDisciplinasObrigatoriasFaltantes() {
@@ -59,6 +63,24 @@ public class HistoricoService {
 		obrigatoriasFaltantes.removeAll(this.getDisciplinasCursadas());
 
 		return obrigatoriasFaltantes;
+	}
+	
+	public List<Disciplina> getDisciplinasFaltantes() {
+		List<Disciplina> disciplinasFaltantes = new ArrayList<>();
+		disciplinasFaltantes.addAll(this.listarDisciplinasObrigatorias());
+		disciplinasFaltantes.addAll(this.listarDisciplinasSegundoEstrato());
+		disciplinasFaltantes.removeAll(this.getDisciplinasCursadas());
+		
+		return disciplinasFaltantes;
+	}
+	
+	public List<Disciplina> getOpcionaisFaltantes() {
+		List<Disciplina> disciplinasFaltantes = new ArrayList<>();
+		disciplinasFaltantes.addAll(this.listarDisciplinasTrilha());
+		disciplinasFaltantes.addAll(this.listarDisciplinasOpcionais());
+		disciplinasFaltantes.removeAll(this.getDisciplinasCursadas());
+		
+		return disciplinasFaltantes;
 	}
 
 }
