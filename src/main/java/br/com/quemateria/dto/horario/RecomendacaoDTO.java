@@ -12,5 +12,7 @@ public class RecomendacaoDTO {
 	private String nome;
 	private String codigo;
 	private String turma;
+	private String dia;
+	private String horario;
 
 }
