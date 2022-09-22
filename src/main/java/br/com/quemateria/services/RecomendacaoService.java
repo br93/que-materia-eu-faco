@@ -119,8 +119,9 @@ public class RecomendacaoService {
 		// List<String> horarios = new ArrayList<>();
 
 		for (HorarioAula horarioAula : lista)
-			if (cargaHorariaMaxima >= 0 && !recomendacao.contains(horarioAula) && !disciplinas
-					.contains(horarioAula.getDisciplina().getNome()) && horarioDisponivel(recomendacao, horarioAula)) {
+			if (cargaHorariaMaxima >= 0 && !recomendacao.contains(horarioAula)
+					&& !disciplinas.contains(horarioAula.getDisciplina().getNome())
+					&& horarioValido(recomendacao, horarioAula)) {
 
 				recomendacao.addAll(this.listarHorarioAulaPorTurma(horarioAula.getDisciplina().getTurma()));
 				disciplinas.add(horarioAula.getDisciplina().getNome());
@@ -132,19 +133,25 @@ public class RecomendacaoService {
 
 	}
 
-	// pensar na logica = horarios estao repetindo por causa do addAll do loop anterior
-	public boolean horarioDisponivel(List<HorarioAula> recomendacao, HorarioAula disciplina) {
+	public Boolean horarioValido(List<HorarioAula> recomendacao, HorarioAula disciplina) {
 
 		if (recomendacao.isEmpty())
 			return true;
 
 		Boolean valido = true;
+		List<HorarioAula> listaParaValidar = this.listarHorarioAulaPorTurma(disciplina.getDisciplina().getTurma());
 
 		for (HorarioAula horarioAula : recomendacao)
-			if (horarioAula.getDia() == disciplina.getDia() && horarioAula.getHorario() == disciplina.getHorario())
+			if (horarioAula == disciplina)
 				valido = false;
 
+		if (valido)
+			for (HorarioAula horasParaValidar : listaParaValidar)
+				if (recomendacao.contains(horasParaValidar))
+					return false;
+
 		return valido;
+
 	}
 
 	public List<HorarioAula> recomendacaoPeriodoIntegral(List<HorarioAula> listaPrimeiroTurno,
@@ -162,7 +169,8 @@ public class RecomendacaoService {
 
 		for (HorarioAula horarioAula : setRecomendacao)
 			if (cargaHorariaMaxima >= 0 && !listaRecomendacao.contains(horarioAula)
-					&& !disciplinas.contains(horarioAula.getDisciplina().getNome())) {
+					&& !disciplinas.contains(horarioAula.getDisciplina().getNome())
+					&& horarioValido(listaRecomendacao, horarioAula)) {
 				listaRecomendacao.addAll(this.listarHorarioAulaPorTurma(horarioAula.getDisciplina().getTurma()));
 				disciplinas.add(horarioAula.getDisciplina().getNome());
 				cargaHorariaMaxima -= horarioAula.getDisciplina().getCargaHoraria();
