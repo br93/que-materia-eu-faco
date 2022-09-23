@@ -1,8 +1,8 @@
 INSERT INTO tb_tipos_de_disciplina (tipo_nome, tipo_valor) VALUES
-	('Obrigatória', '1'),
-	('Segundo Estrato', '2'),
-	('Trilha', '3'),
-	('Opcional', '4');
+	('Obrigatória', '5'),
+	('Segundo Estrato', '3'),
+	('Trilha', '2'),
+	('Opcional', '1');
 	
 INSERT INTO tb_horarios (id, faixa, sigla) VALUES
 	('1', '07h30-08h20', 'M1'),
