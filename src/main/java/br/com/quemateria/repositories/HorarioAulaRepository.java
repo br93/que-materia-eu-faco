@@ -10,18 +10,12 @@ import br.com.quemateria.entities.HorarioAula;
 @Repository
 public interface HorarioAulaRepository extends JpaRepository<HorarioAula, Long> {
 
-	/*
-	 * List<HorarioAula>
-	 * findTop5ByDisciplina_Curso_IdAndDia_IdentificadorAndHorario_SiglaOrderByDisciplina_PesoAscDisciplina_CargaHorariaDescDisciplina_PeriodoAsc(
-	 * Long cursoId, Integer identificador, String sigla);
-	 */
-
-	List<HorarioAula> findAllByDisciplina_Curso_IdAndDia_IdentificadorAndHorario_SiglaOrderByDisciplina_PesoAscDisciplina_CargaHorariaDescDisciplina_PeriodoAsc(
+	List<HorarioAula> findAllByTurma_Disciplina_Curso_IdAndDia_IdentificadorAndHorario_SiglaOrderByTurma_Disciplina_PesoAscTurma_Disciplina_CargaHorariaDescTurma_Disciplina_PeriodoAsc(
 			Long cursoId, Integer identificador, String sigla);
 
-	List<HorarioAula> findAllByDisciplina_Curso_IdAndDisciplina_PeriodoLessThanAndHorario_IdBetweenOrderByDisciplina_PesoAscDisciplina_CargaHorariaDescDisciplina_PeriodoAsc(
+	List<HorarioAula> findAllByTurma_Disciplina_Curso_IdAndTurma_Disciplina_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_PesoAscTurma_Disciplina_CargaHorariaDescTurma_Disciplina_PeriodoAsc(
 			Long cursoId, Integer periodo, Long horarioInicioId, Long horarioFimId);
-	
-	List<HorarioAula> findAllByDisciplina_Turma(String turma);
+
+	List<HorarioAula> findAllByTurma_Codigo(String codigo);
 
 }

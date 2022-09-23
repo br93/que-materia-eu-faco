@@ -31,10 +31,8 @@ public class Disciplina {
 	private Long id;
 
 	private String nome;
-
+	
 	private String codigo;
-
-	private String turma;
 
 	private Integer periodo;
 
@@ -49,10 +47,9 @@ public class Disciplina {
 
 	@ManyToOne
 	private TipoDeDisciplina tipoDeDisciplina;
-
+	
 	@OneToMany(mappedBy = "disciplina")
-	@OrderBy(value = "id ASC")
-	private Set<HorarioAula> horarios;
+	private Set<Turma> turmas;
 
 	@ManyToMany
 	@OrderBy(value = "periodo ASC")

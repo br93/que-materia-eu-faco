@@ -7,15 +7,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetCargaHoraria;
-import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetCodigo;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetCurso;
-import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetHorarios;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetId;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetNome;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetPeriodo;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetPreRequisito;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetRequisitos;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetTipoDeDisciplina;
+import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetTurmas;
 import br.com.quemateria.dto.horario.HorarioAulaMapper;
 import br.com.quemateria.entities.Disciplina;
 import br.com.quemateria.services.CursoService;
@@ -29,16 +28,15 @@ public interface DisciplinaMapper {
 	
 	ConsultaDisciplinaSimplesDTO toSimplesDTO (Disciplina disciplina);
 	
-	@Mapping(target = "id", source = "turma", qualifiedBy = GetId.class)
-	@Mapping(target = "curso", source = "turma", qualifiedBy = GetCurso.class)
-	@Mapping(target = "periodo", source = "turma", qualifiedBy = GetPeriodo.class)
-	@Mapping(target = "requisitos", source = "turma", qualifiedBy = GetRequisitos.class)
-	@Mapping(target = "tipoDeDisciplina", source = "turma", qualifiedBy = GetTipoDeDisciplina.class)
-	@Mapping(target = "nome", source = "turma", qualifiedBy = GetNome.class)
-	@Mapping(target = "cargaHoraria", source = "turma", qualifiedBy = GetCargaHoraria.class)
-	@Mapping(target = "horarios", source = "turma", qualifiedBy = GetHorarios.class)
-	@Mapping(target = "codigo", source = "turma", qualifiedBy = GetCodigo.class)
-	@Mapping(target = "preRequisito", source = "turma", qualifiedBy = GetPreRequisito.class)
+	@Mapping(target = "id", source = "codigo", qualifiedBy = GetId.class)
+	@Mapping(target = "curso", source = "codigo", qualifiedBy = GetCurso.class)
+	@Mapping(target = "periodo", source = "codigo", qualifiedBy = GetPeriodo.class)
+	@Mapping(target = "requisitos", source = "codigo", qualifiedBy = GetRequisitos.class)
+	@Mapping(target = "tipoDeDisciplina", source = "codigo", qualifiedBy = GetTipoDeDisciplina.class)
+	@Mapping(target = "nome", source = "codigo", qualifiedBy = GetNome.class)
+	@Mapping(target = "cargaHoraria", source = "codigo", qualifiedBy = GetCargaHoraria.class)
+	@Mapping(target = "turmas", source = "codigo", qualifiedBy = GetTurmas.class)
+	@Mapping(target = "preRequisito", source = "codigo", qualifiedBy = GetPreRequisito.class)
 	@Mapping(target = "peso", ignore = true)
 	Disciplina toEntityFromDisciplinaSimples (RegistroDisciplinaSimplesDTO dto);
 	

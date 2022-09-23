@@ -25,7 +25,7 @@ public class HorarioAula {
 	private Long id;
 	
 	@ManyToOne
-	private Disciplina disciplina;
+	private Turma turma;
 	
 	@ManyToOne
 	private Dia dia;

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 import br.com.quemateria.entities.Curso;
 import br.com.quemateria.entities.Disciplina;
-import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.entities.TipoDeDisciplina;
+import br.com.quemateria.entities.Turma;
 import br.com.quemateria.services.DisciplinaService;
 
 @Component
@@ -76,72 +76,60 @@ public class DisciplinaUtil {
 	@Qualifier
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.CLASS)
-	public @interface GetHorarios{
-		
-	}
-	
-	@Qualifier
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.CLASS)
-	public @interface GetCodigo{
-		
-	}
-	
-	@Qualifier
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.CLASS)
 	public @interface GetPreRequisito{
 		
 	}
 	
+	@Qualifier
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.CLASS)
+	public @interface GetTurmas{
+		
+	}
+	
 	@GetId
-	public Long getId(String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getId();
+	public Long getId(String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getId();
 	}
 	
 	@GetCurso
-	public Curso getCurso (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getCurso();
+	public Curso getCurso (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getCurso();
 	}
 	
 	@GetNome
-	public String getNome (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getNome();
+	public String getNome (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getNome();
 	}
 	
 	@GetPeriodo
-	public Integer getPeriodo (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getPeriodo();
+	public Integer getPeriodo (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getPeriodo();
 	}
 	
 	@GetRequisitos
-	public Set<Disciplina> getRequisitos (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getRequisitos();
+	public Set<Disciplina> getRequisitos (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getRequisitos();
 	}
 	
 	@GetTipoDeDisciplina
-	public TipoDeDisciplina getTipoDeDisciplina (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getTipoDeDisciplina();
+	public TipoDeDisciplina getTipoDeDisciplina (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getTipoDeDisciplina();
 	}
 	
 	@GetCargaHoraria
-	public Integer getCargaHoraria (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getCargaHoraria();
-	}
-	
-	@GetHorarios
-	public Set<HorarioAula> getHorarios (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getHorarios();
-	}
-	
-	@GetCodigo
-	public String getCodigo (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getCodigo();
+	public Integer getCargaHoraria (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getCargaHoraria();
 	}
 	
 	@GetPreRequisito
-	public Integer getPreRequisito (String turma) {
-		return disciplinaService.buscarDisciplinaPorTurma(turma).getPreRequisito();
+	public Integer getPreRequisito (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getPreRequisito();
+	}
+	
+	@GetTurmas
+	public Set<Turma> getTurmas (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getTurmas();
 	}
 	
 	

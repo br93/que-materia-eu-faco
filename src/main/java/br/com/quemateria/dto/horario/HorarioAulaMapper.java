@@ -16,9 +16,9 @@ public interface HorarioAulaMapper {
 	@Mapping(target = "sigla", source = "horario.sigla")
 	ConsultaHorarioAulaDTO toDTO (HorarioAula horario);
 	
-	@Mapping(target = "codigo", source = "disciplina.codigo")
-	@Mapping(target = "nome", source = "disciplina.nome")
-	@Mapping(target = "turma", source = "disciplina.turma")
+	@Mapping(target = "codigo", source = "turma.disciplina.codigo")
+	@Mapping(target = "nome", source = "turma.disciplina.nome")
+	@Mapping(target = "turma", source = "turma.codigo")
 	@Mapping(target = "dia", source = "dia.identificador")
 	@Mapping(target = "horario", source = "horario.sigla")
 	RecomendacaoDTO toRecomendacaoDTO (HorarioAula horario);

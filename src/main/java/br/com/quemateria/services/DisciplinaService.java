@@ -34,8 +34,8 @@ public class DisciplinaService {
 		return buscarPorId.orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada"));
 	}
 
-	public Disciplina buscarDisciplinaPorTurma(String turma) {
-		Optional<Disciplina> buscarPorTurma = disciplinaRepository.findByTurma(turma);
+	public Disciplina buscarDisciplinaPorCodigo(String codigo) {
+		Optional<Disciplina> buscarPorTurma = disciplinaRepository.findByCodigo(codigo);
 
 		return buscarPorTurma.orElseThrow(() -> new EntityNotFoundException("Disciplina não encontrada"));
 	}

@@ -27,7 +27,7 @@ public class RecomendacaoService {
 	}
 
 	public List<HorarioAula> listarHorarioAulaPorTurma(String turma) {
-		return horarioAulaRepository.findAllByDisciplina_Turma(turma);
+		return horarioAulaRepository.findAllByTurma_Codigo(turma);
 	}
 
 	public void calcularPeso() {
@@ -48,12 +48,12 @@ public class RecomendacaoService {
 		Integer quantidadeDeDisciplinasCursadas = 0;
 
 		List<HorarioAula> recomendacao = horarioAulaRepository
-				.findAllByDisciplina_Curso_IdAndDia_IdentificadorAndHorario_SiglaOrderByDisciplina_PesoAscDisciplina_CargaHorariaDescDisciplina_PeriodoAsc(
+				.findAllByTurma_Disciplina_Curso_IdAndDia_IdentificadorAndHorario_SiglaOrderByTurma_Disciplina_PesoAscTurma_Disciplina_CargaHorariaDescTurma_Disciplina_PeriodoAsc(
 						cursoId, identificador, sigla);
 		List<HorarioAula> listaRemocao = new ArrayList<>();
 
 		for (HorarioAula horarioAula : recomendacao)
-			if (disciplinasCursadas.contains(horarioAula.getDisciplina())) {
+			if (disciplinasCursadas.contains(horarioAula.getTurma().getDisciplina())) {
 				listaRemocao.add(horarioAula);
 				quantidadeDeDisciplinasCursadas++;
 			}
@@ -71,13 +71,13 @@ public class RecomendacaoService {
 			Integer periodo, Long horarioInicialId, Long horarioFinalId) {
 
 		List<HorarioAula> recomendacao = horarioAulaRepository
-				.findAllByDisciplina_Curso_IdAndDisciplina_PeriodoLessThanAndHorario_IdBetweenOrderByDisciplina_PesoAscDisciplina_CargaHorariaDescDisciplina_PeriodoAsc(
+				.findAllByTurma_Disciplina_Curso_IdAndTurma_Disciplina_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_PesoAscTurma_Disciplina_CargaHorariaDescTurma_Disciplina_PeriodoAsc(
 						cursoId, periodo, horarioInicialId, horarioFinalId);
 
 		List<HorarioAula> listaRemocao = new ArrayList<>();
 
 		for (HorarioAula horarioAula : recomendacao)
-			if (disciplinasCursadas.contains(horarioAula.getDisciplina())) {
+			if (disciplinasCursadas.contains(horarioAula.getTurma().getDisciplina())) {
 				listaRemocao.add(horarioAula);
 			}
 
@@ -115,17 +115,17 @@ public class RecomendacaoService {
 	public List<HorarioAula> recomendacaoPeriodoUnico(List<HorarioAula> lista, Integer cargaHorariaMaxima) {
 
 		List<HorarioAula> recomendacao = new ArrayList<>();
-		List<String> disciplinas = new ArrayList<>();
+		List<Disciplina> disciplinas = new ArrayList<>();
 		// List<String> horarios = new ArrayList<>();
 
 		for (HorarioAula horarioAula : lista)
 			if (cargaHorariaMaxima >= 0 && !recomendacao.contains(horarioAula)
-					&& !disciplinas.contains(horarioAula.getDisciplina().getNome())
+					&& !disciplinas.contains(horarioAula.getTurma().getDisciplina())
 					&& horarioValido(recomendacao, horarioAula)) {
 
-				recomendacao.addAll(this.listarHorarioAulaPorTurma(horarioAula.getDisciplina().getTurma()));
-				disciplinas.add(horarioAula.getDisciplina().getNome());
-				cargaHorariaMaxima -= horarioAula.getDisciplina().getCargaHoraria();
+				recomendacao.addAll(this.listarHorarioAulaPorTurma(horarioAula.getTurma().getCodigo()));
+				disciplinas.add(horarioAula.getTurma().getDisciplina());
+				cargaHorariaMaxima -= horarioAula.getTurma().getDisciplina().getCargaHoraria();
 			}
 
 		recomendacao.remove(recomendacao.size() - 1);
@@ -139,7 +139,7 @@ public class RecomendacaoService {
 			return true;
 
 		Boolean valido = true;
-		List<HorarioAula> listaParaValidar = this.listarHorarioAulaPorTurma(disciplina.getDisciplina().getTurma());
+		List<HorarioAula> listaParaValidar = this.listarHorarioAulaPorTurma(disciplina.getTurma().getCodigo());
 
 		for (HorarioAula horarioAula : recomendacao)
 			if (horarioAula == disciplina)
@@ -165,15 +165,15 @@ public class RecomendacaoService {
 		setRecomendacao.addAll(listaSegundoTurno);
 
 		List<HorarioAula> listaRecomendacao = new ArrayList<>();
-		List<String> disciplinas = new ArrayList<>();
+		List<Disciplina> disciplinas = new ArrayList<>();
 
 		for (HorarioAula horarioAula : setRecomendacao)
 			if (cargaHorariaMaxima >= 0 && !listaRecomendacao.contains(horarioAula)
-					&& !disciplinas.contains(horarioAula.getDisciplina().getNome())
+					&& !disciplinas.contains(horarioAula.getTurma().getDisciplina())
 					&& horarioValido(listaRecomendacao, horarioAula)) {
-				listaRecomendacao.addAll(this.listarHorarioAulaPorTurma(horarioAula.getDisciplina().getTurma()));
-				disciplinas.add(horarioAula.getDisciplina().getNome());
-				cargaHorariaMaxima -= horarioAula.getDisciplina().getCargaHoraria();
+				listaRecomendacao.addAll(this.listarHorarioAulaPorTurma(horarioAula.getTurma().getCodigo()));
+				disciplinas.add(horarioAula.getTurma().getDisciplina());
+				cargaHorariaMaxima -= horarioAula.getTurma().getDisciplina().getCargaHoraria();
 			}
 
 		listaRecomendacao.remove(listaRecomendacao.size() - 1);

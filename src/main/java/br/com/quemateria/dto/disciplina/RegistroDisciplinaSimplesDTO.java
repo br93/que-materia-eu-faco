@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RegistroDisciplinaSimplesDTO {
 	
-	private String turma;
+	private String codigo;
 
 }
