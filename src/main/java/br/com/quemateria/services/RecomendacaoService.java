@@ -1,6 +1,7 @@
 package br.com.quemateria.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -92,9 +93,16 @@ public class RecomendacaoService {
 
 		Set<Disciplina> disciplinasCursadas = aluno.getDisciplinasCursadas();
 
-		List<HorarioAula> materiasFaltantes = horarioAulaRepository
-				.findAllByTurma_Disciplina_Curso_IdAndTurma_Disciplina_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_PesoAscTurma_Disciplina_CargaHorariaDescTurma_Disciplina_PeriodoAsc(
-						cursoId, periodo, horarioInicialId, horarioFinalId);
+		List<HorarioAula> materiasFaltantes = new ArrayList<>();
+
+		if (horarioInicialId == 1L)
+			materiasFaltantes = horarioAulaRepository
+					.findAllByTurma_Disciplina_Curso_IdAndTurma_Disciplina_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_PesoAscHorario_IdAsc(
+							cursoId, periodo, horarioInicialId, horarioFinalId);
+		else
+			materiasFaltantes = horarioAulaRepository
+					.findAllByTurma_Disciplina_Curso_IdAndTurma_Disciplina_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_PesoAscHorario_IdDesc(
+							cursoId, periodo, horarioInicialId, horarioFinalId);
 
 		List<HorarioAula> listaRecomendacao = new ArrayList<>();
 
@@ -127,9 +135,13 @@ public class RecomendacaoService {
 				cargaHorariaMaxima -= horarioAula.getTurma().getDisciplina().getCargaHoraria();
 			}
 
-		/*if (!recomendacao.isEmpty() && cargaHorariaMaxima <= 0)
-			recomendacao.remove(recomendacao.size() - 1);*/
-		return recomendacao;
+		/*
+		 * if (!recomendacao.isEmpty() && cargaHorariaMaxima <= 0)
+		 * recomendacao.remove(recomendacao.size() - 1);
+		 */
+		
+		//Ainda nao ta ordenando do jeito que eu queria 
+		return ordenarListaDeRecomendacao(recomendacao);
 
 	}
 
@@ -175,10 +187,13 @@ public class RecomendacaoService {
 				cargaHorariaMaxima -= horarioAula.getTurma().getDisciplina().getCargaHoraria();
 			}
 
-		/*if (!listaRecomendacao.isEmpty() && cargaHorariaMaxima <= 0)
-			listaRecomendacao.remove(listaRecomendacao.size() - 1);*/
+		/*
+		 * if (!listaRecomendacao.isEmpty() && cargaHorariaMaxima <= 0)
+		 * listaRecomendacao.remove(listaRecomendacao.size() - 1);
+		 */
 
-		return listaRecomendacao;
+		
+		return ordenarListaDeRecomendacao(listaRecomendacao);
 
 	}
 
@@ -221,6 +236,13 @@ public class RecomendacaoService {
 
 	private List<HorarioAula> listarHorarioAulaPorTurma(String turma) {
 		return horarioAulaRepository.findAllByTurma_Codigo(turma);
+	}
+	
+	private List<HorarioAula> ordenarListaDeRecomendacao (List<HorarioAula> lista){
+		Collections.sort(lista, (o1, o2) -> Long.compare(o1.getId(), o2.getId()));
+		Collections.sort(lista, (o1, o2) -> Long.compare(o1.getDia().getId(), o2.getDia().getId()));
+		
+		return lista;
 	}
 
 }
