@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.quemateria.dto.horario.HorarioAulaMapper;
 import br.com.quemateria.dto.horario.RecomendacaoDTO;
+import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.Disciplina;
 import br.com.quemateria.services.AlunoService;
 import br.com.quemateria.services.RecomendacaoService;
@@ -51,13 +52,14 @@ public class RecomendacaoController {
 			@RequestParam(value = "noite", defaultValue = "false", required = false) Boolean noite,
 			@RequestParam(value = "horas", defaultValue = "20", required = false) Integer maximoHoras) {
 
+		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
 		Long cursoId = alunoService.getUltimoAlunoCadastrado().getCurso().getId();
 		Integer periodoMaximo = alunoService.getUltimoAlunoCadastrado().getPeriodo()+2;
-		Set<Disciplina> disciplinasCursadas = alunoService.getUltimoAlunoCadastrado().getDisciplinasCursadas();
+		
 		recomendacaoService.calcularPeso();
-
+		
 		return ResponseEntity.ok(horarioAulaMapper.toListRecomendacaoDTO(recomendacaoService
-				.recomendacaoCompleta(disciplinasCursadas, cursoId, periodoMaximo, manha, tarde, noite, maximoHoras)));
+				.recomendacaoCompleta(aluno, cursoId, periodoMaximo, manha, tarde, noite, maximoHoras)));
 
 	}
 
