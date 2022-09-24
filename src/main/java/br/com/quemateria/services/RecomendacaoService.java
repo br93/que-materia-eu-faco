@@ -140,7 +140,6 @@ public class RecomendacaoService {
 		 * recomendacao.remove(recomendacao.size() - 1);
 		 */
 		
-		//Ainda nao ta ordenando do jeito que eu queria 
 		return ordenarListaDeRecomendacao(recomendacao);
 
 	}
@@ -240,6 +239,7 @@ public class RecomendacaoService {
 	
 	private List<HorarioAula> ordenarListaDeRecomendacao (List<HorarioAula> lista){
 		Collections.sort(lista, (o1, o2) -> Long.compare(o1.getId(), o2.getId()));
+		Collections.sort(lista, (o1, o2) -> (o2.getTurma().getCodigo().compareTo(o1.getTurma().getCodigo())));
 		Collections.sort(lista, (o1, o2) -> Long.compare(o1.getDia().getId(), o2.getDia().getId()));
 		
 		return lista;

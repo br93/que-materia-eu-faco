@@ -1,11 +1,9 @@
 package br.com.quemateria.controllers;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.quemateria.dto.horario.HorarioAulaMapper;
 import br.com.quemateria.dto.horario.RecomendacaoDTO;
 import br.com.quemateria.entities.Aluno;
-import br.com.quemateria.entities.Disciplina;
 import br.com.quemateria.services.AlunoService;
 import br.com.quemateria.services.RecomendacaoService;
 
@@ -32,6 +29,7 @@ public class RecomendacaoController {
 		this.horarioAulaMapper = horarioAulaMapper;
 	}
 
+	/* Quebrou com as mudanças da Recomendação Completa, depois vou refazer para retornar um relatorio
 	@GetMapping("{dia}/{horario}")
 	public ResponseEntity<List<RecomendacaoDTO>> listarTop3RecomendacoesPorHorario(@PathVariable Integer dia,
 			@PathVariable String horario) {
@@ -44,6 +42,7 @@ public class RecomendacaoController {
 				recomendacaoService.recomendarMateriasPorHorarioAula(disciplinasCursadas, cursoId, dia, horario)));
 
 	}
+	*/
 
 	@GetMapping
 	public ResponseEntity<List<RecomendacaoDTO>> recomendacao(
