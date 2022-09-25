@@ -65,6 +65,13 @@ public class DisciplinaUtil {
 		
 	}
 	
+	@Qualifier
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.CLASS)
+	public @interface GetEquivalencias{
+		
+	}
+	
 	@GetId
 	public Long getId(String codigo) {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getId();
@@ -93,6 +100,11 @@ public class DisciplinaUtil {
 	@GetTurmas
 	public Set<Turma> getTurmas (String codigo) {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getTurmas();
+	}
+	
+	@GetEquivalencias
+	public Set<Disciplina> getEquivalencias (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getEquivalencias();
 	}
 	
 	

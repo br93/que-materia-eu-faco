@@ -294,7 +294,6 @@ INSERT INTO tb_horario_aula (turma_id, dia_id, horario_id) VALUES
 	('88', '2', '10'), ('88', '2', '11'), ('88', '2', '12'),
 	('89', '2', '13'), ('89', '2', '12');
 	
-	
 INSERT INTO tb_disciplinas_requisitos (disciplina_id, requisito_id) VALUES
 	('5', '1'),
 	('6', '1'),

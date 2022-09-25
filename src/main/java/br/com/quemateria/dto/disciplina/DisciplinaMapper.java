@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetCargaHoraria;
+import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetEquivalencias;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetId;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetMatrizCurricular;
 import br.com.quemateria.dto.disciplina.DisciplinaUtil.GetNome;
@@ -29,6 +30,7 @@ public interface DisciplinaMapper {
 	@Mapping(target = "cargaHoraria", source = "codigo", qualifiedBy = GetCargaHoraria.class)
 	@Mapping(target = "turmas", source = "codigo", qualifiedBy = GetTurmas.class)
 	@Mapping(target = "matrizCurricular", source = "codigo", qualifiedBy = GetMatrizCurricular.class)
+	@Mapping(target = "equivalencias", source = "codigo", qualifiedBy = GetEquivalencias.class)
 	Disciplina toEntityFromDisciplinaSimples (RegistroDisciplinaSimplesDTO dto);
 	
 	List<ConsultaDisciplinaDTO> toListCompletoDTO (List<Disciplina> disciplina);

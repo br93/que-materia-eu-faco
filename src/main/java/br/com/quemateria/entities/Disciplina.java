@@ -43,7 +43,11 @@ public class Disciplina {
 	@ManyToMany
 	@JoinTable(name = "tb_disciplinas_requisitos", joinColumns = @JoinColumn(name = "disciplina_id"), inverseJoinColumns = @JoinColumn(name = "requisito_id"))
 	private Set<Disciplina> requisitos;
-
+	
+	@ManyToMany
+	@JoinTable(name = "tb_disciplinas_equivalencias", joinColumns = @JoinColumn(name = "disciplina_id"), inverseJoinColumns = @JoinColumn(name = "equivalencia_id"))
+	private Set<Disciplina> equivalencias;
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo);
@@ -58,6 +62,8 @@ public class Disciplina {
 		if (getClass() != obj.getClass())
 			return false;
 		Disciplina other = (Disciplina) obj;
+		if (this.getEquivalencias().contains(other) || other.getEquivalencias().contains(this))
+			return true;
 		return Objects.equals(codigo, other.codigo);
 	}
 	
