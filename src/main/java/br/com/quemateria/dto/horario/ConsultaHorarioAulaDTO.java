@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ConsultaHorarioAulaDTO {
 	
-	private String dia;
-	private String sigla;
-	private String faixa;
-
+	private String codigo;
+	private String disciplina;
 }

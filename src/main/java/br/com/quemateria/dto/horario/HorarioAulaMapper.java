@@ -11,9 +11,8 @@ import br.com.quemateria.entities.HorarioAula;
 @Mapper(componentModel = "spring")
 public interface HorarioAulaMapper {
 	
-	@Mapping(target = "dia", source = "dia.dia")
-	@Mapping(target = "faixa", source = "horario.faixa")
-	@Mapping(target = "sigla", source = "horario.sigla")
+	@Mapping(target = "codigo", source = "turma.codigo")
+	@Mapping(target = "disciplina", source = "turma.disciplina.nome")
 	ConsultaHorarioAulaDTO toDTO (HorarioAula horario);
 	
 	@Mapping(target = "codigo", source = "turma.disciplina.codigo")
@@ -25,5 +24,8 @@ public interface HorarioAulaMapper {
 	
 	List<RecomendacaoDTO> toListRecomendacaoDTO (List<HorarioAula> horarios);
 	Set<RecomendacaoDTO> toSetRecomendacaoDTO (Set<HorarioAula> horarios);
+	
+	List<ConsultaHorarioAulaDTO> toListConsultaDTO (List<HorarioAula> horarios);
+	Set<ConsultaHorarioAulaDTO> toSetConsultaDTO (Set<HorarioAula> horarios);
 
 }

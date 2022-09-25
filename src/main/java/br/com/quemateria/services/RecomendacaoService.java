@@ -88,6 +88,26 @@ public class RecomendacaoService {
 
 	}
 
+	public List<HorarioAula> gerarRelatorioDeRecomendacao(Aluno aluno, Long cursoId, Integer periodo, Boolean manha,
+			Boolean tarde, Boolean noite, Integer cargaHorariaMaxima) {
+		
+		List<HorarioAula> recomendacao = this.recomendacaoCompleta(aluno, cursoId, periodo, manha, tarde, noite,
+				cargaHorariaMaxima);
+		
+		List<String> codigos = new ArrayList<>();
+		List<HorarioAula> relatorio = new ArrayList<>();
+
+		for (HorarioAula horarioAula : recomendacao)
+			if (!codigos.contains(horarioAula.getTurma().getCodigo())) {
+				codigos.add(horarioAula.getTurma().getCodigo());
+				relatorio.add(horarioAula);
+			}
+				
+
+		return relatorio;
+
+	}
+
 	private List<HorarioAula> listarMateriasFaltantesPorTurno(Aluno aluno, Long cursoId, Integer periodo,
 			Long horarioInicialId, Long horarioFinalId) {
 
@@ -139,7 +159,7 @@ public class RecomendacaoService {
 		 * if (!recomendacao.isEmpty() && cargaHorariaMaxima <= 0)
 		 * recomendacao.remove(recomendacao.size() - 1);
 		 */
-		
+
 		return ordenarListaDeRecomendacao(recomendacao);
 
 	}
@@ -191,7 +211,6 @@ public class RecomendacaoService {
 		 * listaRecomendacao.remove(listaRecomendacao.size() - 1);
 		 */
 
-		
 		return ordenarListaDeRecomendacao(listaRecomendacao);
 
 	}
@@ -236,12 +255,12 @@ public class RecomendacaoService {
 	private List<HorarioAula> listarHorarioAulaPorTurma(String turma) {
 		return horarioAulaRepository.findAllByTurma_Codigo(turma);
 	}
-	
-	private List<HorarioAula> ordenarListaDeRecomendacao (List<HorarioAula> lista){
+
+	private List<HorarioAula> ordenarListaDeRecomendacao(List<HorarioAula> lista) {
 		Collections.sort(lista, (o1, o2) -> Long.compare(o1.getId(), o2.getId()));
 		Collections.sort(lista, (o1, o2) -> (o2.getTurma().getCodigo().compareTo(o1.getTurma().getCodigo())));
 		Collections.sort(lista, (o1, o2) -> Long.compare(o1.getDia().getId(), o2.getDia().getId()));
-		
+
 		return lista;
 	}
 
