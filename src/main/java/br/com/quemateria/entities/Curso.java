@@ -27,5 +27,5 @@ public class Curso {
 	private Integer periodos;
 	
 	@OneToMany(mappedBy = "curso")
-	private Set<Disciplina> disciplinas;
+	private Set<MatrizCurricular> disciplinas;
 }

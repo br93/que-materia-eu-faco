@@ -14,9 +14,9 @@ public class ConsultaDisciplinaDTO {
 	private String nome;
 	private String codigo;
 	//private String turma;
-	private Integer periodo;
-	private String curso;
-	private String tipo;
+	//private Integer periodo;
+	//private String curso;
+	//private String tipo;
 	//private Set<ConsultaHorarioAulaDTO> horarios;
 	private Set<ConsultaDisciplinaDTO> requisitos;
 

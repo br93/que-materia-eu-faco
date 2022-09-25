@@ -11,57 +11,33 @@ import org.springframework.stereotype.Service;
 import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.Disciplina;
 import br.com.quemateria.entities.HorarioAula;
-import br.com.quemateria.repositories.DisciplinaRepository;
+import br.com.quemateria.entities.MatrizCurricular;
 import br.com.quemateria.repositories.HorarioAulaRepository;
+import br.com.quemateria.repositories.MatrizCurricularRepository;
 
 @Service
 public class RecomendacaoService {
 
 	private final HorarioAulaRepository horarioAulaRepository;
-	private final DisciplinaRepository disciplinaRepository;
-	private final DisciplinaService disciplinaService;
+	private final MatrizCurricularRepository matrizCurricularRepository;
+	private final MatrizCurricularService matrizCurricularService;
 
-	public RecomendacaoService(HorarioAulaRepository horarioAulaRepository, DisciplinaRepository disciplinaRepository,
-			DisciplinaService disciplinaService) {
+	public RecomendacaoService(HorarioAulaRepository horarioAulaRepository,
+			MatrizCurricularRepository matrizCurricularRepository, MatrizCurricularService matrizCurricularService) {
 		this.horarioAulaRepository = horarioAulaRepository;
-		this.disciplinaRepository = disciplinaRepository;
-		this.disciplinaService = disciplinaService;
+		this.matrizCurricularRepository = matrizCurricularRepository;
+		this.matrizCurricularService = matrizCurricularService;
 	}
 
 	public void calcularPeso() {
-		List<Disciplina> disciplinas = disciplinaRepository.findAll();
+		List<MatrizCurricular> disciplinas = matrizCurricularRepository.findAll();
 
-		for (Disciplina disciplina : disciplinas)
+		for (MatrizCurricular disciplina : disciplinas)
 			if (disciplina.getPeso() == 0.0) {
-				disciplinaService.atualizarPeso((Math.log(disciplina.getPeriodo()) / Math.log(2))
-						- (disciplina.getPreRequisito() / 2) - disciplina.getTipoDeDisciplina().getTipoValor(),
+				matrizCurricularService.atualizarPeso((Math.log(disciplina.getPeriodo()) / Math.log(2))
+						- (disciplina.getPreRequisitos() / 2) - disciplina.getTipoDeDisciplina().getTipoValor(),
 						disciplina.getId());
 			}
-
-	}
-
-	public List<HorarioAula> recomendarMateriasPorHorarioAula(Set<Disciplina> disciplinasCursadas, Long cursoId,
-			Integer identificador, String sigla) {
-
-		Integer quantidadeDeDisciplinasCursadas = 0;
-
-		List<HorarioAula> recomendacao = horarioAulaRepository
-				.findAllByTurma_Disciplina_Curso_IdAndDia_IdentificadorAndHorario_SiglaOrderByTurma_Disciplina_PesoAscTurma_Disciplina_CargaHorariaDescTurma_Disciplina_PeriodoAsc(
-						cursoId, identificador, sigla);
-		List<HorarioAula> listaRemocao = new ArrayList<>();
-
-		for (HorarioAula horarioAula : recomendacao)
-			if (disciplinasCursadas.contains(horarioAula.getTurma().getDisciplina())) {
-				listaRemocao.add(horarioAula);
-				quantidadeDeDisciplinasCursadas++;
-			}
-
-		recomendacao.removeAll(listaRemocao);
-
-		if (recomendacao.size() < 3)
-			return recomendacao.subList(0, recomendacao.size());
-
-		return recomendacao.subList(0, 3);
 
 	}
 
@@ -90,10 +66,10 @@ public class RecomendacaoService {
 
 	public List<HorarioAula> gerarRelatorioDeRecomendacao(Aluno aluno, Long cursoId, Integer periodo, Boolean manha,
 			Boolean tarde, Boolean noite, Integer cargaHorariaMaxima) {
-		
+
 		List<HorarioAula> recomendacao = this.recomendacaoCompleta(aluno, cursoId, periodo, manha, tarde, noite,
 				cargaHorariaMaxima);
-		
+
 		List<String> codigos = new ArrayList<>();
 		List<HorarioAula> relatorio = new ArrayList<>();
 
@@ -102,7 +78,6 @@ public class RecomendacaoService {
 				codigos.add(horarioAula.getTurma().getCodigo());
 				relatorio.add(horarioAula);
 			}
-				
 
 		return relatorio;
 
@@ -114,14 +89,16 @@ public class RecomendacaoService {
 		Set<Disciplina> disciplinasCursadas = aluno.getDisciplinasCursadas();
 
 		List<HorarioAula> materiasFaltantes = new ArrayList<>();
+		
+		
 
 		if (horarioInicialId == 1L)
 			materiasFaltantes = horarioAulaRepository
-					.findAllByTurma_Disciplina_Curso_IdAndTurma_Disciplina_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_PesoAscHorario_IdAsc(
+					.findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_MatrizCurricular_PesoAscHorario_IdAsc(
 							cursoId, periodo, horarioInicialId, horarioFinalId);
 		else
 			materiasFaltantes = horarioAulaRepository
-					.findAllByTurma_Disciplina_Curso_IdAndTurma_Disciplina_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_PesoAscHorario_IdDesc(
+					.findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_MatrizCurricular_PesoAscHorario_IdDesc(
 							cursoId, periodo, horarioInicialId, horarioFinalId);
 
 		List<HorarioAula> listaRecomendacao = new ArrayList<>();

@@ -36,7 +36,6 @@ public class Aluno {
 	private Curso curso;
 	
 	@ManyToMany
-	@OrderBy(value = "periodo ASC")
 	@JoinTable(
 			  name = "tb_alunos_disciplinas", 
 			  joinColumns = @JoinColumn(name = "aluno_id"), 

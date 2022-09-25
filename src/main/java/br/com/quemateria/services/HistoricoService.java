@@ -37,22 +37,22 @@ public class HistoricoService {
 
 	public List<Disciplina> listarDisciplinasObrigatorias() {
 		return disciplinaRepository
-				.findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 1L);
+				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 1L);
 	}
 
 	public List<Disciplina> listarDisciplinasSegundoEstrato() {
 		return disciplinaRepository
-				.findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 2L);
+				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 2L);
 	}
 
 	public List<Disciplina> listarDisciplinasTrilha() {
 		return disciplinaRepository
-				.findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 3L);
+				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 3L);
 	}
 	
 	public List<Disciplina> listarDisciplinasOpcionais() {
 		return disciplinaRepository
-				.findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 4L);
+				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(getIdCursoUltimoAlunoCadastrado(), 4L);
 	}
 
 	public List<Disciplina> getDisciplinasObrigatoriasFaltantes() {

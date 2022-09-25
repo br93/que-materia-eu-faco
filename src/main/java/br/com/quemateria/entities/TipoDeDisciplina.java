@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "tb_tipos_de_disciplina")
+@Entity(name = "tb_tipos_disciplina")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

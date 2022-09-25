@@ -10,9 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,25 +32,15 @@ public class Disciplina {
 	
 	private String codigo;
 
-	private Integer periodo;
-
 	private Integer cargaHoraria;
 	
-	private Integer preRequisito;
+	@OneToMany (mappedBy = "disciplina")
+	private Set<MatrizCurricular> matrizCurricular;
 
-	private Double peso;
-
-	@ManyToOne
-	private Curso curso;
-
-	@ManyToOne
-	private TipoDeDisciplina tipoDeDisciplina;
-	
 	@OneToMany(mappedBy = "disciplina")
 	private Set<Turma> turmas;
 
 	@ManyToMany
-	@OrderBy(value = "periodo ASC")
 	@JoinTable(name = "tb_disciplinas_requisitos", joinColumns = @JoinColumn(name = "disciplina_id"), inverseJoinColumns = @JoinColumn(name = "requisito_id"))
 	private Set<Disciplina> requisitos;
 

@@ -52,12 +52,7 @@ public class DisciplinaService {
 		disciplinaRepository.delete(disciplina);
 	}
 
-	public Disciplina atualizarPeso(Double peso, Long id) {
-		Disciplina disciplina = this.buscarDisciplina(id);
-		disciplina.setPeso(peso);
-		
-		return disciplinaRepository.save(disciplina);
-	}
+	
 	
 	
 	

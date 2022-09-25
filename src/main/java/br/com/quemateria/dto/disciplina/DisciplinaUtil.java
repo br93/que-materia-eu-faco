@@ -9,9 +9,8 @@ import java.util.Set;
 import org.mapstruct.Qualifier;
 import org.springframework.stereotype.Component;
 
-import br.com.quemateria.entities.Curso;
 import br.com.quemateria.entities.Disciplina;
-import br.com.quemateria.entities.TipoDeDisciplina;
+import br.com.quemateria.entities.MatrizCurricular;
 import br.com.quemateria.entities.Turma;
 import br.com.quemateria.services.DisciplinaService;
 
@@ -34,21 +33,7 @@ public class DisciplinaUtil {
 	@Qualifier
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.CLASS)
-	public @interface GetCurso{
-		
-	}
-	
-	@Qualifier
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.CLASS)
 	public @interface GetNome{
-		
-	}
-	
-	@Qualifier
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.CLASS)
-	public @interface GetPeriodo{
 		
 	}
 	
@@ -62,13 +47,6 @@ public class DisciplinaUtil {
 	@Qualifier
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.CLASS)
-	public @interface GetTipoDeDisciplina{
-		
-	}
-	
-	@Qualifier
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.CLASS)
 	public @interface GetCargaHoraria{
 		
 	}
@@ -76,7 +54,7 @@ public class DisciplinaUtil {
 	@Qualifier
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.CLASS)
-	public @interface GetPreRequisito{
+	public @interface GetMatrizCurricular{
 		
 	}
 	
@@ -92,19 +70,9 @@ public class DisciplinaUtil {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getId();
 	}
 	
-	@GetCurso
-	public Curso getCurso (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getCurso();
-	}
-	
 	@GetNome
 	public String getNome (String codigo) {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getNome();
-	}
-	
-	@GetPeriodo
-	public Integer getPeriodo (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getPeriodo();
 	}
 	
 	@GetRequisitos
@@ -112,19 +80,14 @@ public class DisciplinaUtil {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getRequisitos();
 	}
 	
-	@GetTipoDeDisciplina
-	public TipoDeDisciplina getTipoDeDisciplina (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getTipoDeDisciplina();
-	}
-	
 	@GetCargaHoraria
 	public Integer getCargaHoraria (String codigo) {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getCargaHoraria();
 	}
 	
-	@GetPreRequisito
-	public Integer getPreRequisito (String codigo) {
-		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getPreRequisito();
+	@GetMatrizCurricular
+	public Set<MatrizCurricular> getMatrizCurricular (String codigo) {
+		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getMatrizCurricular();
 	}
 	
 	@GetTurmas

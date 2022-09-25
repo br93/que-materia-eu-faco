@@ -13,7 +13,7 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
 	
 	Optional<Disciplina> findByCodigo(String codigo);
 	//List<Disciplina> findByCurso_IdAndTipoDeDisciplina_IdOrderByPesoAscCargaHorariaDescPeriodoAsc(Long cursoId, Long tipoId);
-	List<Disciplina> findByCurso_IdAndTipoDeDisciplina_IdOrderByPeriodoAsc(Long cursoId, Long tipoId);
+	List<Disciplina> findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(Long cursoId, Long tipoId);
 	
 	
 
