@@ -20,5 +20,13 @@ public interface HorarioAulaRepository extends JpaRepository<HorarioAula, Long> 
 			Long cursoId, Integer periodo, Long horarioInicioId, Long horarioFimId);
 
 	List<HorarioAula> findAllByTurma_Codigo(String codigo);
+	
+	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_TipoDeDisciplina_IdAndDia_IdentificadorAndHorario_Sigla(Long cursoId, Long tipoId, Integer dia, String horario);
+	
+	List<HorarioAula> findAllByDia_IdentificadorAndHorario_Sigla(Integer dia, String horario);
+	
+	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_CursoId(Long cursoId);
+	
+	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_CursoIdNotAndDia_IdentificadorAndHorario_Sigla(Long cursoId, Integer dia, String horario);
 
 }

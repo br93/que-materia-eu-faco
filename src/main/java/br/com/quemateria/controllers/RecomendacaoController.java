@@ -25,7 +25,7 @@ public class RecomendacaoController {
 	public final AlunoService alunoService;
 	public final RecomendacaoService recomendacaoService;
 	public final HorarioAulaMapper horarioAulaMapper;
-	
+
 	@Autowired
 	public DisciplinaService disciplinaService;
 
@@ -45,12 +45,11 @@ public class RecomendacaoController {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
 		Long cursoId = alunoService.getUltimoAlunoCadastrado().getCurso().getId();
-		Integer periodoMaximo = alunoService.getUltimoAlunoCadastrado().getPeriodo() + 2;
+		Integer periodo = alunoService.getUltimoAlunoCadastrado().getPeriodo();
+		Integer periodoMaximo = periodo + 2;
 
-		recomendacaoService.calcularPeso();
-		
-		System.out.println(disciplinaService.buscarDisciplina(91L).getEquivalencias().size());
-		
+		recomendacaoService.calcularPeso(cursoId, periodo);
+
 		return ResponseEntity.ok(horarioAulaMapper.toListRecomendacaoDTO(recomendacaoService.recomendacaoCompleta(aluno,
 				cursoId, periodoMaximo, manha, tarde, noite, maximoHoras)));
 
@@ -65,15 +64,68 @@ public class RecomendacaoController {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
 		Long cursoId = alunoService.getUltimoAlunoCadastrado().getCurso().getId();
-		Integer periodoMaximo = alunoService.getUltimoAlunoCadastrado().getPeriodo() + 2;
+		Integer periodo = alunoService.getUltimoAlunoCadastrado().getPeriodo();
+		Integer periodoMaximo = periodo + 2;
 
-		recomendacaoService.calcularPeso();
+		recomendacaoService.calcularPeso(cursoId, periodo);
 
 		List<HorarioAula> relatorioRecomendacao = recomendacaoService.gerarRelatorioDeRecomendacao(aluno, cursoId,
 				periodoMaximo, manha, tarde, noite, maximoHoras);
 
 		return ResponseEntity.ok(horarioAulaMapper.toListConsultaDTO(relatorioRecomendacao));
 
+	}
+
+	@GetMapping("opcionais")
+	public ResponseEntity<List<RecomendacaoDTO>> getRecomendacoesOpcionais(@RequestParam Integer dia,
+			@RequestParam String horario) {
+
+		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
+		Long cursoId = alunoService.getUltimoAlunoCadastrado().getCurso().getId();
+
+		List<HorarioAula> recomendacoesOpcionais = recomendacaoService.recomendarMateriasOpcionaisPorHorario(aluno,
+				cursoId, dia, horario);
+
+		return ResponseEntity.ok(horarioAulaMapper.toListRecomendacaoDTO(recomendacoesOpcionais));
+	}
+
+	@GetMapping("opcionais/relatorio")
+	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRelatorioRecomendacoesOpcionais(@RequestParam Integer dia,
+			@RequestParam String horario) {
+
+		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
+		Long cursoId = alunoService.getUltimoAlunoCadastrado().getCurso().getId();
+
+		List<HorarioAula> recomendacoesOpcionais = recomendacaoService.recomendarMateriasOpcionaisPorHorario(aluno,
+				cursoId, dia, horario);
+
+		return ResponseEntity.ok(horarioAulaMapper.toListConsultaDTO(recomendacoesOpcionais));
+	}
+
+	@GetMapping("enriquecimento")
+	public ResponseEntity<List<RecomendacaoDTO>> getRecomendacoesEnriquecimento(@RequestParam Integer dia,
+			@RequestParam String horario) {
+
+		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
+		Long cursoId = alunoService.getUltimoAlunoCadastrado().getCurso().getId();
+
+		List<HorarioAula> recomendacoesEnriquecimento = recomendacaoService
+				.recomendarMateriasEnriquecimentoPorHorario(aluno, cursoId, dia, horario);
+
+		return ResponseEntity.ok(horarioAulaMapper.toListRecomendacaoDTO(recomendacoesEnriquecimento));
+	}
+
+	@GetMapping("enriquecimento/relatorio")
+	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRelatorioRecomendacoesEnriquecimento(
+			@RequestParam Integer dia, @RequestParam String horario) {
+
+		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
+		Long cursoId = alunoService.getUltimoAlunoCadastrado().getCurso().getId();
+
+		List<HorarioAula> recomendacoesEnriquecimento = recomendacaoService
+				.recomendarMateriasEnriquecimentoPorHorario(aluno, cursoId, dia, horario);
+
+		return ResponseEntity.ok(horarioAulaMapper.toListConsultaDTO(recomendacoesEnriquecimento));
 	}
 
 }
