@@ -9,6 +9,7 @@ import br.com.quemateria.entities.Curso;
 public interface CursoMapper {
 	
 	@Mapping(target = "duracao", source = "periodos")
+	@Mapping(target = "codigo", source = "matriz")
 	ConsultaCursoDTO toDTO (Curso curso);
 	
 	@Mapping(target = "id", ignore = true)

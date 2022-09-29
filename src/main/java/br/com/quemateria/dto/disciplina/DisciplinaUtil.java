@@ -10,7 +10,7 @@ import org.mapstruct.Qualifier;
 import org.springframework.stereotype.Component;
 
 import br.com.quemateria.entities.Disciplina;
-import br.com.quemateria.entities.MatrizCurricular;
+import br.com.quemateria.entities.ItemMatrizCurricular;
 import br.com.quemateria.entities.Turma;
 import br.com.quemateria.services.DisciplinaService;
 
@@ -93,7 +93,7 @@ public class DisciplinaUtil {
 	}
 	
 	@GetMatrizCurricular
-	public Set<MatrizCurricular> getMatrizCurricular (String codigo) {
+	public Set<ItemMatrizCurricular> getMatrizCurricular (String codigo) {
 		return disciplinaService.buscarDisciplinaPorCodigo(codigo).getMatrizCurricular();
 	}
 	

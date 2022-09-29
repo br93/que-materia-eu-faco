@@ -27,9 +27,9 @@ import br.com.quemateria.dto.matriz.ConsultaMatrizDTO;
 import br.com.quemateria.dto.matriz.MatrizCurricularMapper;
 import br.com.quemateria.dto.matriz.RegistroMatrizDTO;
 import br.com.quemateria.entities.Disciplina;
-import br.com.quemateria.entities.MatrizCurricular;
+import br.com.quemateria.entities.ItemMatrizCurricular;
 import br.com.quemateria.services.DisciplinaService;
-import br.com.quemateria.services.MatrizCurricularService;
+import br.com.quemateria.services.ItemMatrizCurricularService;
 
 @RestController
 @RequestMapping("v1/disciplinas")
@@ -38,11 +38,11 @@ public class DisciplinaController {
 	private final DisciplinaService disciplinaService;
 	private final DisciplinaMapper disciplinaMapper;
 
-	private final MatrizCurricularService matrizCurricularService;
+	private final ItemMatrizCurricularService matrizCurricularService;
 	private final MatrizCurricularMapper matrizCurricularMapper;
 
 	public DisciplinaController(DisciplinaService disciplinaService, DisciplinaMapper disciplinaMapper,
-			MatrizCurricularService matrizCurricularService, MatrizCurricularMapper matrizCurricularMapper) {
+			ItemMatrizCurricularService matrizCurricularService, MatrizCurricularMapper matrizCurricularMapper) {
 		this.disciplinaService = disciplinaService;
 		this.disciplinaMapper = disciplinaMapper;
 		this.matrizCurricularService = matrizCurricularService;
@@ -113,10 +113,10 @@ public class DisciplinaController {
 
 	@PutMapping("register")
 	public ResponseEntity<ConsultaMatrizDTO> registarDisciplinaNaMatrizCurricular(@RequestBody RegistroMatrizDTO dto) {
-		MatrizCurricular matrizCurricular = matrizCurricularService
-				.salvarMatrizCurricular(matrizCurricularMapper.toEntity(dto));
+		ItemMatrizCurricular itemMatrizCurricular = matrizCurricularService
+				.salvarItemMatrizCurricular(matrizCurricularMapper.toEntity(dto));
 
-		return ResponseEntity.ok(matrizCurricularMapper.toDTO(matrizCurricular));
+		return ResponseEntity.ok(matrizCurricularMapper.toDTO(itemMatrizCurricular));
 	}
 
 }

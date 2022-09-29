@@ -2,11 +2,10 @@ package br.com.quemateria.services;
 
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.stereotype.Service;
 
 import br.com.quemateria.entities.Horario;
+import br.com.quemateria.exceptions.EntityNotFoundException;
 import br.com.quemateria.repositories.HorarioRepository;
 
 @Service

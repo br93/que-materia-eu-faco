@@ -2,6 +2,7 @@ package br.com.quemateria.entities;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,11 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "tb_cursos")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Curso {
@@ -26,6 +29,6 @@ public class Curso {
 	private String matriz;
 	private Integer periodos;
 	
-	@OneToMany(mappedBy = "curso")
-	private Set<MatrizCurricular> disciplinas;
+	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+	private Set<ItemMatrizCurricular> disciplinas;
 }

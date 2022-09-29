@@ -11,20 +11,20 @@ import org.springframework.stereotype.Service;
 import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.Disciplina;
 import br.com.quemateria.entities.HorarioAula;
-import br.com.quemateria.entities.MatrizCurricular;
+import br.com.quemateria.entities.ItemMatrizCurricular;
 import br.com.quemateria.repositories.HorarioAulaRepository;
-import br.com.quemateria.repositories.MatrizCurricularRepository;
+import br.com.quemateria.repositories.ItemMatrizCurricularRepository;
 
 @Service
 public class RecomendacaoService {
 
 	private final HorarioAulaRepository horarioAulaRepository;
-	private final MatrizCurricularRepository matrizCurricularRepository;
-	private final MatrizCurricularService matrizCurricularService;
+	private final ItemMatrizCurricularRepository matrizCurricularRepository;
+	private final ItemMatrizCurricularService matrizCurricularService;
 	private final HistoricoService historicoService;
 
 	public RecomendacaoService(HorarioAulaRepository horarioAulaRepository,
-			MatrizCurricularRepository matrizCurricularRepository, MatrizCurricularService matrizCurricularService,
+			ItemMatrizCurricularRepository matrizCurricularRepository, ItemMatrizCurricularService matrizCurricularService,
 			HistoricoService historicoService) {
 		this.horarioAulaRepository = horarioAulaRepository;
 		this.matrizCurricularRepository = matrizCurricularRepository;
@@ -33,12 +33,12 @@ public class RecomendacaoService {
 	}
 
 	public void calcularPeso(Long cursoId, Integer periodo) {
-		List<MatrizCurricular> disciplinas = matrizCurricularRepository.findAll();
+		List<ItemMatrizCurricular> disciplinas = matrizCurricularRepository.findAll();
 
 		// multiplicar periodo/disciplinaGetPeriodo vai elevar a prioridade de materias
 		// obrigatorias... sem este fator, passa a valorizar mais trilhas
 
-		for (MatrizCurricular disciplina : disciplinas)
+		for (ItemMatrizCurricular disciplina : disciplinas)
 			if (disciplina.getCurso().getId().equals(cursoId)) {
 				matrizCurricularService.atualizarPeso((Math.log(disciplina.getPeriodo()) / Math.log(2))
 						- (disciplina.getPreRequisitos() / 2) - disciplina.getTipoDeDisciplina().getTipoValor()

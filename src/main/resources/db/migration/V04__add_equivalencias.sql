@@ -1,9 +1,9 @@
 CREATE TABLE tb_disciplinas_equivalencias(
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
 disciplina_id BIGINT, 
 equivalencia_id BIGINT, 
-PRIMARY KEY (disciplina_id, equivalencia_id),
-FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id),
-FOREIGN KEY (equivalencia_id) REFERENCES tb_disciplinas(id)
+FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id) ON DELETE CASCADE,
+FOREIGN KEY (equivalencia_id) REFERENCES tb_disciplinas(id) ON DELETE CASCADE
 );
 
 INSERT INTO tb_disciplinas_equivalencias (disciplina_id, equivalencia_id) VALUES

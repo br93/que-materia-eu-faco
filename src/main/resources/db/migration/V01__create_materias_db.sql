@@ -71,17 +71,17 @@ FOREIGN KEY (horario_id) REFERENCES tb_horarios(id)
 );
 
 CREATE TABLE tb_alunos_disciplinas (
-aluno_id BIGINT,
-disciplina_id BIGINT, 
-PRIMARY KEY (aluno_id, disciplina_id),
-FOREIGN KEY (aluno_id) REFERENCES tb_alunos(id),
-FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id)
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+aluno_id BIGINT DEFAULT NULL,
+disciplina_id BIGINT DEFAULT NULL, 
+FOREIGN KEY (aluno_id) REFERENCES tb_alunos(id) ON DELETE CASCADE,
+FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id) ON DELETE CASCADE
 );
 
 CREATE TABLE tb_disciplinas_requisitos(
-disciplina_id BIGINT, 
-requisito_id BIGINT, 
-PRIMARY KEY (disciplina_id, requisito_id),
-FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id),
-FOREIGN KEY (requisito_id) REFERENCES tb_disciplinas(id)
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+disciplina_id BIGINT DEFAULT NULL, 
+requisito_id BIGINT DEFAULT NULL, 
+FOREIGN KEY (disciplina_id) REFERENCES tb_disciplinas(id) ON DELETE CASCADE,
+FOREIGN KEY (requisito_id) REFERENCES tb_disciplinas(id) ON DELETE CASCADE
 );

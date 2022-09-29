@@ -3,6 +3,7 @@ package br.com.quemateria.entities;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,10 +35,10 @@ public class Disciplina {
 
 	private Integer cargaHoraria;
 	
-	@OneToMany (mappedBy = "disciplina")
-	private Set<MatrizCurricular> matrizCurricular;
+	@OneToMany (mappedBy = "disciplina", cascade = CascadeType.ALL)
+	private Set<ItemMatrizCurricular> matrizCurricular;
 
-	@OneToMany(mappedBy = "disciplina")
+	@OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL)
 	private Set<Turma> turmas;
 
 	@ManyToMany

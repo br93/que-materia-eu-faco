@@ -2,6 +2,7 @@ package br.com.quemateria.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,24 +10,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Entity(name = "tb_matrizes")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "tb_matrizes")
-public class MatrizCurricular {
+public class ItemMatrizCurricular {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "curso_id")
 	private Curso curso;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "disciplina_id")
 	private Disciplina disciplina;
 	

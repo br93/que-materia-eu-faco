@@ -3,13 +3,12 @@ package br.com.quemateria.services;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.quemateria.entities.Disciplina;
+import br.com.quemateria.exceptions.EntityNotFoundException;
 import br.com.quemateria.repositories.DisciplinaRepository;
 
 @Service
@@ -98,6 +97,8 @@ public class DisciplinaService {
 
 	public void excluirDisciplina(String codigo) {
 		Disciplina disciplina = this.buscarDisciplinaPorCodigo(codigo);
+		/*disciplina.getEquivalencias().clear();
+		disciplina.getRequisitos().clear();*/
 		disciplinaRepository.delete(disciplina);
 	}
 
