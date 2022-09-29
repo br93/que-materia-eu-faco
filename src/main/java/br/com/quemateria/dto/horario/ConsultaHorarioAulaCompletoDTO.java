@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConsultaHorarioAulaDTO {
+public class ConsultaHorarioAulaCompletoDTO {
 	
+	private Long id;
 	private String nome;
 	private String codigo;
 	private String turma;

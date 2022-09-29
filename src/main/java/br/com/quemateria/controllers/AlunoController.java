@@ -4,10 +4,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.quemateria.dto.aluno.AlunoMapper;
@@ -28,6 +31,11 @@ public class AlunoController {
 		this.alunoMapper = alunoMapper;
 	}
 
+	@GetMapping
+	public ResponseEntity<ConsultaAlunoDTO> buscarAluno(@RequestParam String registro) {
+		return ResponseEntity.ok(alunoMapper.toDTO(alunoService.buscarAlunoPorRegistro(registro)));
+	}
+
 	@GetMapping("list")
 	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos(@PageableDefault Pageable pageable) {
 		return ResponseEntity.ok(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO));
@@ -38,6 +46,13 @@ public class AlunoController {
 		Aluno aluno = alunoService.salvarAluno(alunoMapper.toEntity(registroAlunoDTO));
 
 		return ResponseEntity.ok(alunoMapper.toDTO(aluno));
+	}
+
+	@DeleteMapping("delete/{registro}")
+	public ResponseEntity<ConsultaAlunoDTO> deletarAluno(@PathVariable String registro) {
+		alunoService.excluirAluno(registro);
+
+		return ResponseEntity.noContent().build();
 	}
 
 }

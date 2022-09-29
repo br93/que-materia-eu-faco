@@ -10,5 +10,9 @@ public interface CursoMapper {
 	
 	@Mapping(target = "duracao", source = "periodos")
 	ConsultaCursoDTO toDTO (Curso curso);
+	
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "disciplinas", ignore = true)
+	Curso toEntity (RegistroCursoDTO dto);
 
 }

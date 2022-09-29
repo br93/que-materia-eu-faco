@@ -18,6 +18,10 @@ public class MatrizCurricularService {
 		this.matrizCurricularRepository = matrizCurricularRepository;
 	}
 	
+	public MatrizCurricular salvarMatrizCurricular(MatrizCurricular matrizCurricular) {
+		return matrizCurricularRepository.save(matrizCurricular);
+	}
+	
 	public MatrizCurricular buscarDisciplina(Long id) {
 		Optional<MatrizCurricular> buscarPorId = matrizCurricularRepository.findById(id);
 

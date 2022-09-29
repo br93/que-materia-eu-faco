@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.quemateria.dto.horario.ConsultaHorarioAulaDTO;
+import br.com.quemateria.dto.horario.ConsultaHorarioAulaSimplesDTO;
 import br.com.quemateria.dto.horario.HorarioAulaMapper;
-import br.com.quemateria.dto.horario.RecomendacaoDTO;
 import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.services.AlunoService;
@@ -37,7 +37,7 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<RecomendacaoDTO>> getRecomendacao(
+	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacao(
 			@RequestParam(value = "manha", defaultValue = "true", required = false) Boolean manha,
 			@RequestParam(value = "tarde", defaultValue = "false", required = false) Boolean tarde,
 			@RequestParam(value = "noite", defaultValue = "false", required = false) Boolean noite,
@@ -56,7 +56,7 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("relatorio")
-	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRelatorioRecomendacoes(
+	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoes(
 			@RequestParam(value = "manha", defaultValue = "true", required = false) Boolean manha,
 			@RequestParam(value = "tarde", defaultValue = "false", required = false) Boolean tarde,
 			@RequestParam(value = "noite", defaultValue = "false", required = false) Boolean noite,
@@ -77,7 +77,7 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("opcionais")
-	public ResponseEntity<List<RecomendacaoDTO>> getRecomendacoesOpcionais(@RequestParam Integer dia,
+	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacoesOpcionais(@RequestParam Integer dia,
 			@RequestParam String horario) {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
@@ -90,7 +90,7 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("opcionais/relatorio")
-	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRelatorioRecomendacoesOpcionais(@RequestParam Integer dia,
+	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoesOpcionais(@RequestParam Integer dia,
 			@RequestParam String horario) {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
@@ -103,7 +103,7 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("enriquecimento")
-	public ResponseEntity<List<RecomendacaoDTO>> getRecomendacoesEnriquecimento(@RequestParam Integer dia,
+	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacoesEnriquecimento(@RequestParam Integer dia,
 			@RequestParam String horario) {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
@@ -116,7 +116,7 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("enriquecimento/relatorio")
-	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRelatorioRecomendacoesEnriquecimento(
+	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoesEnriquecimento(
 			@RequestParam Integer dia, @RequestParam String horario) {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();

@@ -39,6 +39,12 @@ public class AlunoService {
 		return buscarPorId.orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 	}
 	
+	public Aluno buscarAlunoPorRegistro(String registro) {
+		Optional<Aluno> buscarPorRegistro = alunoRepository.findByRegistro(registro);
+		
+		return buscarPorRegistro.orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+	}
+	
 	public Aluno atualizarAluno(Aluno aluno, Long id) {
 		Aluno alunoOriginal = this.buscarAluno(id);
 		aluno.setId(alunoOriginal.getId());
@@ -46,8 +52,8 @@ public class AlunoService {
 		return alunoRepository.save(aluno);
 	}
 	
-	public void excluirAluno(Long id) {
-		Aluno aluno = this.buscarAluno(id);
+	public void excluirAluno(String registro) {
+		Aluno aluno = this.buscarAlunoPorRegistro(registro);
 		alunoRepository.delete(aluno);
 	}
 	

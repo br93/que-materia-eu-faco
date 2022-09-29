@@ -33,11 +33,19 @@ public interface DisciplinaMapper {
 	@Mapping(target = "equivalencias", source = "codigo", qualifiedBy = GetEquivalencias.class)
 	Disciplina toEntityFromDisciplinaSimples (RegistroDisciplinaSimplesDTO dto);
 	
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "equivalencias", ignore = true)
+	@Mapping(target = "matrizCurricular", ignore = true)
+	@Mapping(target = "requisitos", ignore = true)
+	@Mapping(target = "turmas", ignore = true)
+	Disciplina toEntity (RegistroDisciplinaDTO dto);
+	
 	List<ConsultaDisciplinaDTO> toListCompletoDTO (List<Disciplina> disciplina);
 	List<ConsultaDisciplinaSimplesDTO> toListSimplesDTO (List<Disciplina> disciplina);
-
+	
 	Set<ConsultaDisciplinaDTO> toSetCompletoDTO (Set<Disciplina> disciplina);
 	Set<ConsultaDisciplinaSimplesDTO> toSetSimplesDTO(Set<Disciplina> disciplinasCursadas);
 	
+	List<Disciplina> toEntityList (List<RegistroDisciplinaSimplesDTO> disciplinas);
 	
 }

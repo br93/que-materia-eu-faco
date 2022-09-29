@@ -39,7 +39,7 @@ public class CursoService {
 
 		return buscarPorMatriz.orElseThrow(() -> new EntityNotFoundException("Curso não encontrado"));
 	}
-
+	
 	public Curso atualizarCurso(Curso curso, Long id) {
 		Curso cursoOriginal = this.buscarCurso(id);
 		curso.setId(cursoOriginal.getId());
@@ -47,8 +47,8 @@ public class CursoService {
 		return cursoRepository.save(curso);
 	}
 
-	public void excluirCurso(Long id) {
-		Curso curso = this.buscarCurso(id);
+	public void excluirCurso(String matriz) {
+		Curso curso = this.buscarCursoPorMatriz(matriz);
 		cursoRepository.delete(curso);
 	}
 

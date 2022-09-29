@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConsultaHorarioAulaDTO {
+public class ConsultaHorarioAulaSimplesDTO {
 	
-	private String nome;
 	private String codigo;
-	private String turma;
-	private String dia;
-	private String horario;
-
+	private String disciplina;
 }
