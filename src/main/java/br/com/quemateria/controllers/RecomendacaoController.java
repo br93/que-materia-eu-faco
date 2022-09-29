@@ -2,7 +2,6 @@ package br.com.quemateria.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,7 +15,6 @@ import br.com.quemateria.dto.horario.HorarioAulaMapper;
 import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.services.AlunoService;
-import br.com.quemateria.services.DisciplinaService;
 import br.com.quemateria.services.RecomendacaoService;
 
 @RestController
@@ -26,9 +24,6 @@ public class RecomendacaoController {
 	public final AlunoService alunoService;
 	public final RecomendacaoService recomendacaoService;
 	public final HorarioAulaMapper horarioAulaMapper;
-
-	@Autowired
-	public DisciplinaService disciplinaService;
 
 	public RecomendacaoController(AlunoService alunoService, RecomendacaoService recomendacaoService,
 			HorarioAulaMapper horarioAulaMapper) {
