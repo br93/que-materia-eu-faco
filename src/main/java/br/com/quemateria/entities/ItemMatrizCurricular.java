@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "tb_matrizes")
+@Entity(name = "tb_itens_matriz")
 @Getter
 @Setter
 @NoArgsConstructor

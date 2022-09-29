@@ -57,7 +57,7 @@ INSERT INTO tb_disciplinas (id, nome, codigo, carga_horaria) VALUES
 	('90', 'Web Design', 'DI84D', '75'),
 	('91', 'Álgebra Linear', 'MA72I', '60');	
 	
-INSERT INTO tb_matrizes (id, disciplina_id, periodo, pre_requisitos, curso_id, tipo_disciplina_id, peso) VALUES
+INSERT INTO tb_itens_matriz (id, disciplina_id, periodo, pre_requisitos, curso_id, tipo_disciplina_id, peso) VALUES
 	('38', '38', '5', '0', '1', '4', 0.0),
 	('39', '39', '4', '0', '1', '3', 0.0),
 	('40', '40', '5', '0', '1', '3', 0.0),

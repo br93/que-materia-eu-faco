@@ -46,7 +46,7 @@ disciplina_id BIGINT,
 FOREIGN KEY(disciplina_id) REFERENCES tb_disciplinas(id)
 );
 
-CREATE TABLE tb_matrizes (
+CREATE TABLE tb_itens_matriz (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 curso_id BIGINT,
 disciplina_id BIGINT,

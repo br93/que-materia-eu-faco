@@ -72,7 +72,7 @@ INSERT INTO tb_disciplinas (id, nome, codigo, carga_horaria) VALUES
 	('36', 'Trabalho de Conclusão de Curso 1', 'CSX40', '30'),
 	('37', 'Trabalho de Conclusão de Curso 2', 'CSX41', '30');
 	
-INSERT INTO tb_matrizes (id, disciplina_id, periodo, pre_requisitos, curso_id, tipo_disciplina_id, peso) VALUES
+INSERT INTO tb_itens_matriz (id, disciplina_id, periodo, pre_requisitos, curso_id, tipo_disciplina_id, peso) VALUES
 	('1', '1', '1', '3', '1', '1', 0.0),
 	('2', '2', '1', '2', '1', '1', 0.0),
 	('3', '3', '1', '7', '1', '1', 0.0),
