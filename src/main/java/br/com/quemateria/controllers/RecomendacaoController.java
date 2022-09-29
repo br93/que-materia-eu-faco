@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class RecomendacaoController {
 		this.horarioAulaMapper = horarioAulaMapper;
 	}
 
-	@GetMapping
+	@PatchMapping
 	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacao(
 			@RequestParam(value = "manha", defaultValue = "true", required = false) Boolean manha,
 			@RequestParam(value = "tarde", defaultValue = "false", required = false) Boolean tarde,
@@ -55,7 +56,7 @@ public class RecomendacaoController {
 
 	}
 
-	@GetMapping("relatorio")
+	@PatchMapping("relatorio")
 	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoes(
 			@RequestParam(value = "manha", defaultValue = "true", required = false) Boolean manha,
 			@RequestParam(value = "tarde", defaultValue = "false", required = false) Boolean tarde,
