@@ -1,4 +1,4 @@
-INSERT INTO tb_cursos (nome, matriz, periodos) VALUES
+INSERT INTO tb_cursos (nome, codigo, periodos) VALUES
 	('Placeholder', '000', '8');
 
 INSERT INTO tb_disciplinas (id, nome, codigo, carga_horaria) VALUES

@@ -26,7 +26,7 @@ public class Curso {
 	private Long id;
 	
 	private String nome;
-	private String matriz;
+	private String codigo;
 	private Integer periodos;
 	
 	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)

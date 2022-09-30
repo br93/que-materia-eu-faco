@@ -13,7 +13,7 @@ import br.com.quemateria.services.DisciplinaService;
 @Mapper(componentModel = "spring", uses = {DisciplinaMapper.class, CursoService.class, DisciplinaService.class})
 public interface AlunoMapper {
 	
-	@Mapping(target = "curso", source = "curso.matriz" )
+	@Mapping(target = "curso", source = "curso.codigo" )
 	ConsultaAlunoDTO toDTO (Aluno aluno);
 	
 	@Mapping(target = "id", ignore = true)

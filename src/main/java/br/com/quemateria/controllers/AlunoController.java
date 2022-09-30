@@ -1,9 +1,14 @@
 package br.com.quemateria.controllers;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +26,7 @@ import br.com.quemateria.services.AlunoService;
 
 @RestController
 @RequestMapping("v1/alunos")
+@Validated
 public class AlunoController {
 
 	private final AlunoService alunoService;
@@ -32,7 +38,8 @@ public class AlunoController {
 	}
 
 	@GetMapping
-	public ResponseEntity<ConsultaAlunoDTO> buscarAluno(@RequestParam String registro) {
+	public ResponseEntity<ConsultaAlunoDTO> buscarAluno(@RequestParam @Length (min = 8, max = 8) 
+			@Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro) {
 		return ResponseEntity.ok(alunoMapper.toDTO(alunoService.buscarAlunoPorRegistro(registro)));
 	}
 
@@ -42,14 +49,15 @@ public class AlunoController {
 	}
 
 	@PostMapping("add")
-	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@RequestBody RegistroAlunoDTO registroAlunoDTO) {
+	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@Valid @RequestBody RegistroAlunoDTO registroAlunoDTO) {
 		Aluno aluno = alunoService.salvarAluno(alunoMapper.toEntity(registroAlunoDTO));
 
 		return ResponseEntity.ok(alunoMapper.toDTO(aluno));
 	}
 
 	@DeleteMapping("delete/{registro}")
-	public ResponseEntity<ConsultaAlunoDTO> deletarAluno(@PathVariable String registro) {
+	public ResponseEntity<ConsultaAlunoDTO> deletarAluno(@PathVariable @Length (min = 8, max = 8) 
+			@Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro) {
 		alunoService.excluirAluno(registro);
 
 		return ResponseEntity.noContent().build();

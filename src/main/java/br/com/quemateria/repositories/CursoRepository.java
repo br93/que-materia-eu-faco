@@ -10,7 +10,7 @@ import br.com.quemateria.entities.Curso;
 @Repository
 public interface CursoRepository extends JpaRepository<Curso, Long> {
 	
-	Optional<Curso> findByMatriz(String matriz);
+	Optional<Curso> findByCodigo(String codigo);
 	
 
 }

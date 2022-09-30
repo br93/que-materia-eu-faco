@@ -1,7 +1,7 @@
 CREATE TABLE tb_cursos (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
 nome VARCHAR(255),
-matriz VARCHAR(3), 
+codigo VARCHAR(3), 
 periodos INTEGER
 );
 

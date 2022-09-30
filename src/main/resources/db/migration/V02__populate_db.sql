@@ -30,7 +30,7 @@ INSERT INTO tb_dias (id, identificador, dia) VALUES
 	('4', '5', 'Quinta'),
 	('5', '6', 'Sexta');
 	
-INSERT INTO tb_cursos (nome, matriz, periodos) VALUES
+INSERT INTO tb_cursos (nome, codigo, periodos) VALUES
 	('Bacharelado em Sistemas de Informação', '236', '8');
 	
 INSERT INTO tb_disciplinas (id, nome, codigo, carga_horaria) VALUES

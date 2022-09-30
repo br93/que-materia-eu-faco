@@ -1,9 +1,14 @@
 package br.com.quemateria.controllers;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +26,7 @@ import br.com.quemateria.services.TurmaService;
 
 @RestController
 @RequestMapping("v1/turmas")
+@Validated
 public class TurmaController {
 	
 	private final TurmaService turmaService;
@@ -32,7 +38,8 @@ public class TurmaController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<ConsultaTurmaDTO> buscarTurma(@RequestParam String codigo) {
+	public ResponseEntity<ConsultaTurmaDTO> buscarTurma(@RequestParam @Length(min = 9, max = 10)
+			@Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})-[A-Z]{1}[0-9]{2}$", message = "Formato XXXXX-A00 ou XXXXXX-A00") String codigo) {
 		return ResponseEntity.ok(turmaMapper.toDTO(turmaService.buscarTurmaPorCodigo(codigo)));
 	}
 	
@@ -42,14 +49,15 @@ public class TurmaController {
 	}
 	
 	@PostMapping("add")
-	public ResponseEntity<ConsultaTurmaDTO> adicionarTurma(@RequestBody RegistroTurmaDTO dto ){
+	public ResponseEntity<ConsultaTurmaDTO> adicionarTurma(@Valid @RequestBody RegistroTurmaDTO dto ){
 		Turma turma = turmaService.salvarTurma(turmaMapper.toEntity(dto));
 		
 		return ResponseEntity.ok(turmaMapper.toDTO(turma));
 	}
 	
 	@DeleteMapping("delete/{codigo}")
-	public ResponseEntity<ConsultaTurmaDTO> deletarTurma(@PathVariable String codigo){
+	public ResponseEntity<ConsultaTurmaDTO> deletarTurma(@PathVariable @Length(min = 9, max = 10)
+			@Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})-[A-Z]{1}[0-9]{2}$", message = "Formato XXXXX-A00 ou XXXXXX-A00") String codigo){
 		turmaService.excluirTurma(codigo);
 		
 		return ResponseEntity.noContent().build();
