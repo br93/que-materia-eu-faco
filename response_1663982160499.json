@@ -1,0 +1,71 @@
+{
+  "curso": "236",
+  "disciplinas": [
+    {
+      "codigo": "CSF13"
+    },
+ {
+      "codigo": "CSX10"
+    },
+ {
+      "codigo": "MA70E"
+    },
+ {
+      "codigo": "CSD20"
+    },
+ {
+      "codigo": "CSE20"
+    },
+ {
+      "codigo": "CSF20"
+    },
+ {
+      "codigo": "CSG10"
+    },
+ {
+      "codigo": "MA71B"
+    },
+ {
+      "codigo": "CSD21"
+    },
+ {
+      "codigo": "CSF30"
+    },
+ {
+      "codigo": "CSW20"
+    },
+ {
+      "codigo": "ES70G"
+    },
+ {
+      "codigo": "GE71A"
+    },
+ {
+      "codigo": "MA70H"
+    },
+ {
+      "codigo": "CSO30"
+    },
+ {
+      "codigo": "ES70B"
+    },
+ {
+      "codigo": "ES70P"
+    },
+ {
+      "codigo": "CSG30"
+    },
+ {
+      "codigo": "CSH30"
+    },
+ {
+      "codigo": "ES70S"
+    },
+ {
+      "codigo": "GE73A"
+    }
+  ],
+  "nome": "string",
+  "periodo": 4,
+  "registro": "string"
+}
