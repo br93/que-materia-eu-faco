@@ -90,17 +90,17 @@ Requisições para a API devem seguir os padrões:
   + Parâmetros
   
             {
+              "nome": Bacharelado em Sistemas de Informação"
               "codigo": "236",
               "quantidadeDePeriodos": 8,
-              "nome": Bacharelado em Sistemas de Informação"
             }
 
 + Resposta 200 (application/json)
 
             {
+              "nome": Bacharelado em Sistemas de Informação"
               "codigo": "236",
               "duracao": 8,
-              "nome": Bacharelado em Sistemas de Informação"
             }
 
 ### Deletar (/v1/cursos/delete/{codigo}) [DELETE]
@@ -181,16 +181,16 @@ Requisições para a API devem seguir os padrões:
   + Parâmetros
   
             {
-              "cargaHoraria": 45,
-              "codigo": "CSG20",
               "nome": "Analise e Projeto de Sistemas"
+              "codigo": "CSG20",
+              "cargaHoraria": 45,
             }
 
 + Resposta 200 (application/json)
 
             {
-              "codigo": "CSG20",
               "nome": "Analise e Projeto de Sistemas",
+              "codigo": "CSG20",
               "requisitos": []"
             }
 
