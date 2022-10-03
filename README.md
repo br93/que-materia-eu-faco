@@ -28,7 +28,7 @@ mvn spring-boot:run
 
 ou utilizando a IDE de sua escolha.
 
-O app estará rodando no link <http://localhost:8080>.
+O app estará rodando no link <http://localhost:8080/swagger-ui/>.
 
 ## Dependências
 * [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
