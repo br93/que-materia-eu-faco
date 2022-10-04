@@ -593,7 +593,7 @@ Requisições para a API devem seguir os padrões:
               "horas": 20,
               "manha": true,
               "tarde": false,
-              "noite": true
+              "noite": false
             }
 
 
@@ -607,7 +607,7 @@ Requisições para a API devem seguir os padrões:
               "horas": 20,
               "manha": true,
               "tarde": false,
-              "noite": true
+              "noite": false
             }
 
 ### Recomendar disciplinas opcionais (/v1/recomendacoes/opcionais) [GET]
