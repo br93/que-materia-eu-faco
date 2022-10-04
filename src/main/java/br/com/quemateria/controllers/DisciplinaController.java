@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -105,7 +104,7 @@ public class DisciplinaController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PatchMapping("delete/prerequisito")
+	@PutMapping("delete/prerequisito")
 	public ResponseEntity<ConsultaDisciplinaDTO> deletarPreRequisito(@RequestParam @Length(min = 5, max = 6)
 			@Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String disciplina,
 				@RequestParam @Length(min = 5, max = 6) 
@@ -115,7 +114,7 @@ public class DisciplinaController {
 		return ResponseEntity.ok(disciplinaMapper.toDTO(disciplinaAtualizada));
 	}
 
-	@PatchMapping("delete/equivalencia")
+	@PutMapping("delete/equivalencia")
 	public ResponseEntity<ConsultaDisciplinaDTO> deletarEquivalencia(@RequestParam @Length(min = 5, max = 6)
 			@Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String disciplina,
 				@RequestParam @Length(min = 5, max = 6) 
@@ -125,7 +124,7 @@ public class DisciplinaController {
 		return ResponseEntity.ok(disciplinaMapper.toDTO(disciplinaAtualizada));
 	}
 
-	@PutMapping("register")
+	@PostMapping("register")
 	public ResponseEntity<ConsultaMatrizDTO> registarDisciplinaNaMatrizCurricular(@Valid @RequestBody RegistroMatrizDTO dto) {
 		ItemMatrizCurricular itemMatrizCurricular = matrizCurricularService
 				.salvarItemMatrizCurricular(matrizCurricularMapper.toEntity(dto));
