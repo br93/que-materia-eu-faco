@@ -479,7 +479,7 @@ Requisições para a API devem seguir os padrões:
               {
                 "id": 272,
                 "nome": "Análise e Projeto de Sistemas",
-                "codigo": "CSG20-S73",
+                "codigo": "CSG20",
                 "turma": "CSG20-S73",
                 "dia": 3,
                 "horario": "T1"
@@ -487,7 +487,7 @@ Requisições para a API devem seguir os padrões:
               {
                 "id": 273,
                 "nome": "Análise e Projeto de Sistemas",
-                "codigo": "CSG20-S73",
+                "codigo": "CSG20",
                 "turma": "CSG20-S73",
                 "dia": 3,
                 "horario": "T2"
@@ -495,7 +495,7 @@ Requisições para a API devem seguir os padrões:
               {
                 "id": 274,
                 "nome": "Análise e Projeto de Sistemas",
-                "codigo": "CSG20-S73",
+                "codigo": "CSG20",
                 "turma": "CSG20-S73",
                 "dia": 3,
                 "horario": "T4"
@@ -512,21 +512,21 @@ Requisições para a API devem seguir os padrões:
               "content": [
                 {
                   "nome": "Análise e Projeto de Sistemas",
-                  "codigo": "CSG20-S73",
+                  "codigo": "CSG20",
                   "turma": "CSG20-S73",
                   "dia": 3,
                   "horario": "T1"
                 },
                 {
                   "nome": "Análise e Projeto de Sistemas",
-                  "codigo": "CSG20-S73",
+                  "codigo": "CSG20",
                   "turma": "CSG20-S73",
                   "dia": 3,
                   "horario": "T2"
                 },
                 {
                   "nome": "Análise e Projeto de Sistemas",
-                  "codigo": "CSG20-S73",
+                  "codigo": "CSG20",
                   "turma": "CSG20-S73",
                   "dia": 3,
                   "horario": "T3"
@@ -552,7 +552,7 @@ Requisições para a API devem seguir os padrões:
             {
               "turma": "CSG2O-S73"
               "nome": "Análise e Projeto de Sistemas"
-              "codigo": "CSG20-S73",
+              "codigo": "CSG20",
               "dia": "3",
               "horario": "T1"
             }
