@@ -7,6 +7,9 @@ Recursos disponíveis para acesso via API:
 * [**Disciplinas**](#disciplinas)
 * [**Turmas**](#turmas)
 * [**Aulas**](#aulas)
+* [**Alunos**](#alunos)
+* [**Histórico**](#historico)
+* [**Recomendações**](#recomendação)
 
 ## Primeiros passos
 **1. Clone a aplicação**
