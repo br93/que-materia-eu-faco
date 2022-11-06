@@ -36,7 +36,7 @@ ou utilizando a IDE de sua escolha.
 O app estará rodando no link <http://localhost:8080>.
 
 ## Dependências
-* [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+* [Java 8](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
 * [Apache Maven](https://maven.apache.org)
 
 ## Métodos
