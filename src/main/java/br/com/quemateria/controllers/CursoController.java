@@ -23,43 +23,40 @@ import br.com.quemateria.dto.curso.CursoMapper;
 import br.com.quemateria.dto.curso.RegistroCursoDTO;
 import br.com.quemateria.entities.Curso;
 import br.com.quemateria.services.CursoService;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("v1/cursos")
 @Validated
+@AllArgsConstructor
 public class CursoController {
-	
+
 	private final CursoService cursoService;
 	private final CursoMapper cursoMapper;
-	
-	public CursoController(CursoService cursoService, CursoMapper cursoMapper) {
-		this.cursoService = cursoService;
-		this.cursoMapper = cursoMapper;
-	}
-	
+
 	@GetMapping
-	public ResponseEntity<ConsultaCursoDTO> buscarCurso(@RequestParam @Length(min = 3, max = 3) 
-			@Pattern(regexp = "^[0-9]{3}$", message = "Formato 000") String codigo){
+	public ResponseEntity<ConsultaCursoDTO> buscarCurso(
+			@RequestParam @Length(min = 3, max = 3) @Pattern(regexp = "^[0-9]{3}$", message = "Formato 000") String codigo) {
 		return ResponseEntity.ok(cursoMapper.toDTO(cursoService.buscarCursoPorCodigo(codigo)));
 	}
-	
+
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaCursoDTO>> listarCursos(@PageableDefault Pageable pageable){
+	public ResponseEntity<Page<ConsultaCursoDTO>> listarCursos(@PageableDefault Pageable pageable) {
 		return ResponseEntity.ok(cursoService.listarCursos(pageable).map(cursoMapper::toDTO));
 	}
-	
+
 	@PostMapping("add")
-	public ResponseEntity<ConsultaCursoDTO> salvarCurso(@Valid @RequestBody RegistroCursoDTO dto){
+	public ResponseEntity<ConsultaCursoDTO> salvarCurso(@Valid @RequestBody RegistroCursoDTO dto) {
 		Curso curso = cursoService.salvarCurso(cursoMapper.toEntity(dto));
-		
+
 		return ResponseEntity.ok(cursoMapper.toDTO(curso));
 	}
-	
+
 	@DeleteMapping("delete/{codigo}")
-	public ResponseEntity<ConsultaCursoDTO> deletarCurso(@PathVariable @Length(min = 3, max = 3) 
-			@Pattern(regexp = "^[0-9]{3}$", message = "Formato 000") String codigo){
+	public ResponseEntity<ConsultaCursoDTO> deletarCurso(
+			@PathVariable @Length(min = 3, max = 3) @Pattern(regexp = "^[0-9]{3}$", message = "Formato 000") String codigo) {
 		cursoService.excluirCurso(codigo);
-				
+
 		return ResponseEntity.noContent().build();
 	}
 

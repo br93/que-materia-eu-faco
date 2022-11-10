@@ -7,17 +7,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.quemateria.entities.Curso;
-import br.com.quemateria.exceptions.EntityNotFoundException;
+import br.com.quemateria.exceptions.CustomNotFoundException;
 import br.com.quemateria.repositories.CursoRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class CursoService {
 
 	private final CursoRepository cursoRepository;
-
-	public CursoService(CursoRepository cursoRepository) {
-		this.cursoRepository = cursoRepository;
-	}
 
 	public Curso salvarCurso(Curso curso) {
 		return cursoRepository.save(curso);
@@ -30,13 +28,13 @@ public class CursoService {
 	public Curso buscarCurso(Long id) {
 		Optional<Curso> buscarPorId = cursoRepository.findById(id);
 
-		return buscarPorId.orElseThrow(() -> new EntityNotFoundException("Curso não encontrado"));
+		return buscarPorId.orElseThrow(() -> new CustomNotFoundException("Curso não encontrado"));
 	}
 	
 	public Curso buscarCursoPorCodigo(String codigo) {
 		Optional<Curso> buscarPorCodigo = cursoRepository.findByCodigo(codigo);
 
-		return buscarPorCodigo.orElseThrow(() -> new EntityNotFoundException("Curso não encontrado"));
+		return buscarPorCodigo.orElseThrow(() -> new CustomNotFoundException("Curso não encontrado"));
 	}
 	
 	public Curso atualizarCurso(Curso curso, Long id) {

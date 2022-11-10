@@ -8,19 +8,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.quemateria.entities.Aluno;
-import br.com.quemateria.exceptions.EntityNotFoundException;
+import br.com.quemateria.entities.Usuario;
+import br.com.quemateria.exceptions.CustomNotFoundException;
 import br.com.quemateria.repositories.AlunoRepository;
+import br.com.quemateria.services.auth.UsuarioService;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class AlunoService {
 	
 	private final AlunoRepository alunoRepository;
+	private final UsuarioService loginService;
 	
-	public AlunoService(AlunoRepository alunoRepository) {
-		this.alunoRepository = alunoRepository;
-	}
-	
-	public Aluno salvarAluno (Aluno aluno) {
+	public Aluno salvarAluno (Aluno aluno, Long id) {
+		Usuario loginAluno = loginService.criarCadastroAluno(id);
+		aluno.setLogin(loginAluno);
 		return alunoRepository.save(aluno);
 	}
 	
@@ -35,13 +38,13 @@ public class AlunoService {
 	public Aluno buscarAluno(Long id) {
 		Optional<Aluno> buscarPorId = alunoRepository.findById(id);
 		
-		return buscarPorId.orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+		return buscarPorId.orElseThrow(() -> new CustomNotFoundException("Aluno não encontrado"));
 	}
 	
 	public Aluno buscarAlunoPorRegistro(String registro) {
 		Optional<Aluno> buscarPorRegistro = alunoRepository.findByRegistro(registro);
 		
-		return buscarPorRegistro.orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+		return buscarPorRegistro.orElseThrow(() -> new CustomNotFoundException("Aluno não encontrado"));
 	}
 	
 	public Aluno atualizarAluno(Aluno aluno, Long id) {
