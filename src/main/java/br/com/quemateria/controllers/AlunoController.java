@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class AlunoController {
 
 	private final AlunoService alunoService;
 	private final AlunoMapper alunoMapper;
+	
 
 	@GetMapping
 	public ResponseEntity<ConsultaAlunoDTO> buscarAluno(
@@ -48,10 +50,10 @@ public class AlunoController {
 	}
 
 	@PostMapping("add")
-	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@Valid @RequestBody RegistroAlunoDTO registroAlunoDTO,
-			Authentication auth) {
-		Usuario login = (Usuario) auth.getPrincipal();
-
+	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@Valid @RequestBody RegistroAlunoDTO registroAlunoDTO){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Usuario login = (Usuario) authentication.getPrincipal();
+				
 		Aluno aluno = alunoMapper.toEntity(registroAlunoDTO);
 		Aluno alunoSalvo = alunoService.salvarAluno(aluno, login.getId());
 

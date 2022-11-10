@@ -1,7 +1,7 @@
 package br.com.quemateria.entities;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,7 +48,7 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(perfil);
+		return Arrays.asList(perfil);
 	}
 
 	@Override

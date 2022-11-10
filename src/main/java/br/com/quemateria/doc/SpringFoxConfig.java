@@ -1,15 +1,15 @@
 package br.com.quemateria.doc;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
@@ -21,53 +21,49 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SpringFoxConfig {      
 	
-	public static final String AUTHORIZATION_HEADER = "Authorization";
-
-	private Contact contato() {
-		return new Contact("Seu nome", "http://www.seusite.com.br", "voce@seusite.com.br");
+	private ApiKey apiKey() { 
+	    return new ApiKey("JWT", "Authorization", "header"); 
 	}
+	
+	private SecurityContext securityContext() { 
+	    return SecurityContext.builder().securityReferences(defaultAuth()).build(); 
+	} 
 
-	private ApiInfoBuilder informacoesApi() {
-
-		ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
-
-		apiInfoBuilder.title("Title - Rest API");
-		apiInfoBuilder.description("API exemplo de uso de Springboot REST API");
-		apiInfoBuilder.version("1.0");
-		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Open Source");
-		apiInfoBuilder.license("Licença - Sua Empresa");
-		apiInfoBuilder.licenseUrl("http://www.seusite.com.br");
-		apiInfoBuilder.contact(this.contato());
-
-		return apiInfoBuilder;
-
+	private List<SecurityReference> defaultAuth() { 
+	    AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything"); 
+	    AuthorizationScope[] authorizationScopes = new AuthorizationScope[1]; 
+	    authorizationScopes[0] = authorizationScope; 
+	    return Arrays.asList(new SecurityReference("JWT", authorizationScopes)); 
 	}
-
+	
 	@Bean
-	public Docket detalheApi() {
-		Docket docket = new Docket(DocumentationType.SWAGGER_2);
-
-		docket.select().apis(RequestHandlerSelectors.basePackage("br.com.quemateria.controllers")).paths(PathSelectors.any()).build()
-				.apiInfo(this.informacoesApi().build()).securityContexts(Arrays.asList(securityContext()))
-				.securitySchemes(Arrays.asList(apiKey()))
-				.consumes(new HashSet<String>(Arrays.asList("application/json")))
-				.produces(new HashSet<String>(Arrays.asList("application/json")));
-
-		return docket;
+	Docket api() {
+	    return new Docket(DocumentationType.SWAGGER_2)
+	      .apiInfo(apiInfo())
+	      .securityContexts(Arrays.asList(securityContext()))
+	      .securitySchemes(Arrays.asList(apiKey()))
+	      .select()
+	      .apis(RequestHandlerSelectors.any())
+	      .paths(PathSelectors.any())
+	      .build();
+	}
+		
+	
+	private ApiInfo apiInfo() {
+	    return new ApiInfo(
+	      "Melhor grade API",
+	      "API de recomendações de grade horária",
+	      "1.0",
+	      "Terms of service",
+	      new Contact("Seu nome", "http://www.seusite.com.br", "voce@seusite.com.br"),
+	      "License of API",
+	      "API license URL",
+	      Collections.emptyList());
 	}
 
-	private ApiKey apiKey() {
-		return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
-	}
+	
 
-	private SecurityContext securityContext() {
-		return SecurityContext.builder().securityReferences(defaultAuth()).build();
-	}
+	
 
-	List<SecurityReference> defaultAuth() {
-		AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-		authorizationScopes[0] = authorizationScope;
-		return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
-	}
+	
 }
