@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,5 +42,10 @@ public class Aluno {
 			  joinColumns = @JoinColumn(name = "aluno_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "disciplina_id"))
 	private Set<Disciplina> disciplinasCursadas;
+	
+	@OneToOne
+    @JoinColumn(name = "id")
+    @MapsId
+    private Usuario login;
 
 }

@@ -22,22 +22,17 @@ import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.services.AlunoService;
 import br.com.quemateria.services.RecomendacaoService;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("v1/recomendacoes")
 @Validated
+@AllArgsConstructor
 public class RecomendacaoController {
 
 	public final AlunoService alunoService;
 	public final RecomendacaoService recomendacaoService;
 	public final HorarioAulaMapper horarioAulaMapper;
-
-	public RecomendacaoController(AlunoService alunoService, RecomendacaoService recomendacaoService,
-			HorarioAulaMapper horarioAulaMapper) {
-		this.alunoService = alunoService;
-		this.recomendacaoService = recomendacaoService;
-		this.horarioAulaMapper = horarioAulaMapper;
-	}
 
 	@PatchMapping
 	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacao(
@@ -80,7 +75,8 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("opcionais")
-	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacoesOpcionais(@RequestParam @Range(min = 2, max = 6) Integer dia,
+	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacoesOpcionais(
+			@RequestParam @Range(min = 2, max = 6) Integer dia,
 			@RequestParam @Length(min = 2, max = 2) @Pattern(regexp = "(^[MT][1-6]|^[N][1-5])$", message = "Formato X0") String horario) {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
@@ -93,7 +89,8 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("opcionais/relatorio")
-	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoesOpcionais(@RequestParam @Range(min = 2, max = 6) Integer dia,
+	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoesOpcionais(
+			@RequestParam @Range(min = 2, max = 6) Integer dia,
 			@RequestParam @Length(min = 2, max = 2) @Pattern(regexp = "(^[MT][1-6]|^[N][1-5])$", message = "Formato X0") String horario) {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
@@ -106,7 +103,8 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("enriquecimento")
-	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacoesEnriquecimento(@RequestParam @Range(min = 2, max = 6) Integer dia,
+	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacoesEnriquecimento(
+			@RequestParam @Range(min = 2, max = 6) Integer dia,
 			@RequestParam @Length(min = 2, max = 2) @Pattern(regexp = "(^[MT][1-6]|^[N][1-5])$", message = "Formato X0") String horario) {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
@@ -121,7 +119,7 @@ public class RecomendacaoController {
 	@GetMapping("enriquecimento/relatorio")
 	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoesEnriquecimento(
 			@RequestParam @Size(min = 2, max = 6) Integer dia,
-					@RequestParam @Length(min = 2, max = 2) @Pattern(regexp = "(^[MT][1-6]|^[N][1-5])$", message = "Formato X0") String horario) {
+			@RequestParam @Length(min = 2, max = 2) @Pattern(regexp = "(^[MT][1-6]|^[N][1-5])$", message = "Formato X0") String horario) {
 
 		Aluno aluno = alunoService.getUltimoAlunoCadastrado();
 		Long cursoId = alunoService.getUltimoAlunoCadastrado().getCurso().getId();

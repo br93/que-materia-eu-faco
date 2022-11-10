@@ -12,18 +12,15 @@ import br.com.quemateria.dto.disciplina.ConsultaDisciplinaDTO;
 import br.com.quemateria.dto.disciplina.ConsultaDisciplinaSimplesDTO;
 import br.com.quemateria.dto.disciplina.DisciplinaMapper;
 import br.com.quemateria.services.HistoricoService;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("v1/historico")
+@AllArgsConstructor
 public class HistoricoController {
 
 	private final HistoricoService historicoService;
 	private final DisciplinaMapper disciplinaMapper;
-
-	public HistoricoController(HistoricoService historicoService, DisciplinaMapper disciplinaMapper) {
-		this.historicoService = historicoService;
-		this.disciplinaMapper = disciplinaMapper;
-	}
 
 	@GetMapping("simples")
 	public ResponseEntity<Set<ConsultaDisciplinaSimplesDTO>> disciplinasCursadasSimples() {
@@ -43,8 +40,8 @@ public class HistoricoController {
 
 	@GetMapping("faltantes/completo")
 	public ResponseEntity<Set<ConsultaDisciplinaDTO>> disciplinasFaltantesCompleto() {
-		return ResponseEntity
-				.ok(new LinkedHashSet<>(disciplinaMapper.toListCompletoDTO(historicoService.getDisciplinasFaltantes())));
+		return ResponseEntity.ok(
+				new LinkedHashSet<>(disciplinaMapper.toListCompletoDTO(historicoService.getDisciplinasFaltantes())));
 
 	}
 

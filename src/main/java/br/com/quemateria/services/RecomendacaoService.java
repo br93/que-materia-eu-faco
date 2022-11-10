@@ -14,23 +14,16 @@ import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.entities.ItemMatrizCurricular;
 import br.com.quemateria.repositories.HorarioAulaRepository;
 import br.com.quemateria.repositories.ItemMatrizCurricularRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class RecomendacaoService {
 
 	private final HorarioAulaRepository horarioAulaRepository;
 	private final ItemMatrizCurricularRepository matrizCurricularRepository;
 	private final ItemMatrizCurricularService matrizCurricularService;
 	private final HistoricoService historicoService;
-
-	public RecomendacaoService(HorarioAulaRepository horarioAulaRepository,
-			ItemMatrizCurricularRepository matrizCurricularRepository, ItemMatrizCurricularService matrizCurricularService,
-			HistoricoService historicoService) {
-		this.horarioAulaRepository = horarioAulaRepository;
-		this.matrizCurricularRepository = matrizCurricularRepository;
-		this.matrizCurricularService = matrizCurricularService;
-		this.historicoService = historicoService;
-	}
 
 	public void calcularPeso(Long cursoId, Integer periodo) {
 		List<ItemMatrizCurricular> disciplinas = matrizCurricularRepository.findAll();

@@ -26,23 +26,20 @@ import br.com.quemateria.dto.horario.HorarioAulaMapper;
 import br.com.quemateria.dto.horario.RegistroHorarioAulaDTO;
 import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.services.HorarioAulaService;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("v1/aulas")
 @Validated
+@AllArgsConstructor
 public class AulaController {
 
 	private final HorarioAulaService horarioAulaService;
 	private final HorarioAulaMapper horarioAulaMapper;
 
-	public AulaController(HorarioAulaService horarioAulaService, HorarioAulaMapper horarioAulaMapper) {
-		this.horarioAulaService = horarioAulaService;
-		this.horarioAulaMapper = horarioAulaMapper;
-	}
-
 	@GetMapping
-	public ResponseEntity<List<ConsultaHorarioAulaCompletoDTO>> buscarAula(@RequestParam @Length(min = 9, max = 10) 
-			@Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})-[A-Z]{1}[0-9]{2}$", message = "Formato XXXXX-A00 ou XXXXXX-A00") String codigoTurma) {
+	public ResponseEntity<List<ConsultaHorarioAulaCompletoDTO>> buscarAula(
+			@RequestParam @Length(min = 9, max = 10) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})-[A-Z]{1}[0-9]{2}$", message = "Formato XXXXX-A00 ou XXXXXX-A00") String codigoTurma) {
 		return ResponseEntity
 				.ok(horarioAulaMapper.toListCompletoDTO(horarioAulaService.listarAulaPorTurmaCodigo(codigoTurma)));
 
