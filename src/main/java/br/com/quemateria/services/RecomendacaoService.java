@@ -5,17 +5,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import br.com.quemateria.dto.matriz.ConsultaMatrizDTO;
-import br.com.quemateria.dto.matriz.MatrizCurricularMapper;
 import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.Disciplina;
 import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.entities.ItemMatrizCurricular;
-import br.com.quemateria.entities.Turma;
 import br.com.quemateria.repositories.HorarioAulaRepository;
 import br.com.quemateria.repositories.ItemMatrizCurricularRepository;
 import lombok.AllArgsConstructor;
@@ -27,33 +23,19 @@ public class RecomendacaoService {
 	private final HorarioAulaRepository horarioAulaRepository;
 	private final ItemMatrizCurricularRepository matrizCurricularRepository;
 	private final HistoricoService historicoService;
-	private final CursoService cursoService;
-	private final TipoDeDisciplinaService tipoDeDisciplinaService;
-	private final DisciplinaService disciplinaService;
-	private final HorarioAulaService horarioAulaService;
-	
-	private final MatrizCurricularMapper matrizCurricularMapper;
+	private final ItemMatrizCurricularService matrizCurricularService;
 
-	public List<ConsultaMatrizDTO> calcularPeso(Long cursoId, Integer periodo) {
+	public void calcularPeso(Long cursoId, Integer periodo) {
+		List<ItemMatrizCurricular> disciplinas = matrizCurricularRepository.findAll();
 
-		String curso = cursoService.buscarCurso(cursoId).getNome();
-
-		List<ItemMatrizCurricular> listaMatriz = matrizCurricularRepository.findAll();
-		List<ConsultaMatrizDTO> listaMatrizDTO = listaMatriz.stream().map(matrizCurricularMapper::toDTO)
-				.filter(x -> x.getCurso().equals(curso)).collect(Collectors.toList());
-
-		listaMatrizDTO.forEach(item -> {
-			item.setPeso((Math.log(item.getPeriodo()) / Math.log(2)) - (item.getPreRequisitos() / 2)
-					- tipoDeDisciplinaService.retornarValor(item.getTipoDeDisciplina())
-					- (periodo >= item.getPeriodo() && historicoService.getDisciplinasObrigatoriasFaltantes()
-							.contains(disciplinaService.buscarDisciplinaPorCodigo(item.getDisciplina()))
-									? 2 * (periodo / item.getPeriodo())
-									: -2));
-		});
-		
-		Collections.sort(listaMatrizDTO, (o1, o2) -> Double.compare(o1.getPeso(), o2.getPeso()));
-		
-		return listaMatrizDTO;
+		for (ItemMatrizCurricular disciplina : disciplinas)
+			if (disciplina.getCurso().getId().equals(cursoId)) {
+				matrizCurricularService.atualizarPeso((Math.log(disciplina.getPeriodo()) / Math.log(2))
+						- (disciplina.getPreRequisitos() / 2) - disciplina.getTipoDeDisciplina().getTipoValor()
+						- (periodo >= disciplina.getPeriodo() && historicoService.getDisciplinasObrigatoriasFaltantes()
+								.contains(disciplina.getDisciplina()) ? 2 * (periodo / disciplina.getPeriodo()) : -2),
+						disciplina.getId());
+			}
 
 	}
 
@@ -159,9 +141,11 @@ public class RecomendacaoService {
 
 		for (HorarioAula horarioAula : materiasFaltantes)
 			if (!disciplinasCursadas.contains(getTurmaDisciplina(horarioAula))
-					&& adicionarDisciplinaOpcional(horarioAula, false)) {
+					&& adicionarDisciplinaOpcional(horarioAula, false) && !isOpcional(getTurmaDisciplina(horarioAula))) {
 				listaRecomendacao.add(horarioAula);
 			}
+		
+		
 
 		return listaRecomendacao;
 	}
@@ -194,11 +178,6 @@ public class RecomendacaoService {
 				disciplinas.add(getTurmaDisciplina(horarioAula));
 				cargaHorariaMaxima -= getTurmaDisciplina(horarioAula).getCargaHoraria();
 			}
-
-		/*
-		 * if (!recomendacao.isEmpty() && cargaHorariaMaxima <= 0)
-		 * recomendacao.remove(recomendacao.size() - 1);
-		 */
 
 		return ordenarListaDeRecomendacao(recomendacao);
 
@@ -245,11 +224,6 @@ public class RecomendacaoService {
 				disciplinas.add(getTurmaDisciplina(horarioAula));
 				cargaHorariaMaxima -= getTurmaDisciplina(horarioAula).getCargaHoraria();
 			}
-
-		/*
-		 * if (!listaRecomendacao.isEmpty() && cargaHorariaMaxima <= 0)
-		 * listaRecomendacao.remove(listaRecomendacao.size() - 1);
-		 */
 
 		return ordenarListaDeRecomendacao(listaRecomendacao);
 
@@ -339,38 +313,23 @@ public class RecomendacaoService {
 
 	public List<HorarioAula> listarHorarioAulaPorCursoIdAtePeriodoFaixaHorarioAsc(Long cursoId, Integer periodo,
 			Long horarioInicialId, Long horarioFinalId) {
-		
-		List<ConsultaMatrizDTO> listaMatriz = this.calcularPeso(cursoId, periodo);
-		List<HorarioAula> listaHorarioAula = horarioAulaRepository.findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByHorario_IdAsc(cursoId, periodo, horarioInicialId, horarioFinalId);
-		List<String> listaCodigos = listaHorarioAula.stream().map(HorarioAula::getTurma).map(Turma::getDisciplina).map(Disciplina::getCodigo).collect(Collectors.toList());
-		List<HorarioAula> listaHorarioOrdenadaPorPeso = new ArrayList<>();
-		
-		
-		listaMatriz.forEach(item -> {
-			if(listaCodigos.contains(item.getDisciplina()))
-				listaHorarioOrdenadaPorPeso.addAll(horarioAulaService.listarAulaPorDisciplinaCodigo(item.getDisciplina()));
-		});
-		
-		return listaHorarioOrdenadaPorPeso;
-		
+		return horarioAulaRepository
+				.findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_MatrizCurricular_PesoAscHorario_IdAsc(
+						cursoId, periodo, horarioInicialId, horarioFinalId);
 	}
 
 	public List<HorarioAula> listarHorarioAulaPorCursoIdAtePeriodoFaixaHorarioDesc(Long cursoId, Integer periodo,
 			Long horarioInicialId, Long horarioFinalId) {
-		
-		List<ConsultaMatrizDTO> listaMatriz = this.calcularPeso(cursoId, periodo);
-		List<HorarioAula> listaHorarioAula = horarioAulaRepository.findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByHorario_IdDesc(cursoId, periodo, horarioInicialId, horarioFinalId);
-		List<String> listaCodigos = listaHorarioAula.stream().map(HorarioAula::getTurma).map(Turma::getDisciplina).map(Disciplina::getCodigo).collect(Collectors.toList());
-		List<HorarioAula> listaHorarioOrdenadaPorPeso = new ArrayList<>();
-		
-		listaMatriz.forEach(item -> {
-			if(listaCodigos.contains(item.getDisciplina()))
-				listaHorarioOrdenadaPorPeso.addAll(horarioAulaService.listarAulaPorDisciplinaCodigo(item.getDisciplina()));
-		});
-		
-		return listaHorarioOrdenadaPorPeso;
-		
-		
+		return horarioAulaRepository
+				.findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_MatrizCurricular_PesoAscHorario_IdDesc(
+						cursoId, periodo, horarioInicialId, horarioFinalId);
+	}
+	
+	private Boolean isOpcional(Disciplina disciplina) {
+		List<Disciplina> disciplinasOpcionais = historicoService.listarDisciplinasOpcionais();
+		if(disciplinasOpcionais.contains(disciplina))
+			return true;
+		return false;
 	}
 
 }

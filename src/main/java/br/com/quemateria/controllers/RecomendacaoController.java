@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class RecomendacaoController {
 	public final RecomendacaoService recomendacaoService;
 	public final HorarioAulaMapper horarioAulaMapper;
 
-	@GetMapping
+	@PatchMapping
 	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacao(
 			@RequestParam(value = "manha", defaultValue = "true", required = false) Boolean manha,
 			@RequestParam(value = "tarde", defaultValue = "false", required = false) Boolean tarde,
@@ -44,13 +45,15 @@ public class RecomendacaoController {
 		Long cursoId = aluno.getCurso().getId();
 		Integer periodo = aluno.getPeriodo();
 		Integer periodoMaximo = periodo + 2;
+		
+		recomendacaoService.calcularPeso(cursoId, periodo);
 
 		return ResponseEntity.ok(horarioAulaMapper.toListRecomendacaoDTO(recomendacaoService.recomendacaoCompleta(aluno,
 				cursoId, periodoMaximo, manha, tarde, noite, maximoHoras)));
 
 	}
 
-	@GetMapping("relatorio")
+	@PatchMapping("relatorio")
 	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoes(
 			@RequestParam(value = "manha", defaultValue = "true", required = false) Boolean manha,
 			@RequestParam(value = "tarde", defaultValue = "false", required = false) Boolean tarde,
@@ -61,6 +64,8 @@ public class RecomendacaoController {
 		Long cursoId = aluno.getCurso().getId();
 		Integer periodo = aluno.getPeriodo();
 		Integer periodoMaximo = periodo + 2;
+		
+		recomendacaoService.calcularPeso(cursoId, periodo);
 
 		List<HorarioAula> relatorioRecomendacao = recomendacaoService.gerarRelatorioDeRecomendacao(aluno, cursoId,
 				periodoMaximo, manha, tarde, noite, maximoHoras);
