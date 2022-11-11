@@ -35,6 +35,8 @@ ou utilizando a IDE de sua escolha.
 
 O app estará rodando no link <http://localhost:8080>.
 
+Azure: https://que-materia-eu-faco-1667957040279.azurewebsites.net/
+
 ## Dependências
 * [Java 8](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
 * [Apache Maven](https://maven.apache.org)
