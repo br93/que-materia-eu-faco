@@ -13,10 +13,10 @@ public interface HorarioAulaRepository extends JpaRepository<HorarioAula, Long> 
 	/*List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndDia_IdentificadorAndHorario_SiglaOrderByTurma_Disciplina_MatrizCurricular_PesoAscTurma_Disciplina_CargaHorariaDescTurma_Disciplina_MatrizCurricular_PeriodoAsc(
 			Long cursoId, Integer identificador, String sigla);*/
 
-	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_MatrizCurricular_PesoAscHorario_IdAsc(
+	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByHorario_IdAsc(
 			Long cursoId, Integer periodo, Long horarioInicioId, Long horarioFimId);
 
-	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_MatrizCurricular_PesoAscHorario_IdDesc(
+	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByHorario_IdDesc(
 			Long cursoId, Integer periodo, Long horarioInicioId, Long horarioFimId);
 
 	List<HorarioAula> findAllByTurma_Codigo(String codigo);
@@ -28,5 +28,7 @@ public interface HorarioAulaRepository extends JpaRepository<HorarioAula, Long> 
 	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_CursoId(Long cursoId);
 	
 	List<HorarioAula> findAllByTurma_Disciplina_MatrizCurricular_CursoIdNotAndDia_IdentificadorAndHorario_Sigla(Long cursoId, Integer dia, String horario);
+	
+	List<HorarioAula> findAllByTurma_Disciplina_Codigo(String codigo);
 
 }

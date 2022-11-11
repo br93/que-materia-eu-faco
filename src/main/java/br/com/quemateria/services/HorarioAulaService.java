@@ -31,6 +31,10 @@ public class HorarioAulaService {
 
 		return buscarPorId.orElseThrow(() -> new CustomNotFoundException("Aula não encontrada"));
 	}
+	
+	public List<HorarioAula> listarAulaPorDisciplinaCodigo(String disciplinaCodigo) {
+		return horarioAulaRepository.findAllByTurma_Disciplina_Codigo(disciplinaCodigo);
+	}
 
 	public List<HorarioAula> listarAulaPorTurmaCodigo(String codigo) {
 		return horarioAulaRepository.findAllByTurma_Codigo(codigo);

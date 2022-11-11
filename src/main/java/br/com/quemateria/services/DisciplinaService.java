@@ -31,7 +31,7 @@ public class DisciplinaService {
 
 		return buscarPorId.orElseThrow(() -> new CustomNotFoundException("Disciplina não encontrada"));
 	}
-
+	
 	public Disciplina buscarDisciplinaPorCodigo(String codigo) {
 		Optional<Disciplina> buscarPorTurma = disciplinaRepository.findByCodigo(codigo);
 

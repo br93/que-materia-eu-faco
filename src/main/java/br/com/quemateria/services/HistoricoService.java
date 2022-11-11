@@ -6,9 +6,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.Disciplina;
-import br.com.quemateria.repositories.AlunoRepository;
 import br.com.quemateria.repositories.DisciplinaRepository;
 import lombok.AllArgsConstructor;
 
@@ -16,44 +14,39 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class HistoricoService {
 
-	private AlunoRepository alunoRepository;
+	private AlunoService alunoService;
 	private DisciplinaRepository disciplinaRepository;
 
-	private Aluno getUltimoAlunoCadastrado() {
-		List<Aluno> listaAlunos = alunoRepository.findAll();
-		return listaAlunos.get(listaAlunos.size() - 1);
-	}
-
-	private Long getIdCursoUltimoAlunoCadastrado() {
-		return this.getUltimoAlunoCadastrado().getCurso().getId();
+	private Long getCursoIdUsuario() {
+		return alunoService.getUsuario().getCurso().getId();
 	}
 
 	public Set<Disciplina> getDisciplinasCursadas() {
-		return this.getUltimoAlunoCadastrado().getDisciplinasCursadas();
+		return alunoService.getUsuario().getDisciplinasCursadas();
 	}
 
 	public List<Disciplina> listarDisciplinasObrigatorias() {
 		return disciplinaRepository
 				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(
-						getIdCursoUltimoAlunoCadastrado(), 1L);
+						getCursoIdUsuario(), 1L);
 	}
 
 	public List<Disciplina> listarDisciplinasSegundoEstrato() {
 		return disciplinaRepository
 				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(
-						getIdCursoUltimoAlunoCadastrado(), 2L);
+						getCursoIdUsuario(), 2L);
 	}
 
 	public List<Disciplina> listarDisciplinasTrilha() {
 		return disciplinaRepository
 				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(
-						getIdCursoUltimoAlunoCadastrado(), 3L);
+						getCursoIdUsuario(), 3L);
 	}
 
 	public List<Disciplina> listarDisciplinasOpcionais() {
 		return disciplinaRepository
 				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(
-						getIdCursoUltimoAlunoCadastrado(), 4L);
+						getCursoIdUsuario(), 4L);
 	}
 
 	public List<Disciplina> getDisciplinasObrigatoriasFaltantes() {

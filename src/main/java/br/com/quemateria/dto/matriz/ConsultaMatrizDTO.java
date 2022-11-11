@@ -15,5 +15,7 @@ public class ConsultaMatrizDTO {
 	private String disciplina;
 	private String tipoDeDisciplina;
 	private Integer periodo;
-
+	private Integer preRequisitos;
+	private Double peso;
+	
 }

@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.quemateria.entities.Aluno;
@@ -59,12 +61,10 @@ public class AlunoService {
 		alunoRepository.delete(aluno);
 	}
 	
-	public Aluno getUltimoAlunoCadastrado() {
-		List<Aluno> listaAlunos = alunoRepository.findAll();
-		return listaAlunos.get(listaAlunos.size() - 1);
+	public Aluno getUsuario() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Usuario login = (Usuario) authentication.getPrincipal();
+		return this.buscarAluno(login.getId());
 	}
 	
-	
-	
-
 }

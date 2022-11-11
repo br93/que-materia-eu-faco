@@ -20,5 +20,15 @@ public class TipoDeDisciplinaService {
 
 		return buscarPorId.orElseThrow(() -> new CustomNotFoundException("Tipo de disciplina não encontrado"));
 	}
+	
+	public TipoDeDisciplina buscarTipoDeDisciplina(String tipoNome) {
+		Optional<TipoDeDisciplina> buscarPorNome = tipoDeDisciplinaRepository.findByTipoNome(tipoNome);
+		
+		return buscarPorNome.orElseThrow(() -> new CustomNotFoundException("Tipo de disciplina não encontrado"));
+	}
+	
+	public Integer retornarValor(String tipoNome) {
+		return this.buscarTipoDeDisciplina(tipoNome).getTipoValor();
+	}
 
 }

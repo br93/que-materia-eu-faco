@@ -25,11 +25,4 @@ public class ItemMatrizCurricularService {
 		return buscarPorId.orElseThrow(() -> new CustomNotFoundException("Disciplina não encontrada"));
 	}
 
-	public ItemMatrizCurricular atualizarPeso(Double peso, Long id) {
-		ItemMatrizCurricular item = this.buscarItemMatrizCurricular(id);
-		item.setPeso(peso);
-
-		return matrizCurricularRepository.save(item);
-	}
-
 }

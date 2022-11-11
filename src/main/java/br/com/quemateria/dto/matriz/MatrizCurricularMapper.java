@@ -14,7 +14,7 @@ import br.com.quemateria.services.TipoDeDisciplinaService;
 public interface MatrizCurricularMapper {
 
 	@Mapping(target = "curso", source = "curso.nome")
-	@Mapping(target = "disciplina", source = "disciplina.nome")
+	@Mapping(target = "disciplina", source = "disciplina.codigo")
 	@Mapping(target = "tipoDeDisciplina", source = "tipoDeDisciplina.tipoNome")
 	ConsultaMatrizDTO toDTO(ItemMatrizCurricular matrizCurricular);
 
