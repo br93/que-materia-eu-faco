@@ -7,9 +7,9 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,9 +50,8 @@ public class AlunoController {
 	}
 
 	@PostMapping("add")
-	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@Valid @RequestBody RegistroAlunoDTO registroAlunoDTO){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Usuario login = (Usuario) authentication.getPrincipal();
+	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@Valid @RequestBody RegistroAlunoDTO registroAlunoDTO, Authentication auth){
+		Usuario login = (Usuario) auth.getPrincipal();
 				
 		Aluno aluno = alunoMapper.toEntity(registroAlunoDTO);
 		Aluno alunoSalvo = alunoService.salvarAluno(aluno, login.getId());
@@ -62,10 +61,18 @@ public class AlunoController {
 
 	@DeleteMapping("delete/{registro}")
 	public ResponseEntity<ConsultaAlunoDTO> deletarAluno(
-			@PathVariable @Length(min = 8, max = 8) @Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro) {
-		alunoService.excluirAluno(registro);
+			@PathVariable @Length(min = 8, max = 8) @Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro, Authentication auth) {
+		
+		Usuario login = (Usuario) auth.getPrincipal();
+		Aluno aluno = alunoService.buscarAluno(login.getId());
 
-		return ResponseEntity.noContent().build();
+        if (aluno.getRegistro().equals(registro)) {
+        	alunoService.excluirAluno(registro);
+        	return ResponseEntity.noContent().build();
+        }
+		
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+
 	}
 
 }

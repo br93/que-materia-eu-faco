@@ -2,8 +2,8 @@ package br.com.quemateria.services.auth;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,12 +31,8 @@ public class AutenticacaoService {
 	@Value("${materias-api.jwt.issuer}")
 	private String issuer;
 	
-	private final AuthenticationManager authManager;
-	
-	@Lazy
-	public AutenticacaoService(AuthenticationManager authManager) {
-		this.authManager = authManager; 
-	}
+	@Autowired
+	private AuthenticationManager authManager;
 	
 	public TokenDTO autenticar(AutenticacaoDTO dto) throws AuthenticationException {
 		Authentication authenticate = authManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsuario(), dto.getSenha()));
