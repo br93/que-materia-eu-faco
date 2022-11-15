@@ -1,5 +1,6 @@
 package br.com.quemateria.exceptions;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +67,15 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<ApiErrorDTO> handleConstraintViolationException(ConstraintViolationException ex){
 		String error = "Bad request. A requisição foi mal formatada";
 		ApiErrorDTO apiError = new ApiErrorDTO(ex.getMessage(), error, HttpStatus.BAD_REQUEST);
+
+		return new ResponseEntity<ApiErrorDTO>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
+	
+	@ExceptionHandler({ SQLIntegrityConstraintViolationException.class})
+	public ResponseEntity<ApiErrorDTO> handleException(SQLIntegrityConstraintViolationException ex) {
+		String error = "Internal Server Error. A operação falhou";
+		ApiErrorDTO apiError = new ApiErrorDTO(ex.getMessage(), error, HttpStatus.INTERNAL_SERVER_ERROR);
+		
 
 		return new ResponseEntity<ApiErrorDTO>(apiError, new HttpHeaders(), apiError.getStatus());
 	}

@@ -7,9 +7,9 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,31 +41,38 @@ public class AlunoController {
 	@GetMapping
 	public ResponseEntity<ConsultaAlunoDTO> buscarAluno(
 			@RequestParam @Length(min = 8, max = 8) @Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro) {
-		return ResponseEntity.ok(alunoMapper.toDTO(alunoService.buscarAlunoPorRegistro(registro)));
+		return new ResponseEntity<>(alunoMapper.toDTO(alunoService.buscarAlunoPorRegistro(registro)), HttpStatus.OK);
 	}
 
 	@GetMapping("list")
 	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos(@PageableDefault Pageable pageable) {
-		return ResponseEntity.ok(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO));
+		return new ResponseEntity<>(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
 	}
 
 	@PostMapping("add")
-	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@Valid @RequestBody RegistroAlunoDTO registroAlunoDTO){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Usuario login = (Usuario) authentication.getPrincipal();
+	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@Valid @RequestBody RegistroAlunoDTO registroAlunoDTO, Authentication auth){
+		Usuario login = (Usuario) auth.getPrincipal();
 				
 		Aluno aluno = alunoMapper.toEntity(registroAlunoDTO);
 		Aluno alunoSalvo = alunoService.salvarAluno(aluno, login.getId());
 
-		return ResponseEntity.ok(alunoMapper.toDTO(alunoSalvo));
+		return new ResponseEntity<>(alunoMapper.toDTO(alunoSalvo), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("delete/{registro}")
 	public ResponseEntity<ConsultaAlunoDTO> deletarAluno(
-			@PathVariable @Length(min = 8, max = 8) @Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro) {
-		alunoService.excluirAluno(registro);
+			@PathVariable @Length(min = 8, max = 8) @Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro, Authentication auth) {
+		
+		Usuario login = (Usuario) auth.getPrincipal();
+		Aluno aluno = alunoService.buscarAluno(login.getId());
 
-		return ResponseEntity.noContent().build();
+        if (aluno.getRegistro().equals(registro)) {
+        	alunoService.excluirAluno(registro);
+        	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+		
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
 	}
 
 }

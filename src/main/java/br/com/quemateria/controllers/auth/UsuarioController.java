@@ -38,7 +38,7 @@ public class UsuarioController {
 	@GetMapping("list")
 	public ResponseEntity<Page<ConsultaUsuarioDTO>> listarUsuarios(@PageableDefault Pageable pageable){
 		Page<ConsultaUsuarioDTO> pageUsuarios = loginService.listarUsuarios(pageable).map(loginMapper::toDTO);
-		return new ResponseEntity<Page<ConsultaUsuarioDTO>>(pageUsuarios, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Page<ConsultaUsuarioDTO>>(pageUsuarios, HttpStatus.PARTIAL_CONTENT);
 	}
 	
 	@PostMapping

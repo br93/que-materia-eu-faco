@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -25,15 +26,19 @@ public class RecomendacaoService {
 	private final HistoricoService historicoService;
 	private final ItemMatrizCurricularService matrizCurricularService;
 
-	public void calcularPeso(Long cursoId, Integer periodo) {
-		List<ItemMatrizCurricular> disciplinas = matrizCurricularRepository.findAll();
+	public void calcularPeso(Long cursoId, Integer periodo, Long alunoId) {
+		List<ItemMatrizCurricular> disciplinas = matrizCurricularRepository.findByCurso_Id(cursoId);
+		List<String> disciplinasFaltantes = historicoService.getDisciplinasFaltantes(alunoId).stream()
+				.map(Disciplina::getCodigo).collect(Collectors.toList());
 
 		for (ItemMatrizCurricular disciplina : disciplinas)
-			if (disciplina.getCurso().getId().equals(cursoId)) {
+			if (disciplinasFaltantes.contains(disciplina.getDisciplina().getCodigo()) && disciplina.getCurso().getId().equals(cursoId)) {
 				matrizCurricularService.atualizarPeso((Math.log(disciplina.getPeriodo()) / Math.log(2))
 						- (disciplina.getPreRequisitos() / 2) - disciplina.getTipoDeDisciplina().getTipoValor()
-						- (periodo >= disciplina.getPeriodo() && historicoService.getDisciplinasObrigatoriasFaltantes()
-								.contains(disciplina.getDisciplina()) ? 2 * (periodo / disciplina.getPeriodo()) : -2),
+						- (periodo >= disciplina.getPeriodo() && historicoService
+								.getDisciplinasObrigatoriasFaltantes(alunoId).contains(disciplina.getDisciplina())
+										? 2 * (periodo / disciplina.getPeriodo())
+										: -2),
 						disciplina.getId());
 			}
 
@@ -127,9 +132,8 @@ public class RecomendacaoService {
 			Long horarioInicialId, Long horarioFinalId) {
 
 		Set<Disciplina> disciplinasCursadas = aluno.getDisciplinasCursadas();
-
 		List<HorarioAula> materiasFaltantes = new ArrayList<>();
-
+		
 		if (horarioInicialId == 1L)
 			materiasFaltantes = listarHorarioAulaPorCursoIdAtePeriodoFaixaHorarioAsc(cursoId, periodo, horarioInicialId,
 					horarioFinalId);
@@ -139,19 +143,19 @@ public class RecomendacaoService {
 
 		List<HorarioAula> listaRecomendacao = new ArrayList<>();
 
+		System.out.println(materiasFaltantes);
+
 		for (HorarioAula horarioAula : materiasFaltantes)
 			if (!disciplinasCursadas.contains(getTurmaDisciplina(horarioAula))
-					&& adicionarDisciplinaOpcional(horarioAula, false) && !isOpcional(getTurmaDisciplina(horarioAula))) {
+					&& adicionarDisciplinaOpcional(horarioAula, false, aluno.getId())) {
 				listaRecomendacao.add(horarioAula);
 			}
-		
-		
 
 		return listaRecomendacao;
 	}
 
-	private Boolean adicionarDisciplinaOpcional(HorarioAula horarioAula, Boolean opcional) {
-		List<Disciplina> disciplinasOpcionais = historicoService.listarDisciplinasOpcionais();
+	private Boolean adicionarDisciplinaOpcional(HorarioAula horarioAula, Boolean opcional, Long alunoId) {
+		List<Disciplina> disciplinasOpcionais = historicoService.listarDisciplinasOpcionais(alunoId);
 
 		if (opcional)
 			return disciplinasOpcionais.contains(getTurmaDisciplina(horarioAula));
@@ -323,13 +327,6 @@ public class RecomendacaoService {
 		return horarioAulaRepository
 				.findAllByTurma_Disciplina_MatrizCurricular_Curso_IdAndTurma_Disciplina_MatrizCurricular_PeriodoLessThanAndHorario_IdBetweenOrderByTurma_Disciplina_MatrizCurricular_PesoAscHorario_IdDesc(
 						cursoId, periodo, horarioInicialId, horarioFinalId);
-	}
-	
-	private Boolean isOpcional(Disciplina disciplina) {
-		List<Disciplina> disciplinasOpcionais = historicoService.listarDisciplinasOpcionais();
-		if(disciplinasOpcionais.contains(disciplina))
-			return true;
-		return false;
 	}
 
 }
