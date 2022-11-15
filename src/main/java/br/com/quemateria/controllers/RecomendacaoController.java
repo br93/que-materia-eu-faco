@@ -7,6 +7,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -53,8 +54,8 @@ public class RecomendacaoController {
 
 		recomendacaoService.calcularPeso(cursoId, periodo, login.getId());
 
-		return ResponseEntity.ok(horarioAulaMapper.toListRecomendacaoDTO(recomendacaoService.recomendacaoCompleta(aluno,
-				cursoId, periodoMaximo, manha, tarde, noite, maximoHoras)));
+		return new ResponseEntity<>(horarioAulaMapper.toListRecomendacaoDTO(recomendacaoService.recomendacaoCompleta(aluno,
+				cursoId, periodoMaximo, manha, tarde, noite, maximoHoras)), HttpStatus.OK);
 
 	}
 
@@ -78,7 +79,7 @@ public class RecomendacaoController {
 		List<HorarioAula> relatorioRecomendacao = recomendacaoService.gerarRelatorioDeRecomendacao(aluno, cursoId,
 				periodoMaximo, manha, tarde, noite, maximoHoras);
 
-		return ResponseEntity.ok(horarioAulaMapper.toListConsultaDTO(relatorioRecomendacao));
+		return new ResponseEntity<>(horarioAulaMapper.toListConsultaDTO(relatorioRecomendacao), HttpStatus.OK);
 
 	}
 
@@ -96,7 +97,7 @@ public class RecomendacaoController {
 		List<HorarioAula> recomendacoesOpcionais = recomendacaoService.recomendarMateriasOpcionaisPorHorario(aluno,
 				cursoId, dia, horario);
 
-		return ResponseEntity.ok(horarioAulaMapper.toListRecomendacaoDTO(recomendacoesOpcionais));
+		return new ResponseEntity<>(horarioAulaMapper.toListRecomendacaoDTO(recomendacoesOpcionais), HttpStatus.OK);
 	}
 
 	@GetMapping("opcionais/relatorio")
@@ -113,7 +114,7 @@ public class RecomendacaoController {
 		List<HorarioAula> recomendacoesOpcionais = recomendacaoService.recomendarMateriasOpcionaisPorHorario(aluno,
 				cursoId, dia, horario);
 
-		return ResponseEntity.ok(horarioAulaMapper.toListConsultaDTO(recomendacoesOpcionais));
+		return new ResponseEntity<>(horarioAulaMapper.toListConsultaDTO(recomendacoesOpcionais), HttpStatus.OK);
 	}
 
 	@GetMapping("enriquecimento")
@@ -130,7 +131,7 @@ public class RecomendacaoController {
 		List<HorarioAula> recomendacoesEnriquecimento = recomendacaoService
 				.recomendarMateriasEnriquecimentoPorHorario(aluno, cursoId, dia, horario);
 
-		return ResponseEntity.ok(horarioAulaMapper.toListRecomendacaoDTO(recomendacoesEnriquecimento));
+		return new ResponseEntity<>(horarioAulaMapper.toListRecomendacaoDTO(recomendacoesEnriquecimento), HttpStatus.OK);
 	}
 
 	@GetMapping("enriquecimento/relatorio")
@@ -147,7 +148,7 @@ public class RecomendacaoController {
 		List<HorarioAula> recomendacoesEnriquecimento = recomendacaoService
 				.recomendarMateriasEnriquecimentoPorHorario(aluno, cursoId, dia, horario);
 
-		return ResponseEntity.ok(horarioAulaMapper.toListConsultaDTO(recomendacoesEnriquecimento));
+		return new ResponseEntity<>(horarioAulaMapper.toListConsultaDTO(recomendacoesEnriquecimento), HttpStatus.OK);
 	}
 
 }

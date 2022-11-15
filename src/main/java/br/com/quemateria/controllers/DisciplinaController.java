@@ -11,8 +11,8 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,20 +52,19 @@ public class DisciplinaController {
 	@GetMapping
 	public ResponseEntity<ConsultaDisciplinaDTO> buscarDisciplina(
 			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String codigo) {
-		return ResponseEntity.ok(disciplinaMapper.toDTO(disciplinaService.buscarDisciplinaPorCodigo(codigo)));
+		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplinaService.buscarDisciplinaPorCodigo(codigo)), HttpStatus.OK);
 	}
 
 	@GetMapping("list")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Page<ConsultaDisciplinaDTO>> listarDisciplinas(@PageableDefault Pageable pageable) {
-		return ResponseEntity.ok(disciplinaService.listarDisciplinas(pageable).map(disciplinaMapper::toDTO));
+		return new ResponseEntity<>(disciplinaService.listarDisciplinas(pageable).map(disciplinaMapper::toDTO), HttpStatus.OK);
 	}
 
 	@PostMapping("add")
 	public ResponseEntity<ConsultaDisciplinaDTO> salvarDisciplina(@Valid @RequestBody RegistroDisciplinaDTO dto) {
 		Disciplina disciplina = disciplinaService.salvarDisciplina(disciplinaMapper.toEntity(dto));
 
-		return ResponseEntity.ok(disciplinaMapper.toDTO(disciplina));
+		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplina), HttpStatus.CREATED);
 	}
 
 	@PutMapping("add/prerequisito")
@@ -76,7 +75,7 @@ public class DisciplinaController {
 		Set<Disciplina> preRequisitos = new HashSet<>(disciplinaMapper.toEntityList(dto));
 		Disciplina disciplina = disciplinaService.adicionarPreRequisitos(preRequisitos, codigo);
 
-		return ResponseEntity.ok(disciplinaMapper.toDTO(disciplina));
+		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplina), HttpStatus.OK);
 
 	}
 
@@ -88,8 +87,7 @@ public class DisciplinaController {
 		Set<Disciplina> equivalencias = new HashSet<>(disciplinaMapper.toEntityList(dto));
 		Disciplina disciplina = disciplinaService.adicionarPreRequisitos(equivalencias, codigo);
 
-		return ResponseEntity.ok(disciplinaMapper.toDTO(disciplina));
-
+		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplina), HttpStatus.OK);
 	}
 
 	@DeleteMapping("delete/{codigo}")
@@ -97,7 +95,7 @@ public class DisciplinaController {
 			@PathVariable @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$") String codigo) {
 		disciplinaService.excluirDisciplina(codigo);
 
-		return ResponseEntity.noContent().build();
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@PutMapping("delete/prerequisito")
@@ -106,7 +104,7 @@ public class DisciplinaController {
 			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String preRequisito) {
 		Disciplina disciplinaAtualizada = disciplinaService.removerPreRequisito(disciplina, preRequisito);
 
-		return ResponseEntity.ok(disciplinaMapper.toDTO(disciplinaAtualizada));
+		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplinaAtualizada), HttpStatus.OK);
 	}
 
 	@PutMapping("delete/equivalencia")
@@ -115,7 +113,7 @@ public class DisciplinaController {
 			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String equivalencia) {
 		Disciplina disciplinaAtualizada = disciplinaService.removerEquivalencia(disciplina, equivalencia);
 
-		return ResponseEntity.ok(disciplinaMapper.toDTO(disciplinaAtualizada));
+		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplinaAtualizada), HttpStatus.OK);
 	}
 
 	@PostMapping("register")
@@ -124,7 +122,7 @@ public class DisciplinaController {
 		ItemMatrizCurricular itemMatrizCurricular = matrizCurricularService
 				.salvarItemMatrizCurricular(matrizCurricularMapper.toEntity(dto));
 
-		return ResponseEntity.ok(matrizCurricularMapper.toDTO(itemMatrizCurricular));
+		return new ResponseEntity<>(matrizCurricularMapper.toDTO(itemMatrizCurricular), HttpStatus.CREATED);
 	}
 
 }

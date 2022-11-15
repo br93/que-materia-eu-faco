@@ -41,12 +41,12 @@ public class AlunoController {
 	@GetMapping
 	public ResponseEntity<ConsultaAlunoDTO> buscarAluno(
 			@RequestParam @Length(min = 8, max = 8) @Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro) {
-		return ResponseEntity.ok(alunoMapper.toDTO(alunoService.buscarAlunoPorRegistro(registro)));
+		return new ResponseEntity<>(alunoMapper.toDTO(alunoService.buscarAlunoPorRegistro(registro)), HttpStatus.OK);
 	}
 
 	@GetMapping("list")
 	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos(@PageableDefault Pageable pageable) {
-		return ResponseEntity.ok(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO));
+		return new ResponseEntity<>(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
 	}
 
 	@PostMapping("add")
@@ -56,7 +56,7 @@ public class AlunoController {
 		Aluno aluno = alunoMapper.toEntity(registroAlunoDTO);
 		Aluno alunoSalvo = alunoService.salvarAluno(aluno, login.getId());
 
-		return ResponseEntity.ok(alunoMapper.toDTO(alunoSalvo));
+		return new ResponseEntity<>(alunoMapper.toDTO(alunoSalvo), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("delete/{registro}")
@@ -68,10 +68,10 @@ public class AlunoController {
 
         if (aluno.getRegistro().equals(registro)) {
         	alunoService.excluirAluno(registro);
-        	return ResponseEntity.noContent().build();
+        	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 		
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
 	}
 

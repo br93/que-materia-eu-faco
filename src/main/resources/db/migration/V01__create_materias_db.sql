@@ -1,7 +1,7 @@
 CREATE TABLE tb_cursos (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
 nome VARCHAR(255),
-codigo VARCHAR(3), 
+codigo VARCHAR(3) UNIQUE, 
 periodos INTEGER
 );
 
@@ -13,7 +13,7 @@ sigla VARCHAR(255)
 
 CREATE TABLE tb_dias (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
-identificador INTEGER, 
+identificador INTEGER UNIQUE, 
 dia VARCHAR(255)
 );
 
@@ -27,7 +27,7 @@ CREATE TABLE tb_alunos (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(255), 
 periodo INTEGER, 
-registro VARCHAR(255), 
+registro VARCHAR(255) UNIQUE, 
 curso_id BIGINT,
 FOREIGN KEY(curso_id) REFERENCES tb_cursos(id)
 );
@@ -35,13 +35,13 @@ FOREIGN KEY(curso_id) REFERENCES tb_cursos(id)
 CREATE TABLE tb_disciplinas (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
 nome VARCHAR(255),
-codigo VARCHAR(255),
+codigo VARCHAR(255) UNIQUE,
 carga_horaria INTEGER
 );
 
 CREATE TABLE tb_turmas (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-codigo VARCHAR(255),
+codigo VARCHAR(255) UNIQUE,
 disciplina_id BIGINT,
 FOREIGN KEY(disciplina_id) REFERENCES tb_disciplinas(id)
 );

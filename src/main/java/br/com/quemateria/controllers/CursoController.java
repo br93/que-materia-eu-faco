@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,19 +38,19 @@ public class CursoController {
 	@GetMapping
 	public ResponseEntity<ConsultaCursoDTO> buscarCurso(
 			@RequestParam @Length(min = 3, max = 3) @Pattern(regexp = "^[0-9]{3}$", message = "Formato 000") String codigo) {
-		return ResponseEntity.ok(cursoMapper.toDTO(cursoService.buscarCursoPorCodigo(codigo)));
+		return new ResponseEntity<>(cursoMapper.toDTO(cursoService.buscarCursoPorCodigo(codigo)), HttpStatus.OK);
 	}
 
 	@GetMapping("list")
 	public ResponseEntity<Page<ConsultaCursoDTO>> listarCursos(@PageableDefault Pageable pageable) {
-		return ResponseEntity.ok(cursoService.listarCursos(pageable).map(cursoMapper::toDTO));
+		return new ResponseEntity<>(cursoService.listarCursos(pageable).map(cursoMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
 	}
 
 	@PostMapping("add")
 	public ResponseEntity<ConsultaCursoDTO> salvarCurso(@Valid @RequestBody RegistroCursoDTO dto) {
 		Curso curso = cursoService.salvarCurso(cursoMapper.toEntity(dto));
 
-		return ResponseEntity.ok(cursoMapper.toDTO(curso));
+		return new ResponseEntity<>(cursoMapper.toDTO(curso), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("delete/{codigo}")
@@ -57,7 +58,7 @@ public class CursoController {
 			@PathVariable @Length(min = 3, max = 3) @Pattern(regexp = "^[0-9]{3}$", message = "Formato 000") String codigo) {
 		cursoService.excluirCurso(codigo);
 
-		return ResponseEntity.noContent().build();
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 }

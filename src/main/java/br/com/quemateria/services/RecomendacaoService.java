@@ -27,10 +27,12 @@ public class RecomendacaoService {
 	private final ItemMatrizCurricularService matrizCurricularService;
 
 	public void calcularPeso(Long cursoId, Integer periodo, Long alunoId) {
-		List<ItemMatrizCurricular> disciplinas = matrizCurricularRepository.findAll();
+		List<ItemMatrizCurricular> disciplinas = matrizCurricularRepository.findByCurso_Id(cursoId);
+		List<String> disciplinasFaltantes = historicoService.getDisciplinasFaltantes(alunoId).stream()
+				.map(Disciplina::getCodigo).collect(Collectors.toList());
 
 		for (ItemMatrizCurricular disciplina : disciplinas)
-			if (disciplina.getCurso().getId().equals(cursoId)) {
+			if (disciplinasFaltantes.contains(disciplina.getDisciplina().getCodigo()) && disciplina.getCurso().getId().equals(cursoId)) {
 				matrizCurricularService.atualizarPeso((Math.log(disciplina.getPeriodo()) / Math.log(2))
 						- (disciplina.getPreRequisitos() / 2) - disciplina.getTipoDeDisciplina().getTipoValor()
 						- (periodo >= disciplina.getPeriodo() && historicoService
@@ -130,11 +132,8 @@ public class RecomendacaoService {
 			Long horarioInicialId, Long horarioFinalId) {
 
 		Set<Disciplina> disciplinasCursadas = aluno.getDisciplinasCursadas();
-		List<String> disciplinasFaltantes = historicoService.getDisciplinasFaltantes(aluno.getId()).stream().map(Disciplina::getNome).collect(Collectors.toList());
-
 		List<HorarioAula> materiasFaltantes = new ArrayList<>();
-		List<HorarioAula> materiasOpcionais = new ArrayList<>();
-
+		
 		if (horarioInicialId == 1L)
 			materiasFaltantes = listarHorarioAulaPorCursoIdAtePeriodoFaixaHorarioAsc(cursoId, periodo, horarioInicialId,
 					horarioFinalId);
@@ -143,7 +142,7 @@ public class RecomendacaoService {
 					horarioInicialId, horarioFinalId);
 
 		List<HorarioAula> listaRecomendacao = new ArrayList<>();
-		
+
 		System.out.println(materiasFaltantes);
 
 		for (HorarioAula horarioAula : materiasFaltantes)
