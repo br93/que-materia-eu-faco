@@ -46,7 +46,7 @@ public class AulaController {
 	}
 
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaHorarioAulaDTO>> listarAulas(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<ConsultaHorarioAulaDTO>> listarAulas(@PageableDefault Pageable pageable, @RequestParam(required = false) Integer page) {
 		return new ResponseEntity<>(horarioAulaService.listarAulas(pageable).map(horarioAulaMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
 	}
 

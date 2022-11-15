@@ -8,7 +8,7 @@ periodos INTEGER
 CREATE TABLE tb_horarios (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
 faixa VARCHAR(255), 
-sigla VARCHAR(255)
+sigla VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE tb_dias (
@@ -19,7 +19,7 @@ dia VARCHAR(255)
 
 CREATE TABLE tb_tipos_disciplina (
 id BIGINT AUTO_INCREMENT PRIMARY KEY, 
-tipo_nome VARCHAR(255), 
+tipo_nome VARCHAR(255) UNIQUE, 
 tipo_valor INTEGER
 );
 

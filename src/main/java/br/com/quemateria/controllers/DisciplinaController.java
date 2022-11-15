@@ -56,8 +56,8 @@ public class DisciplinaController {
 	}
 
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaDisciplinaDTO>> listarDisciplinas(@PageableDefault Pageable pageable) {
-		return new ResponseEntity<>(disciplinaService.listarDisciplinas(pageable).map(disciplinaMapper::toDTO), HttpStatus.OK);
+	public ResponseEntity<Page<ConsultaDisciplinaDTO>> listarDisciplinas(@PageableDefault Pageable pageable, @RequestParam(required = false) Integer page) {
+		return new ResponseEntity<>(disciplinaService.listarDisciplinas(pageable).map(disciplinaMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
 	}
 
 	@PostMapping("add")

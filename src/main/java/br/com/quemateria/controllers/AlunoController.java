@@ -45,7 +45,7 @@ public class AlunoController {
 	}
 
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos(@PageableDefault Pageable pageable, @RequestParam(required = false) Integer page) {
 		return new ResponseEntity<>(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
 	}
 

@@ -42,7 +42,7 @@ public class CursoController {
 	}
 
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaCursoDTO>> listarCursos(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<ConsultaCursoDTO>> listarCursos(@PageableDefault Pageable pageable, @RequestParam(required = false) Integer page) {
 		return new ResponseEntity<>(cursoService.listarCursos(pageable).map(cursoMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
 	}
 

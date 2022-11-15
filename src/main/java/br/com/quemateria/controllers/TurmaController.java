@@ -42,7 +42,7 @@ public class TurmaController {
 	}
 
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaTurmaDTO>> listarTurmas(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<ConsultaTurmaDTO>> listarTurmas(@PageableDefault Pageable pageable, @RequestParam(required = false) Integer page) {
 		return new ResponseEntity<>(turmaService.listarTurmas(pageable).map(turmaMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
 	}
 
