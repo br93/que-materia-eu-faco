@@ -3,7 +3,7 @@ package br.com.quemateria.services.auth;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,14 +22,8 @@ import br.com.quemateria.entities.Usuario;
 @Service
 public class AutenticacaoService {
 	
-	@Value("${materias-api.jwt.secret}")
-	private String secret;
-	
-	@Value("${materias-api.jwt.expiration}")
-	private String expiration;
-	
-	@Value("${materias-api.jwt.issuer}")
-	private String issuer;
+	@Autowired
+	private Environment env;
 	
 	@Autowired
 	private AuthenticationManager authManager;
@@ -60,6 +54,10 @@ public class AutenticacaoService {
 	}
 	
 	private String gerarToken(Authentication authenticate) {
+		
+		String expiration = env.getProperty("materias-api.jwt.expiration");
+		String issuer = env.getProperty("materias-api.jwt.issuer");
+		
 		Usuario principal = (Usuario) authenticate.getPrincipal();
 		Date hoje = new Date();
 		Date dataExpiracao = new Date(hoje.getTime() + Long.parseLong(expiration));
@@ -70,10 +68,12 @@ public class AutenticacaoService {
 	}
 	
 	private Algorithm criarAlgoritmo() {
+		String secret = env.getProperty("materias-api.jwt.secret");
 		return Algorithm.HMAC256(secret);
 	}
 	
 	private DecodedJWT verifyToken(String token) {
+		String issuer = env.getProperty("materias-api.jwt.issuer");
 		return JWT.require(this.criarAlgoritmo()).withIssuer(issuer).build().verify(token);
 	}
 	
