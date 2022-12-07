@@ -1,16 +1,11 @@
 package br.com.quemateria.controllers;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,48 +25,52 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("v1/alunos")
-@Validated
 @AllArgsConstructor
 public class AlunoController {
 
 	private final AlunoService alunoService;
 	private final AlunoMapper alunoMapper;
-	
 
 	@GetMapping
-	public ResponseEntity<ConsultaAlunoDTO> buscarAluno(
-			@RequestParam @Length(min = 8, max = 8) @Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro) {
+	public ResponseEntity<ConsultaAlunoDTO> buscarAluno(@RequestParam String registro) {
+
+		alunoService.validarParametros(registro);
 		return new ResponseEntity<>(alunoMapper.toDTO(alunoService.buscarAlunoPorRegistro(registro)), HttpStatus.OK);
 	}
 
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos(@PageableDefault Pageable pageable, @RequestParam(required = false) Integer page) {
-		return new ResponseEntity<>(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
+	public ResponseEntity<Page<ConsultaAlunoDTO>> listarAlunos(@PageableDefault Pageable pageable,
+			@RequestParam(required = false) Integer page) {
+		return new ResponseEntity<>(alunoService.listarAlunos(pageable).map(alunoMapper::toDTO),
+				HttpStatus.PARTIAL_CONTENT);
 	}
 
 	@PostMapping("add")
-	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@Valid @RequestBody RegistroAlunoDTO registroAlunoDTO, Authentication auth){
+	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@RequestBody RegistroAlunoDTO dto, Authentication auth) {
+
+		alunoService.validarParametros(dto.getNome(), dto.getRegistro(), dto.getPeriodo(), dto.getCurso());
 		Usuario login = (Usuario) auth.getPrincipal();
-				
-		Aluno aluno = alunoMapper.toEntity(registroAlunoDTO);
+
+		Aluno aluno = alunoMapper.toEntity(dto);
 		Aluno alunoSalvo = alunoService.salvarAluno(aluno, login.getId());
 
 		return new ResponseEntity<>(alunoMapper.toDTO(alunoSalvo), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("delete/{registro}")
-	public ResponseEntity<ConsultaAlunoDTO> deletarAluno(
-			@PathVariable @Length(min = 8, max = 8) @Pattern(regexp = "^[a][0-9]{7}", message = "Formato a0000000") String registro, Authentication auth) {
-		
+	public ResponseEntity<ConsultaAlunoDTO> deletarAluno(@PathVariable String registro, Authentication auth) {
+
+		alunoService.validarParametros(registro);
+
 		Usuario login = (Usuario) auth.getPrincipal();
 		Aluno aluno = alunoService.buscarAluno(login.getId());
 
-        if (aluno.getRegistro().equals(registro)) {
-        	alunoService.excluirAluno(registro);
-        	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-		
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		if (aluno.getRegistro().equals(registro)) {
+			alunoService.excluirAluno(registro);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
 	}
 

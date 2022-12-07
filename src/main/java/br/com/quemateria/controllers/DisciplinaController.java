@@ -4,10 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -50,18 +46,22 @@ public class DisciplinaController {
 	private final MatrizCurricularMapper matrizCurricularMapper;
 
 	@GetMapping
-	public ResponseEntity<ConsultaDisciplinaDTO> buscarDisciplina(
-			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String codigo) {
-		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplinaService.buscarDisciplinaPorCodigo(codigo)), HttpStatus.OK);
+	public ResponseEntity<ConsultaDisciplinaDTO> buscarDisciplina(@RequestParam String codigo) {
+		disciplinaService.validarParametros(codigo);
+		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplinaService.buscarDisciplinaPorCodigo(codigo)),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("list")
-	public ResponseEntity<Page<ConsultaDisciplinaDTO>> listarDisciplinas(@PageableDefault Pageable pageable, @RequestParam(required = false) Integer page) {
-		return new ResponseEntity<>(disciplinaService.listarDisciplinas(pageable).map(disciplinaMapper::toDTO), HttpStatus.PARTIAL_CONTENT);
+	public ResponseEntity<Page<ConsultaDisciplinaDTO>> listarDisciplinas(@PageableDefault Pageable pageable,
+			@RequestParam(required = false) Integer page) {
+		return new ResponseEntity<>(disciplinaService.listarDisciplinas(pageable).map(disciplinaMapper::toDTO),
+				HttpStatus.PARTIAL_CONTENT);
 	}
 
 	@PostMapping("add")
-	public ResponseEntity<ConsultaDisciplinaDTO> salvarDisciplina(@Valid @RequestBody RegistroDisciplinaDTO dto) {
+	public ResponseEntity<ConsultaDisciplinaDTO> salvarDisciplina(@RequestBody RegistroDisciplinaDTO dto) {
+		disciplinaService.validarParametros(dto.getNome(), dto.getCodigo(), dto.getCargaHoraria());
 		Disciplina disciplina = disciplinaService.salvarDisciplina(disciplinaMapper.toEntity(dto));
 
 		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplina), HttpStatus.CREATED);
@@ -69,8 +69,10 @@ public class DisciplinaController {
 
 	@PutMapping("add/prerequisito")
 	public ResponseEntity<ConsultaDisciplinaDTO> adicionarPreRequisito(
-			@Valid @RequestBody List<RegistroDisciplinaSimplesDTO> dto,
-			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String codigo) {
+			@RequestBody List<RegistroDisciplinaSimplesDTO> dto, @RequestParam String codigo) {
+
+		dto.forEach((x) -> disciplinaService.validarParametros(x.getCodigo()));
+		disciplinaService.validarParametros(codigo);
 
 		Set<Disciplina> preRequisitos = new HashSet<>(disciplinaMapper.toEntityList(dto));
 		Disciplina disciplina = disciplinaService.adicionarPreRequisitos(preRequisitos, codigo);
@@ -81,8 +83,10 @@ public class DisciplinaController {
 
 	@PutMapping("add/equivalencia")
 	public ResponseEntity<ConsultaDisciplinaDTO> adicionarEquivalencia(
-			@Valid @RequestBody List<RegistroDisciplinaSimplesDTO> dto,
-			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String codigo) {
+			@RequestBody List<RegistroDisciplinaSimplesDTO> dto, @RequestParam String codigo) {
+
+		dto.forEach((x) -> disciplinaService.validarParametros(x.getCodigo()));
+		disciplinaService.validarParametros(codigo);
 
 		Set<Disciplina> equivalencias = new HashSet<>(disciplinaMapper.toEntityList(dto));
 		Disciplina disciplina = disciplinaService.adicionarPreRequisitos(equivalencias, codigo);
@@ -91,34 +95,44 @@ public class DisciplinaController {
 	}
 
 	@DeleteMapping("delete/{codigo}")
-	public ResponseEntity<ConsultaDisciplinaDTO> deletarDisciplina(
-			@PathVariable @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$") String codigo) {
+	public ResponseEntity<ConsultaDisciplinaDTO> deletarDisciplina(@PathVariable String codigo) {
+
+		disciplinaService.validarParametros(codigo);
 		disciplinaService.excluirDisciplina(codigo);
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@PutMapping("delete/prerequisito")
-	public ResponseEntity<ConsultaDisciplinaDTO> deletarPreRequisito(
-			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String disciplina,
-			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String preRequisito) {
+	public ResponseEntity<ConsultaDisciplinaDTO> deletarPreRequisito(@RequestParam String disciplina,
+			@RequestParam String preRequisito) {
+
+		disciplinaService.validarParametros(disciplina);
+		disciplinaService.validarParametros(preRequisito);
+
 		Disciplina disciplinaAtualizada = disciplinaService.removerPreRequisito(disciplina, preRequisito);
 
 		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplinaAtualizada), HttpStatus.OK);
 	}
 
 	@PutMapping("delete/equivalencia")
-	public ResponseEntity<ConsultaDisciplinaDTO> deletarEquivalencia(
-			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String disciplina,
-			@RequestParam @Length(min = 5, max = 6) @Pattern(regexp = "(^[A-Z0-9]{5}|^[A-Z0-9]{6})$", message = "Formato XXXXX ou XXXXXX") String equivalencia) {
+	public ResponseEntity<ConsultaDisciplinaDTO> deletarEquivalencia(@RequestParam String disciplina,
+			@RequestParam String equivalencia) {
+
+		disciplinaService.validarParametros(disciplina);
+		disciplinaService.validarParametros(equivalencia);
+
 		Disciplina disciplinaAtualizada = disciplinaService.removerEquivalencia(disciplina, equivalencia);
 
 		return new ResponseEntity<>(disciplinaMapper.toDTO(disciplinaAtualizada), HttpStatus.OK);
 	}
 
 	@PostMapping("register")
-	public ResponseEntity<ConsultaMatrizDTO> registarDisciplinaNaMatrizCurricular(
-			@Valid @RequestBody RegistroMatrizDTO dto) {
+	public ResponseEntity<ConsultaMatrizDTO> registarDisciplinaNaMatrizCurricular(@RequestBody RegistroMatrizDTO dto) {
+
+		matrizCurricularService.validarParametros(dto.getCurso(), dto.getDisciplina(),
+				dto.getTipoDeDisciplina().intValue(), dto.getPreRequisitos());
+
 		ItemMatrizCurricular itemMatrizCurricular = matrizCurricularService
 				.salvarItemMatrizCurricular(matrizCurricularMapper.toEntity(dto));
 
