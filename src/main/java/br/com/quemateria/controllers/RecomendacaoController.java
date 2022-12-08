@@ -1,7 +1,9 @@
 package br.com.quemateria.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -12,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,7 @@ import br.com.quemateria.entities.HorarioAula;
 import br.com.quemateria.entities.Usuario;
 import br.com.quemateria.services.AlunoService;
 import br.com.quemateria.services.RecomendacaoService;
+import br.com.quemateria.services.auth.UsuarioService;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -33,33 +35,38 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class RecomendacaoController {
 
-	public final AlunoService alunoService;
-	public final RecomendacaoService recomendacaoService;
-	public final HorarioAulaMapper horarioAulaMapper;
+	private final AlunoService alunoService;
+	private final RecomendacaoService recomendacaoService;
+	private final HorarioAulaMapper horarioAulaMapper;
+	private final UsuarioService usuarioService;
 
-	@PatchMapping
+	@GetMapping
 	public ResponseEntity<List<ConsultaHorarioAulaDTO>> getRecomendacao(
 			@RequestParam(value = "manha", defaultValue = "true", required = false) Boolean manha,
 			@RequestParam(value = "tarde", defaultValue = "false", required = false) Boolean tarde,
 			@RequestParam(value = "noite", defaultValue = "false", required = false) Boolean noite,
 			@RequestParam(value = "horas", defaultValue = "20", required = false) Integer maximoHoras,
-			Authentication auth) {
+			HttpServletRequest request) {
 
-		Usuario login = (Usuario) auth.getPrincipal();
+		Principal principal = request.getUserPrincipal();
+		String currentPrincipalName = principal.getName();
+		Usuario usuario = usuarioService.buscarUsuario(currentPrincipalName);
+		Long id = usuario.getId();
 
-		Aluno aluno = alunoService.getUsuario(login.getId());
+		
+		Aluno aluno = alunoService.buscarAluno(id);
 		Long cursoId = aluno.getCurso().getId();
 		Integer periodo = aluno.getPeriodo();
 		Integer periodoMaximo = periodo + 2;
 
-		recomendacaoService.calcularPeso(cursoId, periodo, login.getId());
+		recomendacaoService.calcularPeso(cursoId, periodo, id);
 
 		return new ResponseEntity<>(horarioAulaMapper.toListRecomendacaoDTO(recomendacaoService.recomendacaoCompleta(aluno,
 				cursoId, periodoMaximo, manha, tarde, noite, maximoHoras)), HttpStatus.OK);
 
 	}
 
-	@PatchMapping("relatorio")
+	@GetMapping("relatorio")
 	public ResponseEntity<List<ConsultaHorarioAulaSimplesDTO>> getRelatorioRecomendacoes(
 			@RequestParam(value = "manha", defaultValue = "true", required = false) Boolean manha,
 			@RequestParam(value = "tarde", defaultValue = "false", required = false) Boolean tarde,
@@ -68,13 +75,14 @@ public class RecomendacaoController {
 			Authentication auth) {
 
 		Usuario login = (Usuario) auth.getPrincipal();
+		Long id = login.getId();
 
-		Aluno aluno = alunoService.getUsuario(login.getId());
+		Aluno aluno = alunoService.getUsuarioPorId(id);
 		Long cursoId = aluno.getCurso().getId();
 		Integer periodo = aluno.getPeriodo();
 		Integer periodoMaximo = periodo + 2;
 
-		recomendacaoService.calcularPeso(cursoId, periodo, login.getId());
+		recomendacaoService.calcularPeso(cursoId, periodo, id);
 
 		List<HorarioAula> relatorioRecomendacao = recomendacaoService.gerarRelatorioDeRecomendacao(aluno, cursoId,
 				periodoMaximo, manha, tarde, noite, maximoHoras);
@@ -90,8 +98,9 @@ public class RecomendacaoController {
 			Authentication auth) {
 
 		Usuario login = (Usuario) auth.getPrincipal();
+		Long id = login.getId();
 
-		Aluno aluno = alunoService.getUsuario(login.getId());
+		Aluno aluno = alunoService.getUsuarioPorId(id);
 		Long cursoId = aluno.getCurso().getId();
 
 		List<HorarioAula> recomendacoesOpcionais = recomendacaoService.recomendarMateriasOpcionaisPorHorario(aluno,
@@ -107,8 +116,9 @@ public class RecomendacaoController {
 			Authentication auth) {
 
 		Usuario login = (Usuario) auth.getPrincipal();
+		Long id = login.getId();
 
-		Aluno aluno = alunoService.getUsuario(login.getId());
+		Aluno aluno = alunoService.getUsuarioPorId(id);
 		Long cursoId = aluno.getCurso().getId();
 
 		List<HorarioAula> recomendacoesOpcionais = recomendacaoService.recomendarMateriasOpcionaisPorHorario(aluno,
@@ -124,8 +134,9 @@ public class RecomendacaoController {
 			Authentication auth) {
 
 		Usuario login = (Usuario) auth.getPrincipal();
+		Long id = login.getId();
 
-		Aluno aluno = alunoService.getUsuario(login.getId());
+		Aluno aluno = alunoService.getUsuarioPorId(id);
 		Long cursoId = aluno.getCurso().getId();
 
 		List<HorarioAula> recomendacoesEnriquecimento = recomendacaoService
@@ -141,8 +152,9 @@ public class RecomendacaoController {
 			Authentication auth) {
 
 		Usuario login = (Usuario) auth.getPrincipal();
+		Long id = login.getId();
 
-		Aluno aluno = alunoService.getUsuario(login.getId());
+		Aluno aluno = alunoService.getUsuarioPorId(id);
 		Long cursoId = aluno.getCurso().getId();
 
 		List<HorarioAula> recomendacoesEnriquecimento = recomendacaoService

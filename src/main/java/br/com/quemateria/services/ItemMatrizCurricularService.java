@@ -34,7 +34,7 @@ public class ItemMatrizCurricularService {
 		logger.info("Acessando método buscarItemMatrizCurricular...");
 		Optional<ItemMatrizCurricular> buscarPorId = matrizCurricularRepository.findById(id);
 		
-		if (buscarPorId.get() == null)
+		if (!buscarPorId.isPresent())
 			logger.info("Disciplina não encontrada");
 		
 		logger.info("Disciplina " + buscarPorId.get().getDisciplina().getCodigo() + " " 

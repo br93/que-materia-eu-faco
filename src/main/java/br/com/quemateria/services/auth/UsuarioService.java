@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.quemateria.entities.Usuario;
 import br.com.quemateria.entities.Perfil;
+import br.com.quemateria.entities.Usuario;
 import br.com.quemateria.enums.PerfilType;
 import br.com.quemateria.exceptions.CustomBadRequestException;
 import br.com.quemateria.exceptions.CustomNotFoundException;
@@ -33,6 +33,15 @@ public class UsuarioService implements UserDetailsService {
 		return optional.orElseThrow(() -> new CustomNotFoundException("Usuário não encontrado"));
 	}
 	
+	public Usuario getUserDetailsByEmail(String email) {
+		Usuario userEntity = loginRepository.findByUsuario(email).orElseThrow(
+				() -> new UsernameNotFoundException("Email not found"));
+		
+		//UserDTO userDTO = new ModelMapper().map(userEntity, UserDTO.class);
+		
+		return userEntity;
+	}
+	
 	public Page<Usuario> listarUsuarios(Pageable pageable) {
 		return loginRepository.findAll(pageable);
 	}
@@ -49,6 +58,10 @@ public class UsuarioService implements UserDetailsService {
 	
 	public Usuario buscarUsuario(Long id) {
         return loginRepository.findById(id).orElseThrow(() -> new CustomBadRequestException("Usuário não encontrado!"));
+    }
+	
+	public Usuario buscarUsuario(String nome) {
+        return loginRepository.findByUsuario(nome).orElseThrow(() -> new CustomBadRequestException("Usuário não encontrado!"));
     }
 	
 	public Usuario atualizarUsuario(Usuario login, Long id) {

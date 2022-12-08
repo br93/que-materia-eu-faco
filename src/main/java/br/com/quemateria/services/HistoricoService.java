@@ -18,35 +18,39 @@ public class HistoricoService {
 	private DisciplinaRepository disciplinaRepository;
 
 	private Long getCursoIdAluno(Long alunoId) {
-		return alunoService.getUsuario(alunoId).getCurso().getId();
+		return 1L;
 	}
 
 	public Set<Disciplina> getDisciplinasCursadas(Long alunoId) {
-		return alunoService.getUsuario(alunoId).getDisciplinasCursadas();
+		return alunoService.getUsuarioPorId(alunoId).getDisciplinasCursadas();
 	}
 
 	public List<Disciplina> listarDisciplinasObrigatorias(Long alunoId) {
+		Long cursoId = this.getCursoIdAluno(alunoId);
 		return disciplinaRepository
 				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(
-						getCursoIdAluno(alunoId), 1L);
+						cursoId, 1L);
 	}
 
 	public List<Disciplina> listarDisciplinasSegundoEstrato(Long alunoId) {
+		Long cursoId = this.getCursoIdAluno(alunoId);
 		return disciplinaRepository
 				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(
-						getCursoIdAluno(alunoId), 2L);
+						cursoId, 2L);
 	}
 
 	public List<Disciplina> listarDisciplinasTrilha(Long alunoId) {
+		Long cursoId = this.getCursoIdAluno(alunoId);
 		return disciplinaRepository
 				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(
-						getCursoIdAluno(alunoId), 3L);
+						cursoId, 3L);
 	}
 
 	public List<Disciplina> listarDisciplinasOpcionais(Long alunoId) {
+		Long cursoId = this.getCursoIdAluno(alunoId);
 		return disciplinaRepository
 				.findByMatrizCurricular_Curso_IdAndMatrizCurricular_TipoDeDisciplina_IdOrderByMatrizCurricular_PeriodoAsc(
-						getCursoIdAluno(alunoId), 4L);
+						cursoId, 4L);
 	}
 
 	public List<Disciplina> getDisciplinasObrigatoriasFaltantes(Long alunoId) {

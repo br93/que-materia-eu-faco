@@ -55,10 +55,10 @@ public class AlunoService {
 
 		Optional<Aluno> buscarPorId = alunoRepository.findById(id);
 
-		if (buscarPorId.isEmpty())
+		if (!buscarPorId.isPresent())
 			logger.info("Aluno não encontrado");
 
-		logger.info("Aluno " + buscarPorId.get().getNome() + " encontrado");
+		//logger.info("Aluno " + buscarPorId.get().getNome() + " encontrado");
 		return buscarPorId.orElseThrow(() -> new CustomNotFoundException("Aluno não encontrado"));
 	}
 
@@ -67,10 +67,10 @@ public class AlunoService {
 
 		Optional<Aluno> buscarPorRegistro = alunoRepository.findByRegistro(registro);
 
-		if (buscarPorRegistro.isEmpty())
+		if (!buscarPorRegistro.isPresent())
 			logger.info("Aluno não encontrado");
 
-		logger.info("Aluno " + buscarPorRegistro.get().getNome() + " encontrado");
+		//logger.info("Aluno " + buscarPorRegistro.get().getNome() + " encontrado");
 		return buscarPorRegistro.orElseThrow(() -> new CustomNotFoundException("Aluno não encontrado"));
 	}
 
@@ -95,7 +95,7 @@ public class AlunoService {
 
 	}
 
-	public Aluno getUsuario(Long id) {
+	public Aluno getUsuarioPorId(Long id) {
 		logger.info("Acessando método getUsuario...");
 		
 		return this.buscarAluno(id);

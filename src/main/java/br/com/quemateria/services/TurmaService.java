@@ -40,7 +40,7 @@ public class TurmaService {
 		logger.info("Acessando método buscarTurma...");
 		Optional<Turma> buscarPorId = turmaRepository.findById(id);
 		
-		if (buscarPorId.get() == null)
+		if (!buscarPorId.isPresent())
 			logger.info("Turma não encontrada");
 		
 		logger.info("Turma " + buscarPorId.get().getDisciplina().getCodigo() + " " + 
@@ -53,7 +53,7 @@ public class TurmaService {
 		logger.info("Acessando método buscarTurmaPorCodigo...");
 		Optional<Turma> buscarPorCodigo = turmaRepository.findByCodigo(codigo);
 		
-		if (buscarPorCodigo.get() == null)
+		if (!buscarPorCodigo.isPresent())
 			logger.info("Turma não encontrada");
 		
 		logger.info("Turma " + buscarPorCodigo.get().getDisciplina().getCodigo() + " " + 

@@ -143,7 +143,7 @@ public class RecomendacaoService {
 
 		List<HorarioAula> listaRecomendacao = new ArrayList<>();
 
-		System.out.println(materiasFaltantes);
+		//System.out.println(materiasFaltantes);
 
 		for (HorarioAula horarioAula : materiasFaltantes)
 			if (!disciplinasCursadas.contains(getTurmaDisciplina(horarioAula))

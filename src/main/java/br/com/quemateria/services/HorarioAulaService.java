@@ -43,7 +43,7 @@ public class HorarioAulaService {
 		logger.info("Acessando método buscarAula...");
 		Optional<HorarioAula> buscarPorId = horarioAulaRepository.findById(id);
 		
-		if (buscarPorId.get() == null)
+		if (!buscarPorId.isPresent())
 			logger.info("Horário-aula não encontrado!");
 		
 		logger.info("Horário-aula " + buscarPorId.get().getTurma().getCodigo() + "dia " + 

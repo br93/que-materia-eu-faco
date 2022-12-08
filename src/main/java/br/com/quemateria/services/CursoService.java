@@ -41,7 +41,7 @@ public class CursoService {
 		
 		Optional<Curso> buscarPorId = cursoRepository.findById(id);
 		
-		if (buscarPorId.get() == null)
+		if (!buscarPorId.isPresent())
 			logger.info("Curso não encontrado");
 
 		logger.info("Curso " + buscarPorId.get().getNome() + " encontrado");
@@ -53,7 +53,7 @@ public class CursoService {
 		
 		Optional<Curso> buscarPorCodigo = cursoRepository.findByCodigo(codigo);
 		
-		if (buscarPorCodigo.isEmpty())
+		if (!buscarPorCodigo.isPresent())
 			logger.info("Curso não encontrado");
 
 		logger.info("Curso " + buscarPorCodigo.get().getNome() + " encontrado");

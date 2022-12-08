@@ -42,7 +42,7 @@ public class DisciplinaService {
 		
 		Optional<Disciplina> buscarPorId = disciplinaRepository.findById(id);
 		
-		if (buscarPorId.get() == null)
+		if (!buscarPorId.isPresent())
 			logger.info("Disciplina não encontrada");
 		
 		logger.info("Disciplina " + buscarPorId.get().getCodigo() + " " + buscarPorId.get().getNome() + " encontrada");
@@ -55,7 +55,7 @@ public class DisciplinaService {
 		
 		Optional<Disciplina> buscarPorCodigo = disciplinaRepository.findByCodigo(codigo);
 		
-		if (buscarPorCodigo.isEmpty())
+		if (!buscarPorCodigo.isPresent())
 			logger.info("Disciplina não encontrada");
 		
 		logger.info("Disciplina " + buscarPorCodigo.get().getCodigo() + " " + buscarPorCodigo.get().getNome() + " encontrada");
