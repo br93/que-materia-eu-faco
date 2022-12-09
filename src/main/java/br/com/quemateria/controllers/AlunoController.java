@@ -1,5 +1,8 @@
 package br.com.quemateria.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.quemateria.dto.aluno.AlunoCadastroDisciplinasDTO;
 import br.com.quemateria.dto.aluno.AlunoMapper;
 import br.com.quemateria.dto.aluno.ConsultaAlunoDTO;
-import br.com.quemateria.dto.aluno.RegistroAlunoDTO;
+import br.com.quemateria.dto.disciplina.RegistroDisciplinaSimplesDTO;
 import br.com.quemateria.entities.Aluno;
 import br.com.quemateria.entities.Usuario;
 import br.com.quemateria.services.AlunoService;
+import br.com.quemateria.services.auth.UsuarioService;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -29,6 +34,7 @@ import lombok.AllArgsConstructor;
 public class AlunoController {
 
 	private final AlunoService alunoService;
+	private final UsuarioService usuarioService;
 	private final AlunoMapper alunoMapper;
 
 	@GetMapping
@@ -45,16 +51,20 @@ public class AlunoController {
 				HttpStatus.PARTIAL_CONTENT);
 	}
 
-	@PostMapping("add")
-	public ResponseEntity<ConsultaAlunoDTO> salvarAluno(@RequestBody RegistroAlunoDTO dto, Authentication auth) {
+	@PostMapping("cadastrar-disciplina")
+	public ResponseEntity<ConsultaAlunoDTO> salvarDisciplinasCursadas(Authentication auth,
+			@RequestBody AlunoCadastroDisciplinasDTO dto) {
 
-		alunoService.validarParametros(dto.getNome(), dto.getRegistro(), dto.getPeriodo(), dto.getCurso());
+		List<String> disciplinas = dto.getDisciplinas().stream().map(RegistroDisciplinaSimplesDTO::getCodigo)
+				.collect(Collectors.toList());
+
+		alunoService.validarParametros(dto.getPeriodo(), disciplinas);
 		Usuario login = (Usuario) auth.getPrincipal();
 
 		Aluno aluno = alunoMapper.toEntity(dto);
-		Aluno alunoSalvo = alunoService.salvarAluno(aluno, login.getId());
+		Aluno alunoAtualizado = alunoService.atualizarDisciplinasCursadas(aluno, login.getId());
 
-		return new ResponseEntity<>(alunoMapper.toDTO(alunoSalvo), HttpStatus.CREATED);
+		return new ResponseEntity<>(alunoMapper.toDTO(alunoAtualizado), HttpStatus.OK);
 	}
 
 	@DeleteMapping("delete/{registro}")
@@ -63,10 +73,12 @@ public class AlunoController {
 		alunoService.validarParametros(registro);
 
 		Usuario login = (Usuario) auth.getPrincipal();
+		String permissao = login.getPerfil().getPermissao();
 		Aluno aluno = alunoService.buscarAluno(login.getId());
 
-		if (aluno.getRegistro().equals(registro)) {
+		if (permissao.equals("ADMIN") || aluno.getRegistro().equals(registro)) {
 			alunoService.excluirAluno(registro);
+			usuarioService.excluirUsuario(login.getId());
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
