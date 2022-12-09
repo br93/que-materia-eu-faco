@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.quemateria.dto.auth.AutenticacaoDTO;
 import br.com.quemateria.dto.auth.ConsultaUsuarioDTO;
 import br.com.quemateria.dto.auth.LoginMapper;
-import br.com.quemateria.dto.auth.AutenticacaoDTO;
 import br.com.quemateria.entities.Usuario;
+import br.com.quemateria.services.AlunoService;
 import br.com.quemateria.services.auth.UsuarioService;
 import lombok.AllArgsConstructor;
 
@@ -29,6 +30,7 @@ public class UsuarioController {
 	
 	private final LoginMapper loginMapper;
 	private final UsuarioService loginService;
+	private final AlunoService alunoService;
 	
 	@GetMapping
 	public ResponseEntity<ConsultaUsuarioDTO> buscarUsuario (@RequestParam Long id){
@@ -44,6 +46,8 @@ public class UsuarioController {
 	@PostMapping
 	public ResponseEntity<ConsultaUsuarioDTO> cadastrarUsuario (@RequestBody AutenticacaoDTO dto){
 		Usuario login = loginService.salvarUsuario(loginMapper.toEntity(dto));
+		alunoService.salvarAluno(login.getId());
+		
 		return new ResponseEntity<ConsultaUsuarioDTO>(loginMapper.toDTO(login), HttpStatus.CREATED);
 	}
 	

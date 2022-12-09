@@ -22,6 +22,14 @@ public interface AlunoMapper {
 	@Mapping(target = "login", ignore = true)
 	Aluno toEntity (RegistroAlunoDTO dto);
 	
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "nome", ignore = true)
+	@Mapping(target = "registro", ignore = true)
+	@Mapping(target = "curso", ignore = true)
+	@Mapping(target = "login", ignore = true)
+	@Mapping(target = "disciplinasCursadas", source = "disciplinas")
+	Aluno toEntity (AlunoCadastroDisciplinasDTO dto);
+	
 	List<ConsultaAlunoDTO> toListDTO (List<Aluno> alunos);
 
 }

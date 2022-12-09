@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import br.com.quemateria.entities.Disciplina;
@@ -16,12 +18,17 @@ public class HistoricoService {
 
 	private AlunoService alunoService;
 	private DisciplinaRepository disciplinaRepository;
+	
+	public final Logger logger = LoggerFactory.getLogger(HistoricoService.class);
 
 	private Long getCursoIdAluno(Long alunoId) {
 		return 1L;
 	}
 
 	public Set<Disciplina> getDisciplinasCursadas(Long alunoId) {
+		logger.info("Acessando método getDisciplinasCursadas...");
+
+		logger.info("Listando todos as disciplinas cursadas pelo aluno");
 		return alunoService.getUsuarioPorId(alunoId).getDisciplinasCursadas();
 	}
 
@@ -64,11 +71,14 @@ public class HistoricoService {
 	}
 
 	public List<Disciplina> getDisciplinasFaltantes(Long alunoId) {
+		logger.info("Acessando método getDisciplinasFaltantes...");
+
 		List<Disciplina> disciplinasFaltantes = new ArrayList<>();
 		disciplinasFaltantes.addAll(this.listarDisciplinasObrigatorias(alunoId));
 		disciplinasFaltantes.addAll(this.listarDisciplinasSegundoEstrato(alunoId));
 		disciplinasFaltantes.removeAll(this.getDisciplinasCursadas(alunoId));
 
+		logger.info("Listando todos as disciplinas faltantes do aluno");
 		return disciplinasFaltantes;
 	}
 

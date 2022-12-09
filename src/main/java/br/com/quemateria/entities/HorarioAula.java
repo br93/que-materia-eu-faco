@@ -46,6 +46,8 @@ public class HorarioAula {
 		if (getClass() != obj.getClass())
 			return false;
 		HorarioAula other = (HorarioAula) obj;
+		if (this.getTurma().getDisciplina().getCodigo().equals(other.getTurma().getDisciplina().getCodigo()))
+			return true;
 		return Objects.equals(dia, other.dia) && Objects.equals(horario, other.horario);
 	}
 
